@@ -1,5 +1,14 @@
 #include "TXLib.h"
-void(fon(int mx, int my))
+
+struct BUTTON
+{
+
+};
+
+const int MENU_OPEN = 1;
+
+//Меню
+void fon(int mx, int my)
 {
     txSetColor (TX_BLACK, 4);
     txSetFillColor (TX_WHITE);
@@ -17,6 +26,14 @@ int main()
     {
     txCreateWindow (800, 800);
 
+
+    HDC Kreslo = txLoadImage ("кресло.bmp");
+
+    HDC Stol = txLoadImage ("Стол.bmp");
+
+    bool drawKreslo = false;
+    bool drawstol = false;
+
     int window = 0;
     int mx = -500;
     int my = -500;
@@ -29,18 +46,21 @@ int main()
     sprintf(section [0][5], "0подраздел5") ;
     sprintf(section [0][6], "0подраздел6") ;
 
+
     while(!GetAsyncKeyState(VK_ESCAPE))
     {
-    txSetColor (TX_WHITE, 4);
-    txClear();
-    txSetColor (TX_BLACK, 4);
+        txSetColor (TX_WHITE, 4);
+        txClear();
+        txSetColor (TX_BLACK, 4);
 
-    window = 0;
 
-    fon(mx, my);
+        window = 0;
+
+        fon(mx, my);
+
 
     if(txMouseX() >= mx && txMouseX() <= mx + 200 && txMouseY() >= my && txMouseY() <= my + 150 )
-        window = 1;
+        window = MENU_OPEN;
 
     for(int i = -1; i < 7; i++)
     {
@@ -57,6 +77,52 @@ int main()
                mx = 650;
         }
     }
+    for(int i = 0; i < 800; i = i + 200)
+    {
+//кресло
+
+    if(i == 0 && txMouseX() >= 0 + i && txMouseX() <= 200 + i && txMouseY() >= 0 && txMouseY() <= 100 && txMouseButtons() == 1 && window == 0)
+    {
+        drawKreslo = true;
+    }
+    if(i == 1 && txMouseX() >= 0 + i && txMouseX() <= 200 + i && txMouseY() >= 0 && txMouseY() <= 100 && txMouseButtons() == 1 && window == 0)
+    {
+        drawKreslo = false;
+    }
+
+    if (drawKreslo)
+    {
+
+     Win32::TransparentBlt (txDC(), 200, 200, 200, 200, Kreslo, 0, 0, 686, 700, TX_BLACK);
+    }
+
+
+    }
+
+    for(int i = 0; i < 800; i = i + 200)
+    {
+//кресло
+
+    if(txMouseX() >= 0 + i && txMouseX() <= 200 + i && txMouseY() >= 0 && txMouseY() <= 100 && txMouseButtons() == 1 && window == 0)
+    {
+        drawstol = true;
+    }
+
+    if (drawstol)
+    {
+
+     Win32::TransparentBlt (txDC(), 400, 400, 400, 400, Stol, 0, 0, 686, 700, TX_BLACK);
+    }
+
+
+    }
+
+
+    if (window == MENU_OPEN)
+        Win32::TransparentBlt (txDC(), mx, 0, 50, 50, Kreslo, 0, 0, 686, 700, TX_BLACK); // 10x zoom
+
+
+
 
     txSleep(10) ;
 

@@ -2,26 +2,45 @@
 
 struct BUTTON
 {
+};
 
+struct strObject
+{
+    int x;
+    int y;
+    int oSize;
 };
 
 const int MENU_OPEN = 1;
 
-//Ìåíþ
+//ÃŒÃ¥Ã­Ã¾
 void fon(int mx, int my)
 {
     txSetColor (TX_BLACK, 4);
     txSetFillColor (TX_WHITE);
     txRectangle (0, 0, 800, 100);
 
-    txDrawText(0, 0, 200, 100 ,"Ìåáåëü");
-    txDrawText(200, 0, 400, 100 ,"Ñòåíû");
-    txDrawText(400, 0, 600, 100 ,"Ïîë");
-    txDrawText(600, 0, 800, 100 ,"Îêíà");
+    txDrawText(0, 0, 200, 100 ,"ÃŒÃ¥Ã¡Ã¥Ã«Ã¼");
+    txDrawText(200, 0, 400, 100 ,"Ã‘Ã²Ã¥Ã­Ã»");
+    txDrawText(400, 0, 600, 100 ,"ÃÃ®Ã«");
+    txDrawText(600, 0, 800, 100 ,"ÃŽÃªÃ­Ã ");
 
     txRectangle(900,100,1080,900);
 
     txRectangle (mx, my, mx + 150, my + 140);
+}
+
+void openSubsection()
+{
+    txSetColor (TX_BLACK, 4);
+    txSetFillColor (TX_WHITE);
+    txRectangle (0, 0, 800, 100);
+    txSetColor (TX_BLACK, 2);
+    if(txMouseX() >= 0 && txMouseX() <= 35 && txMouseY() >= 0 && txMouseY() <= 20)
+        txSetColor (TX_LIGHTRED, 2);
+    txLine(10, 10, 30, 10);
+    txLine(10, 10, 15, 5);
+    txLine(10, 10, 15, 15);
 }
 
 int main()
@@ -29,32 +48,58 @@ int main()
     txCreateWindow (1080, 900);
 
 
-    HDC Kreslo = txLoadImage ("êðåñëî.bmp");
+    HDC Kreslo = txLoadImage ("ÃªÃ°Ã¥Ã±Ã«Ã®.bmp");
 
-    HDC Stol = txLoadImage ("Ñòîë.bmp");
+    HDC Stol = txLoadImage ("Ã‘Ã²Ã®Ã«.bmp");
 
-    HDC Kreslo2 = txLoadImage("Êðåñëî2.bmp");
+    HDC Kreslo2 = txLoadImage("ÃŠÃ°Ã¥Ã±Ã«Ã®2.bmp");
 
     bool drawKreslo = false;
     bool drawstol = false;
     bool drawKreslo2 = false;
     bool drawKresloB2=false;
+  
+    txSetFillColor (TX_WHITE);
+    txRectangle (0, 0, 800, 100);
+
+    txSetColor (TX_BLACK, 4);
+    if(txMouseX() >= 0 && txMouseX() <= 200 && txMouseY() >= 0 && txMouseY() <= 100 && mx == -500)
+        txSetColor (TX_LIGHTBLUE, 4);
+    txDrawText(0, 0, 200, 100 ,"Ã­Ã Ã§Ã¢Ã Ã­Ã¨Ã¥ Ã°Ã Ã§Ã¤Ã¥Ã«Ã ");
+    txSetColor (TX_BLACK, 4);
+    if(txMouseX() >= 200 && txMouseX() <= 400 && txMouseY() >= 0 && txMouseY() <= 100 && mx == -500)
+        txSetColor (TX_LIGHTBLUE, 4);
+    txDrawText(200, 0, 400, 100 ,"Ã­Ã Ã§Ã¢Ã Ã­Ã¨Ã¥ Ã°Ã Ã§Ã¤Ã¥Ã«Ã ");
+    txSetColor (TX_BLACK, 4);
+    if(txMouseX() >= 400 && txMouseX() <= 600 && txMouseY() >= 0 && txMouseY() <= 100 && mx == -500)
+        txSetColor (TX_LIGHTBLUE, 4);
+    txDrawText(400, 0, 600, 100 ,"Ã­Ã Ã§Ã¢Ã Ã­Ã¨Ã¥ Ã°Ã Ã§Ã¤Ã¥Ã«Ã ");
+    txSetColor (TX_BLACK, 4);
+    if(txMouseX() >= 600 && txMouseX() <= 800 && txMouseY() >= 0 && txMouseY() <= 100 && mx == -500)
+        txSetColor (TX_LIGHTBLUE, 4);
+    txDrawText(600, 0, 800, 100 ,"Ã­Ã Ã§Ã¢Ã Ã­Ã¨Ã¥ Ã°Ã Ã§Ã¤Ã¥Ã«Ã ");
+    txSetColor (TX_BLACK, 4);
+  
+    strObject object[100];
+    object[0] = {-500, -500, 10};
+  
 
     int window = 0;
     int mx = -500;
     int my = -500;
     char section [3][6][13];
-    sprintf(section [0][0], "0ïîäðàçäåë0") ;
-    sprintf(section [0][1], "0ïîäðàçäåë1") ;
-    sprintf(section [0][2], "0ïîäðàçäåë2") ;
-    sprintf(section [0][3], "0ïîäðàçäåë3") ;
-    sprintf(section [0][4], "0ïîäðàçäåë4") ;
-    sprintf(section [0][5], "0ïîäðàçäåë5") ;
-    sprintf(section [0][6], "0ïîäðàçäåë6") ;
+    sprintf(section [0][0], "0Ã¯Ã®Ã¤Ã°Ã Ã§Ã¤Ã¥Ã«0") ;
+    sprintf(section [0][1], "0Ã¯Ã®Ã¤Ã°Ã Ã§Ã¤Ã¥Ã«1") ;
+    sprintf(section [0][2], "0Ã¯Ã®Ã¤Ã°Ã Ã§Ã¤Ã¥Ã«2") ;
+    sprintf(section [0][3], "0Ã¯Ã®Ã¤Ã°Ã Ã§Ã¤Ã¥Ã«3") ;
+    sprintf(section [0][4], "0Ã¯Ã®Ã¤Ã°Ã Ã§Ã¤Ã¥Ã«4") ;
+    sprintf(section [0][5], "0Ã¯Ã®Ã¤Ã°Ã Ã§Ã¤Ã¥Ã«5") ;
+    sprintf(section [0][6], "0Ã¯Ã®Ã¤Ã°Ã Ã§Ã¤Ã¥Ã«6") ;
 
 
     while(!GetAsyncKeyState(VK_ESCAPE))
     {
+      
         txSetColor (TX_WHITE, 4);
         txClear();
         txSetColor (TX_BLACK, 4);
@@ -76,6 +121,34 @@ int main()
     for(int i = 0; i < 800; i = i + 200)
     {
         if(txMouseX() >= 0 + i && txMouseX() <= 200 + i && txMouseY() >= 0 && txMouseY() <= 100 && txMouseButtons() == 1 && window == 0)
+
+          
+    if(!openSubsect)
+    {
+        fon(mx, my);
+        txRectangle (mx, my, mx + 150, my + 140);
+        for(int i = 0; i < 7; i++)
+        {
+            if(txMouseX() >= mx + 5 && txMouseX() <= mx + 150 && txMouseY() >= my + 5 + i * 20 && txMouseY() <= my + 20 + i * 20)
+                txSetColor (TX_LIGHTBLUE, 4);
+            txDrawText(mx, my + i * 20, mx + 150, my + 20 + i * 20 , section [0][i]);
+            if(txMouseX() >= mx + 5 && txMouseX() <= mx + 150 && txMouseY() >= my + 5 + i * 20 && txMouseY() <= my + 20 + i * 20 && txMouseButtons() == 1)
+                openSubsect = true;
+            txSetColor (TX_BLACK, 4);
+        }
+    }
+
+    else
+        openSubsection();
+
+    if(txMouseX() >= 0 && txMouseX() <= 35 && txMouseY() >= 0 && txMouseY() <= 20 && txMouseButtons() == 1 && openSubsect)
+        {openSubsect = false; mx = -500; txSleep(200);}
+
+    for(int i = 0; i < 800; i = i + 200)
+    {
+        if(txMouseX() >= 0 + i && txMouseX() <= 200 + i && txMouseY() >= 0 && txMouseY() <= 100 && txMouseButtons() == 1)
+
+          
         {
             my = txMouseY() ;
             mx = txMouseX() ;
@@ -83,8 +156,8 @@ int main()
                mx = 650;
         }
     }
-
-    //Âûáîð êàòåãîðèè
+      
+    //Ã‚Ã»Ã¡Ã®Ã° ÃªÃ Ã²Ã¥Ã£Ã®Ã°Ã¨Ã¨
     if(txMouseX() >= 200 && txMouseX() <= 400 &&
        txMouseY() >= 0 && txMouseY() <= 100 && txMouseButtons() == 1)
     {
@@ -100,10 +173,17 @@ int main()
     {
         Win32::TransparentBlt (txDC(), 930, 120, 100, 100, Kreslo, 0, 0, 686, 700, TX_BLACK);
     }
+      
+    txSleep(10) ;
 
+    if(!(txMouseX() >= mx, txMouseY() >= my, txMouseX() <= mx + 200,txMouseY() <= my + 140) && txMouseButtons() == 1)
+    {
+        mx = -500;
+        my = -500;
+    }
 
-
-    //Âûáîð êàðòèíêè
+      
+    //Ã‚Ã»Ã¡Ã®Ã° ÃªÃ Ã°Ã²Ã¨Ã­ÃªÃ¨
     if(txMouseX()>= 930 && txMouseX() <=1030 &&
         txMouseY()>=120 && txMouseY() <= 220 && txMouseButtons() == 1)
     {
@@ -111,7 +191,7 @@ int main()
     }
 
 
-//êðåñëî
+//ÃªÃ°Ã¥Ã±Ã«Ã®
 
     if(txMouseX() >= 0 && txMouseX() <= 200 &&
        txMouseY() >= 0 && txMouseY() <= 100 && txMouseButtons() == 1)
@@ -139,8 +219,7 @@ int main()
         drawstol=false;
     }
 
-
-    txSleep(10) ;
+      
 
     if(!(txMouseX() >= mx, txMouseY() >= my, txMouseX() <= mx + 200,txMouseY() <= my + 140) && txMouseButtons() == 1)
     {
@@ -148,6 +227,7 @@ int main()
         my = -500;
     }
 
+      
     txSleep(20) ;
 
     }

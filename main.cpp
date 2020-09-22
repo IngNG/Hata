@@ -22,7 +22,10 @@ struct strObject
 {
     int x;
     int y;
-    int oSize;
+    HDC pic;
+    bool drawObject;
+    int width;
+    int height;
 };
 
 const int MENU_OPEN = 1;
@@ -59,22 +62,23 @@ void openSubsection()
 
 int main()
 {
-    txCreateWindow (1080, 900);
+    txCreateWindow (1080, 800);
 
-    HDC Kreslo = txLoadImage ("Pictures/кресло.bmp");
-    HDC Stol = txLoadImage ("Pictures/Стол.bmp");
-    HDC Kreslo2 = txLoadImage("Pictures/Кресло2.bmp");
+    // HDC Kreslo = txLoadImage ("Pictures/кресло.bmp");
+    //HDC Stol = txLoadImage ("Pictures/Стол.bmp");
+    //HDC Kreslo2 = txLoadImage("Pictures/Кресло2.bmp");
 
-    bool drawKreslo = false;
-    bool drawstol = false;
-    bool drawKreslo2 = false;
+    //bool drawKreslo = false;
+    //bool drawstol = false;
+    //bool drawKreslo2 = false;
     bool drawKresloB2=false;
 
     bool openSubsect = false;
 
     strObject object[100];
-    object[0] = {-500, -500, 10};
-
+    object[0] = {50, 0, txLoadImage ("Pictures/кресло.bmp"), false, 686, 700};
+    object[1] = {150, 0, txLoadImage ("Pictures/Стол.bmp"), false, 910, 746};
+    object[2] = {250, 0, txLoadImage ("Pictures/кресло2.bmp"), false, 822, 836};
 
     int window = 0;
     int mx = -500;
@@ -89,13 +93,12 @@ int main()
     sprintf(section [0][6], "0подраздел6") ;
 
 
-
+    txBegin();
     while(!GetAsyncKeyState(VK_ESCAPE))
     {
         txSetColor (TX_WHITE, 4);
         txClear();
         txSetColor (TX_BLACK, 4);
-        window = 0;
         fon(mx, my);
         if(!openSubsect)
         {
@@ -110,6 +113,7 @@ int main()
                     openSubsect = true;
                 txSetColor (TX_BLACK, 4);
             }
+            txSleep(200);
         }
 
         else
@@ -132,62 +136,64 @@ int main()
 
 
         //Выбор категории
-        if(txMouseX() >= 200 && txMouseX() <= 400 &&
-           txMouseY() >= 0 && txMouseY() <= 100 && txMouseButtons() == 1)
-        {
-            drawKreslo = true;
-            drawKreslo2 = true;
-        }
+        for(int i = 0; i < 3; i++)
+            if(txMouseX() >= object[i].x && txMouseX() <= object[i].width &&
+               txMouseY() >= 0 && txMouseY() <= 100 && txMouseButtons() == 1 && openSubsect)
+            {
+                object[i].drawObject = true;
+            }
 
         //Рисование вариантов в рамках категории
-        if (drawKreslo2)
-        {
-            Win32::TransparentBlt (txDC(), 930,250,100,100,Kreslo2,0,0,1200,1200,TX_BLACK);
-        }
-        if (drawKreslo)
-        {
-            Win32::TransparentBlt (txDC(), 930, 120, 100, 100, Kreslo, 0, 0, 686, 700, TX_BLACK);
-        }
+        for(int i = 0; i < 3; i++)
+            if (openSubsect)
+            {
+                Win32::TransparentBlt (txDC(), object[i].x, object[i].y, 100, 100,object[i].pic, 0, 0, object[i].width, object[i].height, TX_BLACK);
+            }
+        //if (object[0].drawObject)
+        //{
+        //    Win32::TransparentBlt (txDC(), 930, 120, 100, 100, object[0].pic, 0, 0, 686, 700, TX_BLACK);
+        //}
 
 
 
         //Выбор картинки
-        if(txMouseX()>= 930 && txMouseX() <=1030 &&
-            txMouseY()>=120 && txMouseY() <= 220 && txMouseButtons() == 1)
-        {
-            drawKresloB2 = true;
-        }
+        //if(txMouseX()>= 930 && txMouseX() <=1030 &&
+        //    txMouseY()>=120 && txMouseY() <= 220 && txMouseButtons() == 1)
+        //{
+        //    drawKresloB2 = true;
+        //}
 
 
     //кресло
 
-        if(txMouseX() >= 0 && txMouseX() <= 200 &&
-           txMouseY() >= 0 && txMouseY() <= 100 && txMouseButtons() == 1)
-        {
+        //if(txMouseX() >= 0 && txMouseX() <= 200 &&
+        //   txMouseY() >= 0 && txMouseY() <= 100 && txMouseButtons() == 1)
+        //{
 
-        }
+        //}
 
         //Картинки по центру
-        if (drawKresloB2)
-        {
-          Win32::TransparentBlt (txDC(),200,200,150,150,Kreslo2,0,0,800,800,TX_BLACK);
-        }
-        if (drawstol)
-        {
-            Win32::TransparentBlt (txDC(), 400, 400, 400, 400, Stol, 0, 0, 686, 700, TX_BLACK);
-        }
+        for(int i = 0; i < 3; i++)
+            if (object[i].drawObject)
+            {
+                Win32::TransparentBlt (txDC(),400,400,150,150,object[i].pic,0,0,object[i].width,object[i].height,TX_BLACK);
+            }
+        //if (object[0].drawObject)
+        //{
+        //    Win32::TransparentBlt (txDC(), 400, 400, 400, 400, object[1].pic, 0, 0, 686, 700, TX_BLACK);
+        //}
 
 
 
         if (window == MENU_OPEN)
-            Win32::TransparentBlt (txDC(), mx, 0, 50, 50, Kreslo, 0, 0, 686, 700, TX_BLACK); // 10x zoom
+            Win32::TransparentBlt (txDC(), mx, 0, 50, 50, object[0].pic, 0, 0, 686, 700, TX_BLACK); // 10x zoom
 
-
-        if (GetAsyncKeyState(VK_SPACE))
-        {
-            drawKresloB2=false;
-            drawstol=false;
-        }
+        for(int i = 0; i < 3; i++)
+            if (GetAsyncKeyState(VK_SPACE))
+            {
+                //drawKresloB2=false;
+                object[i].drawObject=false;
+            }
 
 
         if(!(txMouseX() >= mx, txMouseY() >= my, txMouseX() <= mx + 200,txMouseY() <= my + 140) && txMouseButtons() == 1)
@@ -196,10 +202,12 @@ int main()
             my = -500;
         }
 
-
         txSleep(20) ;
 
     }
+
+    for(int i = 0; i < 3; i++)
+        txDeleteDC (object[i].pic);
 
     return 0;
     }

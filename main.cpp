@@ -64,14 +64,6 @@ int main()
 {
     txCreateWindow (1080, 800);
 
-    // HDC Kreslo = txLoadImage ("Pictures/кресло.bmp");
-    //HDC Stol = txLoadImage ("Pictures/Стол.bmp");
-    //HDC Kreslo2 = txLoadImage("Pictures/Кресло2.bmp");
-
-    //bool drawKreslo = false;
-    //bool drawstol = false;
-    //bool drawKreslo2 = false;
-    bool drawKresloB2=false;
 
     bool openSubsect = false;
 
@@ -79,6 +71,12 @@ int main()
     object[0] = {50, 0, txLoadImage ("Pictures/кресло.bmp"), false, 686, 700};
     object[1] = {150, 0, txLoadImage ("Pictures/Стол.bmp"), false, 910, 746};
     object[2] = {250, 0, txLoadImage ("Pictures/кресло2.bmp"), false, 822, 836};
+
+    bool drawKresloB2=false;
+    //HDC Sofa2 = txLoadImage("Pictures/диван.bmp");
+    //HDC Stolpc = txLoadImage("Pictures/столкомп.bmp");
+    //HDC room = txLoadImage("Pictures/омната.bmp");
+
 
     int window = 0;
     int mx = -500;
@@ -137,8 +135,10 @@ int main()
 
         //Выбор категории
         for(int i = 0; i < 3; i++)
-            if(txMouseX() >= object[i].x && txMouseX() <= object[i].width &&
-               txMouseY() >= 0 && txMouseY() <= 100 && txMouseButtons() == 1 && openSubsect)
+            if (txMouseX() >= object[i].x &&
+                txMouseX() <= object[i].x + object[i].width &&
+                txMouseY() >= 0 && txMouseY() <= 100 &&
+                txMouseButtons() == 1 && openSubsect)
             {
                 object[i].drawObject = true;
             }
@@ -149,28 +149,7 @@ int main()
             {
                 Win32::TransparentBlt (txDC(), object[i].x, object[i].y, 100, 100,object[i].pic, 0, 0, object[i].width, object[i].height, TX_BLACK);
             }
-        //if (object[0].drawObject)
-        //{
-        //    Win32::TransparentBlt (txDC(), 930, 120, 100, 100, object[0].pic, 0, 0, 686, 700, TX_BLACK);
-        //}
 
-
-
-        //Выбор картинки
-        //if(txMouseX()>= 930 && txMouseX() <=1030 &&
-        //    txMouseY()>=120 && txMouseY() <= 220 && txMouseButtons() == 1)
-        //{
-        //    drawKresloB2 = true;
-        //}
-
-
-    //кресло
-
-        //if(txMouseX() >= 0 && txMouseX() <= 200 &&
-        //   txMouseY() >= 0 && txMouseY() <= 100 && txMouseButtons() == 1)
-        //{
-
-        //}
 
         //Картинки по центру
         for(int i = 0; i < 3; i++)
@@ -178,10 +157,23 @@ int main()
             {
                 Win32::TransparentBlt (txDC(),400,400,150,150,object[i].pic,0,0,object[i].width,object[i].height,TX_BLACK);
             }
-        //if (object[0].drawObject)
-        //{
-        //    Win32::TransparentBlt (txDC(), 400, 400, 400, 400, object[1].pic, 0, 0, 686, 700, TX_BLACK);
-        //}
+
+            //if (drawstol)
+            {
+                //Win32::TransparentBlt (txDC(), 400, 400, 400, 400, Stol, 0, 0, 686, 700, TX_BLACK);
+            }
+            //if (drawSofa2)
+            {
+                //Win32::TransparentBlt (txDC(), 400, 400, 400, 400, Sofa2, 0, 0, 686, 700, TX_BLACK);
+            }
+            //if (drawstolpc)
+            {
+                //Win32::TransparentBlt (txDC(), 400, 400, 400, 400, Stolpc, 0, 0, 686, 700, TX_BLACK);
+            }
+            //if (drawroom)
+            {
+                //Win32::TransparentBlt (txDC(), 400, 400, 400, 400, room, 0, 0, 686, 700, TX_BLACK);
+            }
 
 
 
@@ -210,5 +202,5 @@ int main()
         txDeleteDC (object[i].pic);
 
     return 0;
-    }
+}
 

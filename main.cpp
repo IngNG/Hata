@@ -1,18 +1,16 @@
 #include "TXLib.h"
 
-//Можно две структуры для раздела и подраздела
-
+//Подраздел
 struct subBUTTON
 {
-    //int x;
-    //int y;
     const char* text;
 };
 
+//Раздел
 struct BUTTON
 {
-    //int x;
-    //int y;
+    int x;
+    int y;
     const char* text;
     subBUTTON subButtons[10];
 };
@@ -27,6 +25,7 @@ void drawButton(int x, int y, char text[] )
     txDrawText(x, y, x + 200, y + 100 ,text);
 }
 
+//Картинка
 struct strObject
 {
     int x;
@@ -58,7 +57,6 @@ void fon(int mx, int my)
 
 void openSubsection()
 {
-    txSetColor (TX_WHITE, 4);
     txClear();
     txSetColor (TX_BLACK, 4);
     txSetFillColor (TX_WHITE);
@@ -78,42 +76,28 @@ int main()
 
     bool openSubsect = false;
 
+    //Варианты мебели сверху
     strObject object[100];
     object[0] = {50, 0, txLoadImage ("Pictures/кресло.bmp"), false, 686, 700};
     object[1] = {150, 0, txLoadImage ("Pictures/Стол.bmp"), false, 910, 746};
     object[2] = {250, 0, txLoadImage ("Pictures/кресло2.bmp"), false, 822, 836};
 
-    subBUTTON btn[10];
-    btn[0] = {"комната"};
-    btn[1] = {"стол"};
-    btn[2] = {"Мебель"};
-    btn[3] = {"стулья"};
-    btn[4] = {"Мебель"};
+    //Разделы
     BUTTON buttons[5];
-    buttons[0] = {"Мебель",        btn    };
-
-    bool drawKresloB2=false;
-    //HDC Sofa2 = txLoadImage("Pictures/диван.bmp");
-    //HDC Stolpc = txLoadImage("Pictures/столкомп.bmp");
-    //HDC room = txLoadImage("Pictures/омната.bmp");
+    buttons[0] =   {0, 0, "Мебель",     {{"комната"}, {"стол"}, {"Мебель"}, {"стулья"}, {"Мебель"}}};
+    buttons[1] = {200, 0, "Техника",    {{"комната"}, {"стол"}, {"Мебель"}, {"стулья"}, {"Мебель"}}};
+    buttons[2] = {400, 0, "Пол",        {{"комната"}, {"стол"}, {"Мебель"}, {"стулья"}, {"Мебель"}}};
+    buttons[3] = {600, 0, "Стены",      {{"комната"}, {"стол"}, {"Мебель"}, {"стулья"}, {"Мебель"}}};
+    buttons[4] = {800, 0, "Планировка", {{"комната"}, {"стол"}, {"Мебель"}, {"стулья"}, {"Мебель"}}};
 
 
     int window = 0;
     int mx = -500;
     int my = -500;
-    char section [3][6][12];
-    sprintf(section [0][0], "комната") ;
-    sprintf(section [0][1], "стол") ;
-    sprintf(section [0][2], "мебель") ;
-    sprintf(section [0][3], "стулья") ;
-    sprintf(section [0][4], "стол + комп") ;
-    sprintf(section [0][5], "0подраздел5") ;
-    sprintf(section [0][6], "0подраздел6") ;
 
-    txBegin();
     while(!GetAsyncKeyState(VK_ESCAPE))
     {
-        txSetColor (TX_WHITE, 4);
+        txBegin();
         txClear();
         txSetColor (TX_BLACK, 4);
         fon(mx, my);
@@ -125,7 +109,7 @@ int main()
             {
                 if(txMouseX() >= mx + 5 && txMouseX() <= mx + 150 && txMouseY() >= my + 5 + i * 20 && txMouseY() <= my + 20 + i * 20)
                     txSetColor (TX_LIGHTBLUE, 4);
-                txDrawText(mx, my + i * 20, mx + 150, my + 20 + i * 20 , buttons[0].subButtons[i]);
+                txDrawText(mx, my + i * 20, mx + 150, my + 20 + i * 20 , buttons[0].subButtons[i].text);
                 if(txMouseX() >= mx + 5 && txMouseX() <= mx + 150 && txMouseY() >= my + 5 + i * 20 && txMouseY() <= my + 20 + i * 20 && txMouseButtons() == 1)
                     openSubsect = true;
                 txSetColor (TX_BLACK, 4);
@@ -166,43 +150,25 @@ int main()
         for(int i = 0; i < 3; i++)
             if (openSubsect)
             {
-                Win32::TransparentBlt (txDC(), object[i].x, object[i].y, 100, 100,object[i].pic, 0, 0, object[i].width, object[i].height, TX_BLACK);
+                //Win32::TransparentBlt (txDC(), object[i].x, object[i].y, 100, 100,object[i].pic, 0, 0, object[i].width, object[i].height, TX_BLACK);
             }
 
 
-        //Картинки по центру
+        //Варианты мебели сверху
         for(int i = 0; i < 3; i++)
             if (object[i].drawObject)
             {
                 Win32::TransparentBlt (txDC(),object[i].x,object[i].y,150,150,object[i].pic,0,0,object[i].width,object[i].height,TX_BLACK);
             }
 
-            //if (drawstol)
-            {
-                //Win32::TransparentBlt (txDC(), 400, 400, 400, 400, Stol, 0, 0, 686, 700, TX_BLACK);
-            }
-            //if (drawSofa2)
-            {
-                //Win32::TransparentBlt (txDC(), 400, 400, 400, 400, Sofa2, 0, 0, 686, 700, TX_BLACK);
-            }
-            //if (drawstolpc)
-            {
-                //Win32::TransparentBlt (txDC(), 400, 400, 400, 400, Stolpc, 0, 0, 686, 700, TX_BLACK);
-            }
-            //if (drawroom)
-            {
-                //Win32::TransparentBlt (txDC(), 400, 400, 400, 400, room, 0, 0, 686, 700, TX_BLACK);
-            }
-
-
 
         if (window == MENU_OPEN)
             Win32::TransparentBlt (txDC(), mx, 0, 50, 50, object[0].pic, 0, 0, 686, 700, TX_BLACK); // 10x zoom
 
+        //По пробелу скрываем всю мебель
         for(int i = 0; i < 3; i++)
             if (GetAsyncKeyState(VK_SPACE))
             {
-                //drawKresloB2=false;
                 object[i].drawObject=false;
             }
 

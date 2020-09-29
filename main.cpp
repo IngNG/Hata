@@ -1,5 +1,7 @@
 #include "TXLib.h"
 
+//#include "Struct"
+
 //Подраздел
 struct subBUTTON
 {
@@ -13,17 +15,23 @@ struct BUTTON
     int y;
     const char* text;
     subBUTTON subButtons[10];
+
+    void draw()
+    {
+          txSetColor (TX_BLACK, 4);
+        if(txMouseX() >= x          && txMouseX() <= y &&
+           txMouseY() >= x + 200    && txMouseY() <= y + 100);
+            txSetColor (TX_LIGHTBLUE, 4);
+
+        txDrawText(x, y, x + 200, y + 100 ,text);
+    }
+
 };
 
-void drawButton(int x, int y, char text[] )
-{
-    txSetColor (TX_BLACK, 4);
-    if(txMouseX() >= x          && txMouseX() <= y &&
-       txMouseY() >= x + 200    && txMouseY() <= y + 100)
-        txSetColor (TX_LIGHTBLUE, 4);
-
-    txDrawText(x, y, x + 200, y + 100 ,text);
-}
+    bool click()
+    {
+        if(txMouseX() >= Х && txMouseX() <= 35 && txMouseY() >= 0 && txMouseY() <= 20 && txMouseButtons() == 1);
+    }
 
 //Картинка
 struct strObject
@@ -100,10 +108,17 @@ int main()
         txBegin();
         txClear();
         txSetColor (TX_BLACK, 4);
-        fon(mx, my);
         if(!openSubsect)
         {
             fon(mx, my);
+            for(int i = 0; i < 5; i++)
+                buttons[i].draw();
+
+            if (click(subButton[2]))
+            {
+                category = subbUtton[2].category;//Столы кухонные
+            }
+
             txRectangle (mx, my, mx + 150, my + 140);
             for(int i = 0; i < 4; i++)
             {

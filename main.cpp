@@ -18,9 +18,9 @@ struct BUTTON
 
     void draw()
     {
-          txSetColor (TX_BLACK, 4);
-        if(txMouseX() >= x          && txMouseX() <= y &&
-           txMouseY() >= x + 200    && txMouseY() <= y + 100);
+        txSetColor (TX_BLACK, 4);
+        if(txMouseX() >= x          && txMouseY() >= y &&
+           txMouseX() <= x + 200    && txMouseY() <= y + 100);
             txSetColor (TX_LIGHTBLUE, 4);
 
         txDrawText(x, y, x + 200, y + 100 ,text);
@@ -28,10 +28,10 @@ struct BUTTON
 
 };
 
-    bool click()
+    /*bool click()
     {
         if(txMouseX() >= Х && txMouseX() <= 35 && txMouseY() >= 0 && txMouseY() <= 20 && txMouseButtons() == 1);
-    }
+    } */
 
 //Картинка
 struct strObject
@@ -50,15 +50,16 @@ const int MENU_OPEN = 1;
 void fon(int mx, int my)
 {
     //Вместо 1000 везде лучше SCREEN_WIDTH какой-нибудь или txGetExtentX()
+    txSetColor(TX_BLACK, 4);
     txSetFillColor (TX_WHITE);
     txRectangle (0, 0, 1000, 100);
 
     //Сделать функцией, зависящей от раздела
-    drawButton(0, 0, "Мебель");
+    /*drawButton(0, 0, "Мебель");
     drawButton(200, 0, "техника");
     drawButton(400, 0, "пол");
     drawButton(600, 0, "стены");
-    drawButton(800, 0, "комната ");
+    drawButton(800, 0, "комната ");    */
 
     txRectangle (mx, my, mx + 150, my + 140);
 }
@@ -92,11 +93,21 @@ int main()
 
     //Разделы
     BUTTON buttons[5];
-    buttons[0] =   {0, 0, "Мебель",     {{"комната"}, {"стол"}, {"Мебель"}, {"стулья"}, {"Мебель"}}};
-    buttons[1] = {200, 0, "Техника",    {{"комната"}, {"стол"}, {"Мебель"}, {"стулья"}, {"Мебель"}}};
-    buttons[2] = {400, 0, "Пол",        {{"комната"}, {"стол"}, {"Мебель"}, {"стулья"}, {"Мебель"}}};
-    buttons[3] = {600, 0, "Стены",      {{"комната"}, {"стол"}, {"Мебель"}, {"стулья"}, {"Мебель"}}};
-    buttons[4] = {800, 0, "Планировка", {{"комната"}, {"стол"}, {"Мебель"}, {"стулья"}, {"Мебель"}}};
+    buttons[0] =   {0, 0, "Мебель",     {{"комната1"}, {"стол"}, {"Мебель"}, {"стулья"}, {"Мебель"}}};
+    buttons[1] = {200, 0, "Техника",    {{"комната2"}, {"стол"}, {"Мебель"}, {"стулья"}, {"Мебель"}}};
+    buttons[2] = {400, 0, "Пол",        {{"комната3"}, {"стол"}, {"Мебель"}, {"стулья"}, {"Мебель"}}};
+    buttons[3] = {600, 0, "Стены",      {{"комната4"}, {"стол"}, {"Мебель"}, {"стулья"}, {"Мебель"}}};
+    buttons[4] = {800, 0, "Планировка", {{"комната5"}, {"стол"}, {"Мебель"}, {"стулья"}, {"Мебель"}}};
+
+    bool btn0Opened = false;
+    bool btn1Opened = false;
+    bool btn2Opened = false;
+    bool btn3Opened = false;
+    bool btn4Opened = false;
+
+    bool subBtn0Opened = false;
+    bool subBtn1Opened = false;
+    bool subBtn2Opened = false;
 
 
     int window = 0;
@@ -111,22 +122,30 @@ int main()
         if(!openSubsect)
         {
             fon(mx, my);
-            for(int i = 0; i < 5; i++)
+            for (int i = 0; i < 5; i++)
                 buttons[i].draw();
 
-            if (click(subButton[2]))
+            /*if (click(subButton[2]))
             {
                 category = subbUtton[2].category;//Столы кухонные
-            }
+            } */
 
             txRectangle (mx, my, mx + 150, my + 140);
-            for(int i = 0; i < 4; i++)
+
+            for (int i = 0; i < 4; i++)
             {
-                if(txMouseX() >= mx + 5 && txMouseX() <= mx + 150 && txMouseY() >= my + 5 + i * 20 && txMouseY() <= my + 20 + i * 20)
+                //Цвет подраздела
+                if(txMouseX() >= mx && txMouseX() <= mx + 150 && txMouseY() >= my + 5 + i * 20 && txMouseY() <= my + 25 + i * 20)
                     txSetColor (TX_LIGHTBLUE, 4);
-                txDrawText(mx, my + i * 20, mx + 150, my + 20 + i * 20 , buttons[0].subButtons[i].text);
-                if(txMouseX() >= mx + 5 && txMouseX() <= mx + 150 && txMouseY() >= my + 5 + i * 20 && txMouseY() <= my + 20 + i * 20 && txMouseButtons() == 1)
+                txDrawText(mx, my + 5 + i * 20, mx + 150, my + 25 + i * 20 , buttons[0].subButtons[i].text);
+
+                //Выбор подраздела
+                if(txMouseX() >= mx && txMouseX() <= mx + 150 && txMouseY() >= my + 5 + i * 20 && txMouseY() <= my + 25 + i * 20 && txMouseButtons() == 1)
+                {
                     openSubsect = true;
+                    if (i == 0) {subBtn0Opened = true;  subBtn1Opened = false;}
+                    if (i == 1) {subBtn0Opened = false; subBtn1Opened = true;}
+                }
                 txSetColor (TX_BLACK, 4);
             }
             txSleep(20);
@@ -135,11 +154,42 @@ int main()
         else
             openSubsection();
 
+        //Отмена выбора подраздела
         if(txMouseX() >= 0 && txMouseX() <= 35 && txMouseY() >= 0 && txMouseY() <= 20 && txMouseButtons() == 1 && openSubsect)
-            {openSubsect = false; mx = -500; txSleep(200);}
+        {
+            openSubsect = false; /*mx = -500;*/ txSleep(200);
 
+            subBtn0Opened = false;
+            subBtn1Opened = false;
+        }
 
-        for(int i = 0; i < 1000; i = i + 200)
+        //На фиг нужны mx, my? Почему не рисовать тупо прямоугольник под кнопкой? Как в КодБлокс том же
+
+        //Клик на раздел
+        if (txMouseY() >= 0 && txMouseY() <= 100 && txMouseButtons() == 1)
+        {
+            //Второй раз не открываем
+            if (btn0Opened && txMouseX() >= buttons[0].x && txMouseX() <= buttons[0].x + 200){}
+            else if (btn1Opened && txMouseX() >= buttons[1].x && txMouseX() <= buttons[1].x + 200){}
+            else
+            {
+                btn0Opened = false;
+                btn1Opened = false;
+                my = txMouseY() ;
+                mx = txMouseX() ;
+                if(mx + 150 >= 1000)
+                   mx = 850;
+            }
+            //Какой конкретно раздел?
+            if (txMouseX() >= buttons[0].x && txMouseX() <= buttons[0].x + 200)
+                btn0Opened = true;
+
+            if (txMouseX() >= buttons[1].x && txMouseX() <= buttons[1].x + 200)
+                btn1Opened = true;
+
+        }
+        //На фига тут фор по и?
+        /*for(int i = 0; i < 1000; i = i + 200)
         {
             if(txMouseX() >= 0 + i && txMouseX() <= 200 + i && txMouseY() >= 0 && txMouseY() <= 100 && txMouseButtons() == 1)
             {
@@ -148,18 +198,21 @@ int main()
                 if(mx + 150 >= 1000)
                    mx = 850;
             }
-        }
+        } */
 
 
         //Выбор категории
         for(int i = 0; i < 3; i++)
-            if (txMouseX() >= object[i].x &&
-                txMouseX() <= object[i].x + object[i].width &&
-                txMouseY() >= 0 && txMouseY() <= 100 &&
-                txMouseButtons() == 1 && openSubsect)
-            {
-                object[i].drawObject = true;
-            }
+            object[i].drawObject = false;
+
+        if (openSubsect && subBtn0Opened && btn1Opened)
+        {
+            object[0].drawObject = true;
+        }
+        if (openSubsect && subBtn1Opened && btn1Opened)
+        {
+            object[1].drawObject = true;
+        }
 
         //Рисование вариантов в рамках категории
         for(int i = 0; i < 3; i++)
@@ -194,8 +247,13 @@ int main()
             my = -500;
         }
 
-        txSleep(20) ;
+        if (btn0Opened)  txTextOut(100, 200, "0");
+        if (btn1Opened)  txTextOut(100, 250, "1");
 
+        if (subBtn0Opened)  txTextOut(200, 200, "0");
+        if (subBtn1Opened)  txTextOut(200, 250, "1");
+
+        txSleep(20) ;
     }
 
     for(int i = 0; i < 3; i++)

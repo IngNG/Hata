@@ -5,6 +5,7 @@
 //Подраздел
 struct subBUTTON
 {
+    bool subBtnOpened;
     const char* text;
 };
 
@@ -13,6 +14,7 @@ struct BUTTON
 {
     int x;
     int y;
+    bool btnOpened;
     const char* text;
     subBUTTON subButtons[10];
 
@@ -93,21 +95,21 @@ int main()
 
     //Разделы
     BUTTON buttons[5];
-    buttons[0] =   {0, 0, "Мебель",     {{"комната1"}, {"стол"}, {"Мебель"}, {"стулья"}, {"Мебель"}}};
-    buttons[1] = {200, 0, "Техника",    {{"комната2"}, {"стол"}, {"Мебель"}, {"стулья"}, {"Мебель"}}};
-    buttons[2] = {400, 0, "Пол",        {{"комната3"}, {"стол"}, {"Мебель"}, {"стулья"}, {"Мебель"}}};
-    buttons[3] = {600, 0, "Стены",      {{"комната4"}, {"стол"}, {"Мебель"}, {"стулья"}, {"Мебель"}}};
-    buttons[4] = {800, 0, "Планировка", {{"комната5"}, {"стол"}, {"Мебель"}, {"стулья"}, {"Мебель"}}};
+    buttons[0] =   {0, 0, false, "Мебель",     {{false, "комната1"}, {false, "стол"}, {false, "Мебель"}, {false, "стулья"}, {false, "Мебель"}}};
+    buttons[1] = {200, 0, false, "Техника",    {{false, "комната2"}, {false, "стол"}, {false, "Мебель"}, {false, "стулья"}, {false, "Мебель"}}};
+    buttons[2] = {400, 0, false, "Пол",        {{false, "комната3"}, {false, "стол"}, {false, "Мебель"}, {false, "стулья"}, {false, "Мебель"}}};
+    buttons[3] = {600, 0, false, "Стены",      {{false, "комната4"}, {false, "стол"}, {false, "Мебель"}, {false, "стулья"}, {false, "Мебель"}}};
+    buttons[4] = {800, 0, false, "Планировка", {{false, "комната5"}, {false, "стол"}, {false, "Мебель"}, {false, "стулья"}, {false, "Мебель"}}};
 
-    bool btn0Opened = false;
+    /*bool btn0Opened = false;
     bool btn1Opened = false;
     bool btn2Opened = false;
     bool btn3Opened = false;
-    bool btn4Opened = false;
+    bool btn4Opened = false;*/
 
-    bool subBtn0Opened = false;
+    /*bool subBtn0Opened = false;
     bool subBtn1Opened = false;
-    bool subBtn2Opened = false;
+    bool subBtn2Opened = false;*/
 
 
     int window = 0;
@@ -133,6 +135,9 @@ int main()
             txRectangle (mx, my, mx + 150, my + 140);
 
             for (int i = 0; i < 4; i++)
+                buttons[0].subButtons[i].subBtnOpened = false;
+
+            for (int i = 0; i < 4; i++)
             {
                 //Цвет подраздела
                 if(txMouseX() >= mx && txMouseX() <= mx + 150 && txMouseY() >= my + 5 + i * 20 && txMouseY() <= my + 25 + i * 20)
@@ -143,8 +148,8 @@ int main()
                 if(txMouseX() >= mx && txMouseX() <= mx + 150 && txMouseY() >= my + 5 + i * 20 && txMouseY() <= my + 25 + i * 20 && txMouseButtons() == 1)
                 {
                     openSubsect = true;
-                    if (i == 0) {subBtn0Opened = true;  subBtn1Opened = false;}
-                    if (i == 1) {subBtn0Opened = false; subBtn1Opened = true;}
+                    for (int j = 0; j < 4; i++)
+                        if (i == j) {buttons[j].subButtons[i].subBtnOpened = true;}
                 }
                 txSetColor (TX_BLACK, 4);
             }
@@ -159,8 +164,8 @@ int main()
         {
             openSubsect = false; /*mx = -500;*/ txSleep(200);
 
-            subBtn0Opened = false;
-            subBtn1Opened = false;
+            for (int i = 0; i < 4; i++)
+                buttons[0].subButtons[i].subBtnOpened = false;
         }
 
         //На фиг нужны mx, my? Почему не рисовать тупо прямоугольник под кнопкой? Как в КодБлокс том же
@@ -169,23 +174,24 @@ int main()
         if (txMouseY() >= 0 && txMouseY() <= 100 && txMouseButtons() == 1)
         {
             //Второй раз не открываем
-            if (btn0Opened && txMouseX() >= buttons[0].x && txMouseX() <= buttons[0].x + 200){}
-            else if (btn1Opened && txMouseX() >= buttons[1].x && txMouseX() <= buttons[1].x + 200){}
+            if (buttons[0].btnOpened && txMouseX() >= buttons[0].x && txMouseX() <= buttons[0].x + 200){}
+            else if (buttons[1].btnOpened && txMouseX() >= buttons[1].x && txMouseX() <= buttons[1].x + 200){}
             else
             {
-                btn0Opened = false;
-                btn1Opened = false;
+                buttons[0].btnOpened = false;
+                buttons[1].btnOpened = false;
                 my = txMouseY() ;
                 mx = txMouseX() ;
                 if(mx + 150 >= 1000)
                    mx = 850;
             }
             //Какой конкретно раздел?
-            if (txMouseX() >= buttons[0].x && txMouseX() <= buttons[0].x + 200)
-                btn0Opened = true;
+            for (int i = 0; i < 5; i++)
+                if (txMouseX() >= buttons[i].x && txMouseX() <= buttons[i].x + 200)
+                    buttons[i].btnOpened = true;
 
-            if (txMouseX() >= buttons[1].x && txMouseX() <= buttons[1].x + 200)
-                btn1Opened = true;
+            //if (txMouseX() >= buttons[1].x && txMouseX() <= buttons[1].x + 200)
+            //    buttons[1].btnOpened = true;
 
         }
         //На фига тут фор по и?
@@ -205,11 +211,11 @@ int main()
         for(int i = 0; i < 3; i++)
             object[i].drawObject = false;
 
-        if (openSubsect && subBtn0Opened && btn1Opened)
+        if (openSubsect && buttons[0].subButtons[0].subBtnOpened && buttons[0].btnOpened)
         {
             object[0].drawObject = true;
         }
-        if (openSubsect && subBtn1Opened && btn1Opened)
+        if (openSubsect && buttons[0].subButtons[1].subBtnOpened && buttons[1].btnOpened)
         {
             object[1].drawObject = true;
         }
@@ -247,11 +253,14 @@ int main()
             my = -500;
         }
 
-        if (btn0Opened)  txTextOut(100, 200, "0");
-        if (btn1Opened)  txTextOut(100, 250, "1");
+        if (buttons[0].btnOpened)  txTextOut(100, 200, "0");
+        if (buttons[1].btnOpened)  txTextOut(100, 250, "1");
+        if (buttons[2].btnOpened)  txTextOut(100, 300, "2");
+        if (buttons[3].btnOpened)  txTextOut(100, 350, "3");
+        if (buttons[4].btnOpened)  txTextOut(100, 400, "4");
 
-        if (subBtn0Opened)  txTextOut(200, 200, "0");
-        if (subBtn1Opened)  txTextOut(200, 250, "1");
+        if (buttons[0].subButtons[0].subBtnOpened)  txTextOut(200, 200, "0");
+        if (buttons[0].subButtons[1].subBtnOpened)  txTextOut(200, 250, "1");
 
         txSleep(20) ;
     }

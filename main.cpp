@@ -2,14 +2,14 @@
 
 //#include "Struct"
 
-//Подраздел
+//ГЏГ®Г¤Г°Г Г§Г¤ГҐГ«
 struct subBUTTON
 {
     bool subBtnOpened;
     const char* text;
 };
 
-//Раздел
+//ГђГ Г§Г¤ГҐГ«
 struct BUTTON
 {
     int x;
@@ -21,21 +21,21 @@ struct BUTTON
     void draw()
     {
         txSetColor (TX_BLACK, 4);
-        if(txMouseX() >= x          && txMouseY() >= y &&
-           txMouseX() <= x + 200    && txMouseY() <= y + 100);
-            txSetColor (TX_LIGHTBLUE, 4);
-
+        //if(txMouseX() >= x          && txMouseY() >= y &&
+        //   txMouseX() <= x + 200    && txMouseY() <= y + 100);
+        //    txSetColor (TX_LIGHTBLUE, 4);
         txDrawText(x, y, x + 200, y + 100 ,text);
+        txSetColor (TX_BLACK, 4);
     }
 
 };
 
     /*bool click()
     {
-        if(txMouseX() >= Х && txMouseX() <= 35 && txMouseY() >= 0 && txMouseY() <= 20 && txMouseButtons() == 1);
+        if(txMouseX() >= Г• && txMouseX() <= 35 && txMouseY() >= 0 && txMouseY() <= 20 && txMouseButtons() == 1);
     } */
 
-//Картинка
+//ГЉГ Г°ГІГЁГ­ГЄГ 
 struct strObject
 {
     int x;
@@ -48,20 +48,22 @@ struct strObject
 
 const int MENU_OPEN = 1;
 
-//Меню
+//ГЊГҐГ­Гѕ
 void fon(int mx, int my)
 {
-    //Вместо 1000 везде лучше SCREEN_WIDTH какой-нибудь или txGetExtentX()
+    txClear();
+    txSetColor (TX_BLACK, 4);
+    //Г‚Г¬ГҐГ±ГІГ® 1000 ГўГҐГ§Г¤ГҐ Г«ГіГ·ГёГҐ SCREEN_WIDTH ГЄГ ГЄГ®Г©-Г­ГЁГЎГіГ¤Гј ГЁГ«ГЁ txGetExtentX()
     txSetColor(TX_BLACK, 4);
     txSetFillColor (TX_WHITE);
     txRectangle (0, 0, 1000, 100);
 
-    //Сделать функцией, зависящей от раздела
-    /*drawButton(0, 0, "Мебель");
-    drawButton(200, 0, "техника");
-    drawButton(400, 0, "пол");
-    drawButton(600, 0, "стены");
-    drawButton(800, 0, "комната ");    */
+    //Г‘Г¤ГҐГ«Г ГІГј ГґГіГ­ГЄГ¶ГЁГҐГ©, Г§Г ГўГЁГ±ГїГ№ГҐГ© Г®ГІ Г°Г Г§Г¤ГҐГ«Г 
+    /*drawButton(0, 0, "ГЊГҐГЎГҐГ«Гј");
+    drawButton(200, 0, "ГІГҐГµГ­ГЁГЄГ ");
+    drawButton(400, 0, "ГЇГ®Г«");
+    drawButton(600, 0, "Г±ГІГҐГ­Г»");
+    drawButton(800, 0, "ГЄГ®Г¬Г­Г ГІГ  ");    */
 
     txRectangle (mx, my, mx + 150, my + 140);
 }
@@ -78,24 +80,25 @@ void openSubsection()
     txLine(10, 10, 30, 10);
     txLine(10, 10, 15, 5);
     txLine(10, 10, 15, 15);
+    txSetColor (TX_BLACK, 4);
 }
 
 int main()
 {
     txCreateWindow (1000, 800);
 
-
     bool openSubsect = false;
 
-    //Варианты мебели сверху
+    //Г‚Г Г°ГЁГ Г­ГІГ» Г¬ГҐГЎГҐГ«ГЁ Г±ГўГҐГ°ГµГі
+    int numObj = 3;
     strObject object[100];
-    object[0] = {50, 0, txLoadImage ("Pictures/кресло.bmp"), false, 686, 700};
-    object[1] = {150, 0, txLoadImage ("Pictures/Стол.bmp"), false, 910, 746};
-    object[2] = {250, 0, txLoadImage ("Pictures/кресло2.bmp"), false, 822, 836};
+    object[0] = {50, 0, txLoadImage ("Pictures/ГЄГ°ГҐГ±Г«Г®.bmp"), false, 686, 700};
+    object[1] = {150, 0, txLoadImage ("Pictures/Г‘ГІГ®Г«.bmp"), false, 910, 746};
+    object[2] = {250, 0, txLoadImage ("Pictures/ГЄГ°ГҐГ±Г«Г®2.bmp"), false, 822, 836};
     object[3] = {400, 0, txLoadImage ("Pictures/Bed.bmp"), false, 310, 415};
     object[4] = {550, 0, txLoadImage ("Pictures/couchplanesofa.bmp"), false, 750, 563};
     object[5] = {700, 0, txLoadImage ("Pictures/Sofa.bmp"), false, 768, 332};
-    object[6] = {815, 0, txLoadImage ("Pictures/izognytЫЙ.bmp"), false, 150, 29};
+    object[6] = {815, 0, txLoadImage ("Pictures/izognytГ›Г‰.bmp"), false, 150, 29};
 
 
 
@@ -104,36 +107,41 @@ int main()
 
 
 
-    //Разделы
+    //ГђГ Г§Г¤ГҐГ«Г»
     BUTTON buttons[5];
-    buttons[0] =   {0, 0, false, "Мебель",     {{false, "комната1"}, {false, "стол"}, {false, "Мебель"}, {false, "стулья"}, {false, "Мебель"}}};
-    buttons[1] = {200, 0, false, "Техника",    {{false, "комната2"}, {false, "стол"}, {false, "Мебель"}, {false, "стулья"}, {false, "Мебель"}}};
-    buttons[2] = {400, 0, false, "Пол",        {{false, "комната3"}, {false, "стол"}, {false, "Мебель"}, {false, "стулья"}, {false, "Мебель"}}};
-    buttons[3] = {600, 0, false, "Стены",      {{false, "комната4"}, {false, "стол"}, {false, "Мебель"}, {false, "стулья"}, {false, "Мебель"}}};
-    buttons[4] = {800, 0, false, "Планировка", {{false, "комната5"}, {false, "стол"}, {false, "Мебель"}, {false, "стулья"}, {false, "Мебель"}}};
+    buttons[0] =   {0, 0, false, "ГЊГҐГЎГҐГ«Гј",     {{false, "Г±ГІГіГ«ГјГї"      }, {false, "Г±ГІГ®Г«Г»"       }, {false, "ГЄГ°Г®ГўГ ГІГЁ"   }, {false, "ГёГЄГ ГґГ»"     }, {false, " "}}};
+    buttons[1] = {200, 0, false, "Г’ГҐГµГ­ГЁГЄГ ",    {{false, "Г±ГІГЁГ°. Г¬Г ГёГЁГ­Г»"}, {false, "ГµГ®Г«Г®Г¤ГЁГ«ГјГ­ГЁГЄГЁ"}, {false, "ГІГҐГ«ГҐГўГЁГ§Г®Г°Г»"}, {false, "ГЄГ®Г¬ГЇГјГѕГІГҐГ°Г»"}, {false, " "}}};
+    buttons[2] = {400, 0, false, "ГЏГ®Г«",        {{false, "ГЇГ Г°ГЄГҐГІ"      }, {false, "ГЄГ®ГўГ°Г»"       }, {false, ""          }, {false, ""          }, {false, " "}}};
+    buttons[3] = {600, 0, false, "ГђГ Г§Г­Г®ГҐ",     {{false, "ГўГ Г­Г­Г»ГҐ"      }, {false, "ГІГіГ Г«ГҐГІГ»"     }, {false, "Г¤ГҐГЄГ®Г°"     }, {false, ""          }, {false, " "}}};
+    buttons[4] = {800, 0, false, "ГЏГ«Г Г­ГЁГ°Г®ГўГЄГ ", {{false, "Г¤ГўГҐГ°ГЁ"       }, {false, "Г®ГЄГ­Г "        }, {false, "Г±ГІГҐГ­Г»"     }, {false, ""          }, {false, " "}}};
 
     int window = 0;
     int mx = -500;
     int my = -500;
 
-    //Выбранный раздел / Подраздел
+    //Г‚Г»ГЎГ°Г Г­Г­Г»Г© Г°Г Г§Г¤ГҐГ« / ГЏГ®Г¤Г°Г Г§Г¤ГҐГ«
     int choosenSection = -1;
     int choosenSubSection = -1;
 
     while(!GetAsyncKeyState(VK_ESCAPE))
     {
         txBegin();
-        txClear();
-        txSetColor (TX_BLACK, 4);
         if(!openSubsect)
         {
             fon(mx, my);
             for (int i = 0; i < 5; i++)
+            {
+                if(txMouseX() >= buttons[i].x          && txMouseY() >= buttons[i].y &&
+                   txMouseX() <= buttons[i].x + 200    && txMouseY() <= buttons[i].y + 100)
+                    txSetColor (TX_LIGHTBLUE, 4);
                 buttons[i].draw();
+                txSetColor (TX_BLACK, 4);
+            }
+
 
             /*if (click(subButton[2]))
             {
-                category = subbUtton[2].category;//Столы кухонные
+                category = subbUtton[2].category;//Г‘ГІГ®Г«Г» ГЄГіГµГ®Г­Г­Г»ГҐ
             } */
 
             txRectangle (mx, my, mx + 150, my + 140);
@@ -143,13 +151,13 @@ int main()
 
             for (int i = 0; i < 4; i++)
             {
-                //Цвет подраздела
+                //Г–ГўГҐГІ ГЇГ®Г¤Г°Г Г§Г¤ГҐГ«Г 
                 if(txMouseX() >= mx && txMouseX() <= mx + 150 && txMouseY() >= my + 5 + i * 20 && txMouseY() <= my + 25 + i * 20)
                     txSetColor (TX_LIGHTBLUE, 4);
                 txDrawText (mx,         my + 5 + i * 20,
                             mx + 150,   my + 25 + i * 20 , buttons[0].subButtons[i].text);
 
-                //Выбор подраздела
+                //Г‚Г»ГЎГ®Г° ГЇГ®Г¤Г°Г Г§Г¤ГҐГ«Г 
                 if (txMouseX() >= mx &&
                     txMouseX() <= mx + 150 &&
                     txMouseY() >= my + 5 + i * 20 &&
@@ -159,7 +167,7 @@ int main()
                     openSubsect = true;
                     buttons[choosenSection].subButtons[i].subBtnOpened = true;
 
-                    //А номер выбранной кнопки где-то хранится?
+                    //ГЂ Г­Г®Г¬ГҐГ° ГўГ»ГЎГ°Г Г­Г­Г®Г© ГЄГ­Г®ГЇГЄГЁ ГЈГ¤ГҐ-ГІГ® ГµГ°Г Г­ГЁГІГ±Гї?
                 }
                 txSetColor (TX_BLACK, 4);
             }
@@ -169,7 +177,7 @@ int main()
         else
             openSubsection();
 
-        //Отмена выбора подраздела
+        //ГЋГІГ¬ГҐГ­Г  ГўГ»ГЎГ®Г°Г  ГЇГ®Г¤Г°Г Г§Г¤ГҐГ«Г 
         if (txMouseX() >= 0 && txMouseX() <= 35 &&
             txMouseY() >= 0 && txMouseY() <= 20 &&
             txMouseButtons() == 1 && openSubsect)
@@ -180,25 +188,27 @@ int main()
                 buttons[choosenSection].subButtons[i].subBtnOpened = false;
         }
 
-        //На фиг нужны mx, my? Почему не рисовать тупо прямоугольник под кнопкой? Как в КодБлокс том же
+        //ГЌГ  ГґГЁГЈ Г­ГіГ¦Г­Г» mx, my? ГЏГ®Г·ГҐГ¬Гі Г­ГҐ Г°ГЁГ±Г®ГўГ ГІГј ГІГіГЇГ® ГЇГ°ГїГ¬Г®ГіГЈГ®Г«ГјГ­ГЁГЄ ГЇГ®Г¤ ГЄГ­Г®ГЇГЄГ®Г©? ГЉГ ГЄ Гў ГЉГ®Г¤ГЃГ«Г®ГЄГ± ГІГ®Г¬ Г¦ГҐ
 
-        //Клик на раздел
+        //ГЉГ«ГЁГЄ Г­Г  Г°Г Г§Г¤ГҐГ«
         if (txMouseY() >= 0 && txMouseY() <= 100 && txMouseButtons() == 1)
         {
-            //Второй раз не открываем (можно красивее написать)
-            if (buttons[0].btnOpened && txMouseX() >= buttons[0].x && txMouseX() <= buttons[0].x + 200){}
-            else if (buttons[1].btnOpened && txMouseX() >= buttons[1].x && txMouseX() <= buttons[1].x + 200){}
+            //Г‚ГІГ®Г°Г®Г© Г°Г Г§ Г­ГҐ Г®ГІГЄГ°Г»ГўГ ГҐГ¬ (Г¬Г®Г¦Г­Г® ГЄГ°Г Г±ГЁГўГҐГҐ Г­Г ГЇГЁГ±Г ГІГј)
+            for (int i = 0; i < 4; i++)
+                if (buttons[i].btnOpened && txMouseX() >= buttons[i].x && txMouseX() <= buttons[i].x + 200){}
+            //else if (buttons[1].btnOpened && txMouseX() >= buttons[1].x && txMouseX() <= buttons[1].x + 200){}
             else
             {
-                buttons[0].btnOpened = false;
-                buttons[1].btnOpened = false;
+                for (int i = 0; i < 4; i++)
+                    buttons[i].btnOpened = false;
+                //buttons[1].btnOpened = false;
                 my = txMouseY() ;
                 mx = txMouseX() ;
                 if(mx + 150 >= 1000)
                    mx = 850;
             }
 
-            //Какой конкретно раздел?
+            //ГЉГ ГЄГ®Г© ГЄГ®Г­ГЄГ°ГҐГІГ­Г® Г°Г Г§Г¤ГҐГ«?
             for (int i = 0; i < 5; i++)
             {
                 if (txMouseX() >= buttons[i].x && txMouseX() <= buttons[i].x + 200)
@@ -211,7 +221,7 @@ int main()
             }
 
         }
-        //На фига тут фор по и?
+        //ГЌГ  ГґГЁГЈГ  ГІГіГІ ГґГ®Г° ГЇГ® ГЁ?
         /*for(int i = 0; i < 1000; i = i + 200)
         {
             if(txMouseX() >= 0 + i && txMouseX() <= 200 + i && txMouseY() >= 0 && txMouseY() <= 100 && txMouseButtons() == 1)
@@ -224,11 +234,11 @@ int main()
         } */
 
 
-        //Выбор категории
-        for(int i = 0; i < 3; i++)
+        //Г‚Г»ГЎГ®Г° ГЄГ ГІГҐГЈГ®Г°ГЁГЁ
+        for(int i = 0; i < numObj; i++)
             object[i].drawObject = false;
 
-        //Рисуем картинки если выбрана такая-то пара "раздел-подраздел"
+        //ГђГЁГ±ГіГҐГ¬ ГЄГ Г°ГІГЁГ­ГЄГЁ ГҐГ±Г«ГЁ ГўГ»ГЎГ°Г Г­Г  ГІГ ГЄГ Гї-ГІГ® ГЇГ Г°Г  "Г°Г Г§Г¤ГҐГ«-ГЇГ®Г¤Г°Г Г§Г¤ГҐГ«"
         if (openSubsect && buttons[0].subButtons[0].subBtnOpened && buttons[0].btnOpened)
         {
             object[0].drawObject = true;
@@ -269,19 +279,36 @@ int main()
 
 
 
-        //Варианты мебели сверху
+        //Г‚Г Г°ГЁГ Г­ГІГ» Г¬ГҐГЎГҐГ«ГЁ Г±ГўГҐГ°ГµГі
         for(int i = 0; i < 8; i++)
+            if (openSubsect && buttons[i].subButtons[i].subBtnOpened && buttons[i].btnOpened)
+                object[i].drawObject = true;
+        //if (openSubsect && buttons[1].subButtons[1].subBtnOpened && buttons[1].btnOpened)
+        //{
+        //    object[1].drawObject = true;
+        //}
+
+
+        //Г‚Г Г°ГЁГ Г­ГІГ» Г¬ГҐГЎГҐГ«ГЁ Г±ГўГҐГ°ГµГі
+        for(int i = 0; i < numObj; i++)
+        {
             if (object[i].drawObject)
             {
                 Win32::TransparentBlt (txDC(),object[i].x,object[i].y,150,150,object[i].pic,0,0,object[i].width,object[i].height,TX_BLACK);
             }
+            if (object[i].drawObject && txMouseX() >= object[i].x && txMouseX() <= object[i].width && txMouseY() >= object[i].y && txMouseY() <= object[i].y && txMouseButtons() == 1)
+            {
+                Win32::TransparentBlt (txDC(),object[i].x - 300,object[i].y - 300,150,150,object[i].pic,0,0,object[i].width,object[i].height,TX_BLACK);
+            }
+        }
 
-        //Что это?
+
+        //Г—ГІГ® ГЅГІГ®?
         if (window == MENU_OPEN)
             Win32::TransparentBlt (txDC(), mx, 0, 50, 50, object[0].pic, 0, 0, 686, 700, TX_BLACK); // 10x zoom
 
-        //По пробелу скрываем всю мебель
-        for(int i = 0; i < 8; i++)
+        //ГЏГ® ГЇГ°Г®ГЎГҐГ«Гі Г±ГЄГ°Г»ГўГ ГҐГ¬ ГўГ±Гѕ Г¬ГҐГЎГҐГ«Гј
+        for(int i = 0; i < numObj; i++)
             if (GetAsyncKeyState(VK_SPACE))
             {
                 object[i].drawObject=false;
@@ -290,26 +317,33 @@ int main()
 
         if(!(txMouseX() >= mx, txMouseY() >= my, txMouseX() <= mx + 200,txMouseY() <= my + 140) && txMouseButtons() == 1)
         {
-            //mx = -500;
-            //my = -500;
+            mx = -500;
+            my = -500;
         }
 
-        //В качестве отладки выводим номер открытого раздела
+        //Г‚ ГЄГ Г·ГҐГ±ГІГўГҐ Г®ГІГ«Г Г¤ГЄГЁ ГўГ»ГўГ®Г¤ГЁГ¬ Г­Г®Г¬ГҐГ° Г®ГІГЄГ°Г»ГІГ®ГЈГ® Г°Г Г§Г¤ГҐГ«Г 
         {
-        if (buttons[0].btnOpened)  txTextOut(100, 200, "0");
-        if (buttons[1].btnOpened)  txTextOut(100, 250, "1");
-        if (buttons[2].btnOpened)  txTextOut(100, 300, "2");
-        if (buttons[3].btnOpened)  txTextOut(100, 350, "3");
-        if (buttons[4].btnOpened)  txTextOut(100, 400, "4");
+        for(int i = 0; i < 5; i++)
+        {
+            if (buttons[i].btnOpened)  txTextOut(800, 10, buttons[i].text);
+                for(int j = 0; j < 4; j++)
+                    if (buttons[i].subButtons[j].subBtnOpened)  txTextOut(800, 30, buttons[i].subButtons[j].text);
+        }
 
-        if (buttons[0].subButtons[0].subBtnOpened)  txTextOut(200, 200, "0");
-        if (buttons[0].subButtons[1].subBtnOpened)  txTextOut(200, 250, "1");
+
+        //if (buttons[1].btnOpened)  txTextOut(100, 250, "1");
+        //if (buttons[2].btnOpened)  txTextOut(100, 300, "2");
+        //if (buttons[3].btnOpened)  txTextOut(100, 350, "3");
+        //if (buttons[4].btnOpened)  txTextOut(100, 400, "4");
+
+        //if (buttons[0].subButtons[0].subBtnOpened)  txTextOut(200, 200, "0");
+        //if (buttons[0].subButtons[1].subBtnOpened)  txTextOut(200, 250, "1");
         }
         txSleep(20) ;
     }
 
-    //Удаление картинок
-    for(int i = 0; i < 3; i++)
+    //Г“Г¤Г Г«ГҐГ­ГЁГҐ ГЄГ Г°ГІГЁГ­Г®ГЄ
+    for(int i = 0; i < numObj; i++)
         txDeleteDC (object[i].pic);
 
     return 0;

@@ -21,11 +21,11 @@ struct BUTTON
     void draw()
     {
         txSetColor (TX_BLACK, 4);
-        if(txMouseX() >= x          && txMouseY() >= y &&
-           txMouseX() <= x + 200    && txMouseY() <= y + 100);
-            txSetColor (TX_LIGHTBLUE, 4);
-
+        //if(txMouseX() >= x          && txMouseY() >= y &&
+        //   txMouseX() <= x + 200    && txMouseY() <= y + 100);
+        //    txSetColor (TX_LIGHTBLUE, 4);
         txDrawText(x, y, x + 200, y + 100 ,text);
+        txSetColor (TX_BLACK, 4);
     }
 
 };
@@ -51,6 +51,8 @@ const int MENU_OPEN = 1;
 //Меню
 void fon(int mx, int my)
 {
+    txClear();
+    txSetColor (TX_BLACK, 4);
     //Вместо 1000 везде лучше SCREEN_WIDTH какой-нибудь или txGetExtentX()
     txSetColor(TX_BLACK, 4);
     txSetFillColor (TX_WHITE);
@@ -78,16 +80,17 @@ void openSubsection()
     txLine(10, 10, 30, 10);
     txLine(10, 10, 15, 5);
     txLine(10, 10, 15, 15);
+    txSetColor (TX_BLACK, 4);
 }
 
 int main()
 {
     txCreateWindow (1000, 800);
 
-
     bool openSubsect = false;
 
     //Варианты мебели сверху
+    int numObj = 3;
     strObject object[100];
     object[0] = {50, 0, txLoadImage ("Pictures/кресло.bmp"), false, 686, 700};
     object[1] = {150, 0, txLoadImage ("Pictures/Стол.bmp"), false, 910, 746};
@@ -95,11 +98,11 @@ int main()
 
     //Разделы
     BUTTON buttons[5];
-    buttons[0] =   {0, 0, false, "Мебель",     {{false, "комната1"}, {false, "стол"}, {false, "Мебель"}, {false, "стулья"}, {false, "Мебель"}}};
-    buttons[1] = {200, 0, false, "Техника",    {{false, "комната2"}, {false, "стол"}, {false, "Мебель"}, {false, "стулья"}, {false, "Мебель"}}};
-    buttons[2] = {400, 0, false, "Пол",        {{false, "комната3"}, {false, "стол"}, {false, "Мебель"}, {false, "стулья"}, {false, "Мебель"}}};
-    buttons[3] = {600, 0, false, "Стены",      {{false, "комната4"}, {false, "стол"}, {false, "Мебель"}, {false, "стулья"}, {false, "Мебель"}}};
-    buttons[4] = {800, 0, false, "Планировка", {{false, "комната5"}, {false, "стол"}, {false, "Мебель"}, {false, "стулья"}, {false, "Мебель"}}};
+    buttons[0] =   {0, 0, false, "Мебель",     {{false, "стулья"      }, {false, "столы"       }, {false, "кровати"   }, {false, "шкафы"     }, {false, " "}}};
+    buttons[1] = {200, 0, false, "Техника",    {{false, "стир. машины"}, {false, "холодильники"}, {false, "телевизоры"}, {false, "компьютеры"}, {false, " "}}};
+    buttons[2] = {400, 0, false, "Пол",        {{false, "паркет"      }, {false, "ковры"       }, {false, ""          }, {false, ""          }, {false, " "}}};
+    buttons[3] = {600, 0, false, "Разное",     {{false, "ванные"      }, {false, "туалеты"     }, {false, "декор"     }, {false, ""          }, {false, " "}}};
+    buttons[4] = {800, 0, false, "Планировка", {{false, "двери"       }, {false, "окна"        }, {false, "стены"     }, {false, ""          }, {false, " "}}};
 
     int window = 0;
     int mx = -500;
@@ -112,13 +115,18 @@ int main()
     while(!GetAsyncKeyState(VK_ESCAPE))
     {
         txBegin();
-        txClear();
-        txSetColor (TX_BLACK, 4);
         if(!openSubsect)
         {
             fon(mx, my);
             for (int i = 0; i < 5; i++)
+            {
+                if(txMouseX() >= buttons[i].x          && txMouseY() >= buttons[i].y &&
+                   txMouseX() <= buttons[i].x + 200    && txMouseY() <= buttons[i].y + 100)
+                    txSetColor (TX_LIGHTBLUE, 4);
                 buttons[i].draw();
+                txSetColor (TX_BLACK, 4);
+            }
+
 
             /*if (click(subButton[2]))
             {
@@ -175,12 +183,14 @@ int main()
         if (txMouseY() >= 0 && txMouseY() <= 100 && txMouseButtons() == 1)
         {
             //Второй раз не открываем (можно красивее написать)
-            if (buttons[0].btnOpened && txMouseX() >= buttons[0].x && txMouseX() <= buttons[0].x + 200){}
-            else if (buttons[1].btnOpened && txMouseX() >= buttons[1].x && txMouseX() <= buttons[1].x + 200){}
+            for (int i = 0; i < 4; i++)
+                if (buttons[i].btnOpened && txMouseX() >= buttons[i].x && txMouseX() <= buttons[i].x + 200){}
+            //else if (buttons[1].btnOpened && txMouseX() >= buttons[1].x && txMouseX() <= buttons[1].x + 200){}
             else
             {
-                buttons[0].btnOpened = false;
-                buttons[1].btnOpened = false;
+                for (int i = 0; i < 4; i++)
+                    buttons[i].btnOpened = false;
+                //buttons[1].btnOpened = false;
                 my = txMouseY() ;
                 mx = txMouseX() ;
                 if(mx + 150 >= 1000)
@@ -214,33 +224,39 @@ int main()
 
 
         //Выбор категории
-        for(int i = 0; i < 3; i++)
+        for(int i = 0; i < numObj; i++)
             object[i].drawObject = false;
 
         //Рисуем картинки если выбрана такая-то пара "раздел-подраздел"
-        if (openSubsect && buttons[0].subButtons[0].subBtnOpened && buttons[0].btnOpened)
-        {
-            object[0].drawObject = true;
-        }
-        if (openSubsect && buttons[1].subButtons[1].subBtnOpened && buttons[1].btnOpened)
-        {
-            object[1].drawObject = true;
-        }
+        for(int i = 0; i < 4; i++)
+            if (openSubsect && buttons[i].subButtons[i].subBtnOpened && buttons[i].btnOpened)
+                object[i].drawObject = true;
+        //if (openSubsect && buttons[1].subButtons[1].subBtnOpened && buttons[1].btnOpened)
+        //{
+        //    object[1].drawObject = true;
+        //}
 
 
         //Варианты мебели сверху
-        for(int i = 0; i < 3; i++)
+        for(int i = 0; i < numObj; i++)
+        {
             if (object[i].drawObject)
             {
                 Win32::TransparentBlt (txDC(),object[i].x,object[i].y,150,150,object[i].pic,0,0,object[i].width,object[i].height,TX_BLACK);
             }
+            if (object[i].drawObject && txMouseX() >= object[i].x && txMouseX() <= object[i].width && txMouseY() >= object[i].y && txMouseY() <= object[i].y && txMouseButtons() == 1)
+            {
+                Win32::TransparentBlt (txDC(),object[i].x - 300,object[i].y - 300,150,150,object[i].pic,0,0,object[i].width,object[i].height,TX_BLACK);
+            }
+        }
+
 
         //Что это?
         if (window == MENU_OPEN)
             Win32::TransparentBlt (txDC(), mx, 0, 50, 50, object[0].pic, 0, 0, 686, 700, TX_BLACK); // 10x zoom
 
         //По пробелу скрываем всю мебель
-        for(int i = 0; i < 3; i++)
+        for(int i = 0; i < numObj; i++)
             if (GetAsyncKeyState(VK_SPACE))
             {
                 object[i].drawObject=false;
@@ -249,26 +265,33 @@ int main()
 
         if(!(txMouseX() >= mx, txMouseY() >= my, txMouseX() <= mx + 200,txMouseY() <= my + 140) && txMouseButtons() == 1)
         {
-            //mx = -500;
-            //my = -500;
+            mx = -500;
+            my = -500;
         }
 
         //В качестве отладки выводим номер открытого раздела
         {
-        if (buttons[0].btnOpened)  txTextOut(100, 200, "0");
-        if (buttons[1].btnOpened)  txTextOut(100, 250, "1");
-        if (buttons[2].btnOpened)  txTextOut(100, 300, "2");
-        if (buttons[3].btnOpened)  txTextOut(100, 350, "3");
-        if (buttons[4].btnOpened)  txTextOut(100, 400, "4");
+        for(int i = 0; i < 5; i++)
+        {
+            if (buttons[i].btnOpened)  txTextOut(800, 10, buttons[i].text);
+                for(int j = 0; j < 4; j++)
+                    if (buttons[i].subButtons[j].subBtnOpened)  txTextOut(800, 30, buttons[i].subButtons[j].text);
+        }
 
-        if (buttons[0].subButtons[0].subBtnOpened)  txTextOut(200, 200, "0");
-        if (buttons[0].subButtons[1].subBtnOpened)  txTextOut(200, 250, "1");
+
+        //if (buttons[1].btnOpened)  txTextOut(100, 250, "1");
+        //if (buttons[2].btnOpened)  txTextOut(100, 300, "2");
+        //if (buttons[3].btnOpened)  txTextOut(100, 350, "3");
+        //if (buttons[4].btnOpened)  txTextOut(100, 400, "4");
+
+        //if (buttons[0].subButtons[0].subBtnOpened)  txTextOut(200, 200, "0");
+        //if (buttons[0].subButtons[1].subBtnOpened)  txTextOut(200, 250, "1");
         }
         txSleep(20) ;
     }
 
     //Удаление картинок
-    for(int i = 0; i < 3; i++)
+    for(int i = 0; i < numObj; i++)
         txDeleteDC (object[i].pic);
 
     return 0;

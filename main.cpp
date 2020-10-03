@@ -92,6 +92,17 @@ int main()
     object[0] = {50, 0, txLoadImage ("Pictures/кресло.bmp"), false, 686, 700};
     object[1] = {150, 0, txLoadImage ("Pictures/Стол.bmp"), false, 910, 746};
     object[2] = {250, 0, txLoadImage ("Pictures/кресло2.bmp"), false, 822, 836};
+    object[3] = {400, 0, txLoadImage ("Pictures/Bed.bmp"), false, 310, 415};
+    object[4] = {550, 0, txLoadImage ("Pictures/couchplanesofa.bmp"), false, 750, 563};
+    object[5] = {700, 0, txLoadImage ("Pictures/Sofa.bmp"), false, 768, 332};
+    object[6] = {815, 0, txLoadImage ("Pictures/izognytЫЙ.bmp"), false, 150, 29};
+
+
+
+
+
+
+
 
     //Разделы
     BUTTON buttons[5];
@@ -226,10 +237,40 @@ int main()
         {
             object[1].drawObject = true;
         }
+        if (openSubsect && buttons[1].subButtons[1].subBtnOpened && buttons[1].btnOpened)
+        {
+            object[2].drawObject = true;
+        }
+        if (openSubsect && buttons[1].subButtons[2].subBtnOpened && buttons[1].btnOpened)
+        {
+            object[3].drawObject = true;
+        }
+
+        if (openSubsect && buttons[1].subButtons[2].subBtnOpened && buttons[1].btnOpened)
+        {
+            object[4].drawObject = true;
+        }
+        if (openSubsect && buttons[1].subButtons[2].subBtnOpened && buttons[1].btnOpened)
+        {
+            object[5].drawObject = true;
+        }
+        if (openSubsect && buttons[1].subButtons[2].subBtnOpened && buttons[1].btnOpened)
+        {
+            object[6].drawObject = true;
+        }
+
+        if (openSubsect && buttons[1].subButtons[3].subBtnOpened && buttons[1].btnOpened)
+        {
+            object[7].drawObject = true;
+        }
+
+
+
+
 
 
         //Варианты мебели сверху
-        for(int i = 0; i < 3; i++)
+        for(int i = 0; i < 8; i++)
             if (object[i].drawObject)
             {
                 Win32::TransparentBlt (txDC(),object[i].x,object[i].y,150,150,object[i].pic,0,0,object[i].width,object[i].height,TX_BLACK);
@@ -240,7 +281,7 @@ int main()
             Win32::TransparentBlt (txDC(), mx, 0, 50, 50, object[0].pic, 0, 0, 686, 700, TX_BLACK); // 10x zoom
 
         //По пробелу скрываем всю мебель
-        for(int i = 0; i < 3; i++)
+        for(int i = 0; i < 8; i++)
             if (GetAsyncKeyState(VK_SPACE))
             {
                 object[i].drawObject=false;

@@ -101,20 +101,13 @@ int main()
     buttons[3] = {600, 0, false, "Стены",      {{false, "комната4"}, {false, "стол"}, {false, "Мебель"}, {false, "стулья"}, {false, "Мебель"}}};
     buttons[4] = {800, 0, false, "Планировка", {{false, "комната5"}, {false, "стол"}, {false, "Мебель"}, {false, "стулья"}, {false, "Мебель"}}};
 
-    /*bool btn0Opened = false;
-    bool btn1Opened = false;
-    bool btn2Opened = false;
-    bool btn3Opened = false;
-    bool btn4Opened = false;*/
-
-    /*bool subBtn0Opened = false;
-    bool subBtn1Opened = false;
-    bool subBtn2Opened = false;*/
-
-
     int window = 0;
     int mx = -500;
     int my = -500;
+
+    //Выбранный раздел / Подраздел
+    int choosenSection = -1;
+    int choosenSubSection = -1;
 
     while(!GetAsyncKeyState(VK_ESCAPE))
     {
@@ -134,22 +127,28 @@ int main()
 
             txRectangle (mx, my, mx + 150, my + 140);
 
-            for (int i = 0; i < 4; i++)
-                buttons[0].subButtons[i].subBtnOpened = false;
+            //for (int i = 0; i < 4; i++)
+            //    buttons[0].subButtons[i].subBtnOpened = false;
 
             for (int i = 0; i < 4; i++)
             {
                 //Цвет подраздела
                 if(txMouseX() >= mx && txMouseX() <= mx + 150 && txMouseY() >= my + 5 + i * 20 && txMouseY() <= my + 25 + i * 20)
                     txSetColor (TX_LIGHTBLUE, 4);
-                txDrawText(mx, my + 5 + i * 20, mx + 150, my + 25 + i * 20 , buttons[0].subButtons[i].text);
+                txDrawText (mx,         my + 5 + i * 20,
+                            mx + 150,   my + 25 + i * 20 , buttons[0].subButtons[i].text);
 
                 //Выбор подраздела
-                if(txMouseX() >= mx && txMouseX() <= mx + 150 && txMouseY() >= my + 5 + i * 20 && txMouseY() <= my + 25 + i * 20 && txMouseButtons() == 1)
+                if (txMouseX() >= mx &&
+                    txMouseX() <= mx + 150 &&
+                    txMouseY() >= my + 5 + i * 20 &&
+                    txMouseY() <= my + 25 + i * 20 &&
+                    txMouseButtons() == 1)
                 {
                     openSubsect = true;
-                    for (int j = 0; j < 4; i++)
-                        if (i == j) {buttons[j].subButtons[i].subBtnOpened = true;}
+                    buttons[choosenSection].subButtons[i].subBtnOpened = true;
+
+                    //А номер выбранной кнопки где-то хранится?
                 }
                 txSetColor (TX_BLACK, 4);
             }
@@ -160,12 +159,14 @@ int main()
             openSubsection();
 
         //Отмена выбора подраздела
-        if(txMouseX() >= 0 && txMouseX() <= 35 && txMouseY() >= 0 && txMouseY() <= 20 && txMouseButtons() == 1 && openSubsect)
+        if (txMouseX() >= 0 && txMouseX() <= 35 &&
+            txMouseY() >= 0 && txMouseY() <= 20 &&
+            txMouseButtons() == 1 && openSubsect)
         {
             openSubsect = false; /*mx = -500;*/ txSleep(200);
 
             for (int i = 0; i < 4; i++)
-                buttons[0].subButtons[i].subBtnOpened = false;
+                buttons[choosenSection].subButtons[i].subBtnOpened = false;
         }
 
         //На фиг нужны mx, my? Почему не рисовать тупо прямоугольник под кнопкой? Как в КодБлокс том же
@@ -173,7 +174,7 @@ int main()
         //Клик на раздел
         if (txMouseY() >= 0 && txMouseY() <= 100 && txMouseButtons() == 1)
         {
-            //Второй раз не открываем
+            //Второй раз не открываем (можно красивее написать)
             if (buttons[0].btnOpened && txMouseX() >= buttons[0].x && txMouseX() <= buttons[0].x + 200){}
             else if (buttons[1].btnOpened && txMouseX() >= buttons[1].x && txMouseX() <= buttons[1].x + 200){}
             else
@@ -185,13 +186,18 @@ int main()
                 if(mx + 150 >= 1000)
                    mx = 850;
             }
+
             //Какой конкретно раздел?
             for (int i = 0; i < 5; i++)
+            {
                 if (txMouseX() >= buttons[i].x && txMouseX() <= buttons[i].x + 200)
+                {
                     buttons[i].btnOpened = true;
-
-            //if (txMouseX() >= buttons[1].x && txMouseX() <= buttons[1].x + 200)
-            //    buttons[1].btnOpened = true;
+                    choosenSection = i;
+                }
+                else
+                    buttons[i].btnOpened = false;
+            }
 
         }
         //На фига тут фор по и?
@@ -211,21 +217,15 @@ int main()
         for(int i = 0; i < 3; i++)
             object[i].drawObject = false;
 
+        //Рисуем картинки если выбрана такая-то пара "раздел-подраздел"
         if (openSubsect && buttons[0].subButtons[0].subBtnOpened && buttons[0].btnOpened)
         {
             object[0].drawObject = true;
         }
-        if (openSubsect && buttons[0].subButtons[1].subBtnOpened && buttons[1].btnOpened)
+        if (openSubsect && buttons[1].subButtons[1].subBtnOpened && buttons[1].btnOpened)
         {
             object[1].drawObject = true;
         }
-
-        //Рисование вариантов в рамках категории
-        for(int i = 0; i < 3; i++)
-            if (openSubsect)
-            {
-                //Win32::TransparentBlt (txDC(), object[i].x, object[i].y, 100, 100,object[i].pic, 0, 0, object[i].width, object[i].height, TX_BLACK);
-            }
 
 
         //Варианты мебели сверху
@@ -235,7 +235,7 @@ int main()
                 Win32::TransparentBlt (txDC(),object[i].x,object[i].y,150,150,object[i].pic,0,0,object[i].width,object[i].height,TX_BLACK);
             }
 
-
+        //Что это?
         if (window == MENU_OPEN)
             Win32::TransparentBlt (txDC(), mx, 0, 50, 50, object[0].pic, 0, 0, 686, 700, TX_BLACK); // 10x zoom
 
@@ -249,10 +249,12 @@ int main()
 
         if(!(txMouseX() >= mx, txMouseY() >= my, txMouseX() <= mx + 200,txMouseY() <= my + 140) && txMouseButtons() == 1)
         {
-            mx = -500;
-            my = -500;
+            //mx = -500;
+            //my = -500;
         }
 
+        //В качестве отладки выводим номер открытого раздела
+        {
         if (buttons[0].btnOpened)  txTextOut(100, 200, "0");
         if (buttons[1].btnOpened)  txTextOut(100, 250, "1");
         if (buttons[2].btnOpened)  txTextOut(100, 300, "2");
@@ -261,13 +263,13 @@ int main()
 
         if (buttons[0].subButtons[0].subBtnOpened)  txTextOut(200, 200, "0");
         if (buttons[0].subButtons[1].subBtnOpened)  txTextOut(200, 250, "1");
-
+        }
         txSleep(20) ;
     }
 
+    //Удаление картинок
     for(int i = 0; i < 3; i++)
         txDeleteDC (object[i].pic);
 
     return 0;
 }
-

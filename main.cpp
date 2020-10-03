@@ -2,14 +2,14 @@
 
 //#include "Struct"
 
-//Ïîäðàçäåë
+//ÃÃ®Ã¤Ã°Ã Ã§Ã¤Ã¥Ã«
 struct subBUTTON
 {
     bool subBtnOpened;
     const char* text;
 };
 
-//Ðàçäåë
+//ÃÃ Ã§Ã¤Ã¥Ã«
 struct BUTTON
 {
     int x;
@@ -32,10 +32,10 @@ struct BUTTON
 
     /*bool click()
     {
-        if(txMouseX() >= Õ && txMouseX() <= 35 && txMouseY() >= 0 && txMouseY() <= 20 && txMouseButtons() == 1);
+        if(txMouseX() >= Ã• && txMouseX() <= 35 && txMouseY() >= 0 && txMouseY() <= 20 && txMouseButtons() == 1);
     } */
 
-//Êàðòèíêà
+//ÃŠÃ Ã°Ã²Ã¨Ã­ÃªÃ 
 struct strObject
 {
     int x;
@@ -48,22 +48,22 @@ struct strObject
 
 const int MENU_OPEN = 1;
 
-//Ìåíþ
+//ÃŒÃ¥Ã­Ã¾
 void fon(int mx, int my)
 {
     txClear();
     txSetColor (TX_BLACK, 4);
-    //Âìåñòî 1000 âåçäå ëó÷øå SCREEN_WIDTH êàêîé-íèáóäü èëè txGetExtentX()
+    //Ã‚Ã¬Ã¥Ã±Ã²Ã® 1000 Ã¢Ã¥Ã§Ã¤Ã¥ Ã«Ã³Ã·Ã¸Ã¥ SCREEN_WIDTH ÃªÃ ÃªÃ®Ã©-Ã­Ã¨Ã¡Ã³Ã¤Ã¼ Ã¨Ã«Ã¨ txGetExtentX()
     txSetColor(TX_BLACK, 4);
     txSetFillColor (TX_WHITE);
     txRectangle (0, 0, 1000, 100);
 
-    //Ñäåëàòü ôóíêöèåé, çàâèñÿùåé îò ðàçäåëà
-    /*drawButton(0, 0, "Ìåáåëü");
-    drawButton(200, 0, "òåõíèêà");
-    drawButton(400, 0, "ïîë");
-    drawButton(600, 0, "ñòåíû");
-    drawButton(800, 0, "êîìíàòà ");    */
+    //Ã‘Ã¤Ã¥Ã«Ã Ã²Ã¼ Ã´Ã³Ã­ÃªÃ¶Ã¨Ã¥Ã©, Ã§Ã Ã¢Ã¨Ã±Ã¿Ã¹Ã¥Ã© Ã®Ã² Ã°Ã Ã§Ã¤Ã¥Ã«Ã 
+    /*drawButton(0, 0, "ÃŒÃ¥Ã¡Ã¥Ã«Ã¼");
+    drawButton(200, 0, "Ã²Ã¥ÃµÃ­Ã¨ÃªÃ ");
+    drawButton(400, 0, "Ã¯Ã®Ã«");
+    drawButton(600, 0, "Ã±Ã²Ã¥Ã­Ã»");
+    drawButton(800, 0, "ÃªÃ®Ã¬Ã­Ã Ã²Ã  ");    */
 
     txRectangle (mx, my, mx + 150, my + 140);
 }
@@ -89,26 +89,37 @@ int main()
 
     bool openSubsect = false;
 
-    //Âàðèàíòû ìåáåëè ñâåðõó
+    //Ã‚Ã Ã°Ã¨Ã Ã­Ã²Ã» Ã¬Ã¥Ã¡Ã¥Ã«Ã¨ Ã±Ã¢Ã¥Ã°ÃµÃ³
     int numObj = 3;
     strObject object[100];
-    object[0] = {50, 0, txLoadImage ("Pictures/êðåñëî.bmp"), false, 686, 700};
-    object[1] = {150, 0, txLoadImage ("Pictures/Ñòîë.bmp"), false, 910, 746};
-    object[2] = {250, 0, txLoadImage ("Pictures/êðåñëî2.bmp"), false, 822, 836};
+    object[0] = {50, 0, txLoadImage ("Pictures/ÃªÃ°Ã¥Ã±Ã«Ã®.bmp"), false, 686, 700};
+    object[1] = {150, 0, txLoadImage ("Pictures/Ã‘Ã²Ã®Ã«.bmp"), false, 910, 746};
+    object[2] = {250, 0, txLoadImage ("Pictures/ÃªÃ°Ã¥Ã±Ã«Ã®2.bmp"), false, 822, 836};
+    object[3] = {400, 0, txLoadImage ("Pictures/Bed.bmp"), false, 310, 415};
+    object[4] = {550, 0, txLoadImage ("Pictures/couchplanesofa.bmp"), false, 750, 563};
+    object[5] = {700, 0, txLoadImage ("Pictures/Sofa.bmp"), false, 768, 332};
+    object[6] = {815, 0, txLoadImage ("Pictures/izognytÃ›Ã‰.bmp"), false, 150, 29};
 
-    //Ðàçäåëû
+
+
+
+
+
+
+
+    //ÃÃ Ã§Ã¤Ã¥Ã«Ã»
     BUTTON buttons[5];
-    buttons[0] =   {0, 0, false, "Ìåáåëü",     {{false, "ñòóëüÿ"      }, {false, "ñòîëû"       }, {false, "êðîâàòè"   }, {false, "øêàôû"     }, {false, " "}}};
-    buttons[1] = {200, 0, false, "Òåõíèêà",    {{false, "ñòèð. ìàøèíû"}, {false, "õîëîäèëüíèêè"}, {false, "òåëåâèçîðû"}, {false, "êîìïüþòåðû"}, {false, " "}}};
-    buttons[2] = {400, 0, false, "Ïîë",        {{false, "ïàðêåò"      }, {false, "êîâðû"       }, {false, ""          }, {false, ""          }, {false, " "}}};
-    buttons[3] = {600, 0, false, "Ðàçíîå",     {{false, "âàííûå"      }, {false, "òóàëåòû"     }, {false, "äåêîð"     }, {false, ""          }, {false, " "}}};
-    buttons[4] = {800, 0, false, "Ïëàíèðîâêà", {{false, "äâåðè"       }, {false, "îêíà"        }, {false, "ñòåíû"     }, {false, ""          }, {false, " "}}};
+    buttons[0] =   {0, 0, false, "ÃŒÃ¥Ã¡Ã¥Ã«Ã¼",     {{false, "Ã±Ã²Ã³Ã«Ã¼Ã¿"      }, {false, "Ã±Ã²Ã®Ã«Ã»"       }, {false, "ÃªÃ°Ã®Ã¢Ã Ã²Ã¨"   }, {false, "Ã¸ÃªÃ Ã´Ã»"     }, {false, " "}}};
+    buttons[1] = {200, 0, false, "Ã’Ã¥ÃµÃ­Ã¨ÃªÃ ",    {{false, "Ã±Ã²Ã¨Ã°. Ã¬Ã Ã¸Ã¨Ã­Ã»"}, {false, "ÃµÃ®Ã«Ã®Ã¤Ã¨Ã«Ã¼Ã­Ã¨ÃªÃ¨"}, {false, "Ã²Ã¥Ã«Ã¥Ã¢Ã¨Ã§Ã®Ã°Ã»"}, {false, "ÃªÃ®Ã¬Ã¯Ã¼Ã¾Ã²Ã¥Ã°Ã»"}, {false, " "}}};
+    buttons[2] = {400, 0, false, "ÃÃ®Ã«",        {{false, "Ã¯Ã Ã°ÃªÃ¥Ã²"      }, {false, "ÃªÃ®Ã¢Ã°Ã»"       }, {false, ""          }, {false, ""          }, {false, " "}}};
+    buttons[3] = {600, 0, false, "ÃÃ Ã§Ã­Ã®Ã¥",     {{false, "Ã¢Ã Ã­Ã­Ã»Ã¥"      }, {false, "Ã²Ã³Ã Ã«Ã¥Ã²Ã»"     }, {false, "Ã¤Ã¥ÃªÃ®Ã°"     }, {false, ""          }, {false, " "}}};
+    buttons[4] = {800, 0, false, "ÃÃ«Ã Ã­Ã¨Ã°Ã®Ã¢ÃªÃ ", {{false, "Ã¤Ã¢Ã¥Ã°Ã¨"       }, {false, "Ã®ÃªÃ­Ã "        }, {false, "Ã±Ã²Ã¥Ã­Ã»"     }, {false, ""          }, {false, " "}}};
 
     int window = 0;
     int mx = -500;
     int my = -500;
 
-    //Âûáðàííûé ðàçäåë / Ïîäðàçäåë
+    //Ã‚Ã»Ã¡Ã°Ã Ã­Ã­Ã»Ã© Ã°Ã Ã§Ã¤Ã¥Ã« / ÃÃ®Ã¤Ã°Ã Ã§Ã¤Ã¥Ã«
     int choosenSection = -1;
     int choosenSubSection = -1;
 
@@ -130,7 +141,7 @@ int main()
 
             /*if (click(subButton[2]))
             {
-                category = subbUtton[2].category;//Ñòîëû êóõîííûå
+                category = subbUtton[2].category;//Ã‘Ã²Ã®Ã«Ã» ÃªÃ³ÃµÃ®Ã­Ã­Ã»Ã¥
             } */
 
             txRectangle (mx, my, mx + 150, my + 140);
@@ -140,13 +151,13 @@ int main()
 
             for (int i = 0; i < 4; i++)
             {
-                //Öâåò ïîäðàçäåëà
+                //Ã–Ã¢Ã¥Ã² Ã¯Ã®Ã¤Ã°Ã Ã§Ã¤Ã¥Ã«Ã 
                 if(txMouseX() >= mx && txMouseX() <= mx + 150 && txMouseY() >= my + 5 + i * 20 && txMouseY() <= my + 25 + i * 20)
                     txSetColor (TX_LIGHTBLUE, 4);
                 txDrawText (mx,         my + 5 + i * 20,
                             mx + 150,   my + 25 + i * 20 , buttons[0].subButtons[i].text);
 
-                //Âûáîð ïîäðàçäåëà
+                //Ã‚Ã»Ã¡Ã®Ã° Ã¯Ã®Ã¤Ã°Ã Ã§Ã¤Ã¥Ã«Ã 
                 if (txMouseX() >= mx &&
                     txMouseX() <= mx + 150 &&
                     txMouseY() >= my + 5 + i * 20 &&
@@ -156,7 +167,7 @@ int main()
                     openSubsect = true;
                     buttons[choosenSection].subButtons[i].subBtnOpened = true;
 
-                    //À íîìåð âûáðàííîé êíîïêè ãäå-òî õðàíèòñÿ?
+                    //Ã€ Ã­Ã®Ã¬Ã¥Ã° Ã¢Ã»Ã¡Ã°Ã Ã­Ã­Ã®Ã© ÃªÃ­Ã®Ã¯ÃªÃ¨ Ã£Ã¤Ã¥-Ã²Ã® ÃµÃ°Ã Ã­Ã¨Ã²Ã±Ã¿?
                 }
                 txSetColor (TX_BLACK, 4);
             }
@@ -166,7 +177,7 @@ int main()
         else
             openSubsection();
 
-        //Îòìåíà âûáîðà ïîäðàçäåëà
+        //ÃŽÃ²Ã¬Ã¥Ã­Ã  Ã¢Ã»Ã¡Ã®Ã°Ã  Ã¯Ã®Ã¤Ã°Ã Ã§Ã¤Ã¥Ã«Ã 
         if (txMouseX() >= 0 && txMouseX() <= 35 &&
             txMouseY() >= 0 && txMouseY() <= 20 &&
             txMouseButtons() == 1 && openSubsect)
@@ -177,12 +188,12 @@ int main()
                 buttons[choosenSection].subButtons[i].subBtnOpened = false;
         }
 
-        //Íà ôèã íóæíû mx, my? Ïî÷åìó íå ðèñîâàòü òóïî ïðÿìîóãîëüíèê ïîä êíîïêîé? Êàê â ÊîäÁëîêñ òîì æå
+        //ÃÃ  Ã´Ã¨Ã£ Ã­Ã³Ã¦Ã­Ã» mx, my? ÃÃ®Ã·Ã¥Ã¬Ã³ Ã­Ã¥ Ã°Ã¨Ã±Ã®Ã¢Ã Ã²Ã¼ Ã²Ã³Ã¯Ã® Ã¯Ã°Ã¿Ã¬Ã®Ã³Ã£Ã®Ã«Ã¼Ã­Ã¨Ãª Ã¯Ã®Ã¤ ÃªÃ­Ã®Ã¯ÃªÃ®Ã©? ÃŠÃ Ãª Ã¢ ÃŠÃ®Ã¤ÃÃ«Ã®ÃªÃ± Ã²Ã®Ã¬ Ã¦Ã¥
 
-        //Êëèê íà ðàçäåë
+        //ÃŠÃ«Ã¨Ãª Ã­Ã  Ã°Ã Ã§Ã¤Ã¥Ã«
         if (txMouseY() >= 0 && txMouseY() <= 100 && txMouseButtons() == 1)
         {
-            //Âòîðîé ðàç íå îòêðûâàåì (ìîæíî êðàñèâåå íàïèñàòü)
+            //Ã‚Ã²Ã®Ã°Ã®Ã© Ã°Ã Ã§ Ã­Ã¥ Ã®Ã²ÃªÃ°Ã»Ã¢Ã Ã¥Ã¬ (Ã¬Ã®Ã¦Ã­Ã® ÃªÃ°Ã Ã±Ã¨Ã¢Ã¥Ã¥ Ã­Ã Ã¯Ã¨Ã±Ã Ã²Ã¼)
             for (int i = 0; i < 4; i++)
                 if (buttons[i].btnOpened && txMouseX() >= buttons[i].x && txMouseX() <= buttons[i].x + 200){}
             //else if (buttons[1].btnOpened && txMouseX() >= buttons[1].x && txMouseX() <= buttons[1].x + 200){}
@@ -197,7 +208,7 @@ int main()
                    mx = 850;
             }
 
-            //Êàêîé êîíêðåòíî ðàçäåë?
+            //ÃŠÃ ÃªÃ®Ã© ÃªÃ®Ã­ÃªÃ°Ã¥Ã²Ã­Ã® Ã°Ã Ã§Ã¤Ã¥Ã«?
             for (int i = 0; i < 5; i++)
             {
                 if (txMouseX() >= buttons[i].x && txMouseX() <= buttons[i].x + 200)
@@ -210,7 +221,7 @@ int main()
             }
 
         }
-        //Íà ôèãà òóò ôîð ïî è?
+        //ÃÃ  Ã´Ã¨Ã£Ã  Ã²Ã³Ã² Ã´Ã®Ã° Ã¯Ã® Ã¨?
         /*for(int i = 0; i < 1000; i = i + 200)
         {
             if(txMouseX() >= 0 + i && txMouseX() <= 200 + i && txMouseY() >= 0 && txMouseY() <= 100 && txMouseButtons() == 1)
@@ -223,12 +234,53 @@ int main()
         } */
 
 
-        //Âûáîð êàòåãîðèè
+        //Ã‚Ã»Ã¡Ã®Ã° ÃªÃ Ã²Ã¥Ã£Ã®Ã°Ã¨Ã¨
         for(int i = 0; i < numObj; i++)
             object[i].drawObject = false;
 
-        //Ðèñóåì êàðòèíêè åñëè âûáðàíà òàêàÿ-òî ïàðà "ðàçäåë-ïîäðàçäåë"
-        for(int i = 0; i < 4; i++)
+        //ÃÃ¨Ã±Ã³Ã¥Ã¬ ÃªÃ Ã°Ã²Ã¨Ã­ÃªÃ¨ Ã¥Ã±Ã«Ã¨ Ã¢Ã»Ã¡Ã°Ã Ã­Ã  Ã²Ã ÃªÃ Ã¿-Ã²Ã® Ã¯Ã Ã°Ã  "Ã°Ã Ã§Ã¤Ã¥Ã«-Ã¯Ã®Ã¤Ã°Ã Ã§Ã¤Ã¥Ã«"
+        if (openSubsect && buttons[0].subButtons[0].subBtnOpened && buttons[0].btnOpened)
+        {
+            object[0].drawObject = true;
+        }
+        if (openSubsect && buttons[1].subButtons[1].subBtnOpened && buttons[1].btnOpened)
+        {
+            object[1].drawObject = true;
+        }
+        if (openSubsect && buttons[1].subButtons[1].subBtnOpened && buttons[1].btnOpened)
+        {
+            object[2].drawObject = true;
+        }
+        if (openSubsect && buttons[1].subButtons[2].subBtnOpened && buttons[1].btnOpened)
+        {
+            object[3].drawObject = true;
+        }
+
+        if (openSubsect && buttons[1].subButtons[2].subBtnOpened && buttons[1].btnOpened)
+        {
+            object[4].drawObject = true;
+        }
+        if (openSubsect && buttons[1].subButtons[2].subBtnOpened && buttons[1].btnOpened)
+        {
+            object[5].drawObject = true;
+        }
+        if (openSubsect && buttons[1].subButtons[2].subBtnOpened && buttons[1].btnOpened)
+        {
+            object[6].drawObject = true;
+        }
+
+        if (openSubsect && buttons[1].subButtons[3].subBtnOpened && buttons[1].btnOpened)
+        {
+            object[7].drawObject = true;
+        }
+
+
+
+
+
+
+        //Ã‚Ã Ã°Ã¨Ã Ã­Ã²Ã» Ã¬Ã¥Ã¡Ã¥Ã«Ã¨ Ã±Ã¢Ã¥Ã°ÃµÃ³
+        for(int i = 0; i < 8; i++)
             if (openSubsect && buttons[i].subButtons[i].subBtnOpened && buttons[i].btnOpened)
                 object[i].drawObject = true;
         //if (openSubsect && buttons[1].subButtons[1].subBtnOpened && buttons[1].btnOpened)
@@ -237,7 +289,7 @@ int main()
         //}
 
 
-        //Âàðèàíòû ìåáåëè ñâåðõó
+        //Ã‚Ã Ã°Ã¨Ã Ã­Ã²Ã» Ã¬Ã¥Ã¡Ã¥Ã«Ã¨ Ã±Ã¢Ã¥Ã°ÃµÃ³
         for(int i = 0; i < numObj; i++)
         {
             if (object[i].drawObject)
@@ -251,11 +303,11 @@ int main()
         }
 
 
-        //×òî ýòî?
+        //Ã—Ã²Ã® Ã½Ã²Ã®?
         if (window == MENU_OPEN)
             Win32::TransparentBlt (txDC(), mx, 0, 50, 50, object[0].pic, 0, 0, 686, 700, TX_BLACK); // 10x zoom
 
-        //Ïî ïðîáåëó ñêðûâàåì âñþ ìåáåëü
+        //ÃÃ® Ã¯Ã°Ã®Ã¡Ã¥Ã«Ã³ Ã±ÃªÃ°Ã»Ã¢Ã Ã¥Ã¬ Ã¢Ã±Ã¾ Ã¬Ã¥Ã¡Ã¥Ã«Ã¼
         for(int i = 0; i < numObj; i++)
             if (GetAsyncKeyState(VK_SPACE))
             {
@@ -269,7 +321,7 @@ int main()
             my = -500;
         }
 
-        //Â êà÷åñòâå îòëàäêè âûâîäèì íîìåð îòêðûòîãî ðàçäåëà
+        //Ã‚ ÃªÃ Ã·Ã¥Ã±Ã²Ã¢Ã¥ Ã®Ã²Ã«Ã Ã¤ÃªÃ¨ Ã¢Ã»Ã¢Ã®Ã¤Ã¨Ã¬ Ã­Ã®Ã¬Ã¥Ã° Ã®Ã²ÃªÃ°Ã»Ã²Ã®Ã£Ã® Ã°Ã Ã§Ã¤Ã¥Ã«Ã 
         {
         for(int i = 0; i < 5; i++)
         {
@@ -290,7 +342,7 @@ int main()
         txSleep(20) ;
     }
 
-    //Óäàëåíèå êàðòèíîê
+    //Ã“Ã¤Ã Ã«Ã¥Ã­Ã¨Ã¥ ÃªÃ Ã°Ã²Ã¨Ã­Ã®Ãª
     for(int i = 0; i < numObj; i++)
         txDeleteDC (object[i].pic);
 

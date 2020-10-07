@@ -138,7 +138,7 @@ int main()
                 category = subbUtton[2].category;//Столы кухонные
             } */
 
-            txRectangle (mx, my, mx + 150, my + 140);
+            txRectangle (mx, my, mx + 200, my + 140);
 
             //for (int i = 0; i < 4; i++)
             //    buttons[0].subButtons[i].subBtnOpened = false;
@@ -149,7 +149,7 @@ int main()
                 if(txMouseX() >= mx && txMouseX() <= mx + 150 && txMouseY() >= my + 5 + i * 20 && txMouseY() <= my + 25 + i * 20)
                     txSetColor (TX_LIGHTBLUE, 4);
                 txDrawText (mx,         my + 5 + i * 20,
-                            mx + 150,   my + 25 + i * 20 , buttons[0].subButtons[i].text);
+                            mx + 200,   my + 25 + i * 20 , buttons[0].subButtons[i].text);
 
                 //Выбор подраздела
                 if (txMouseX() >= mx &&
@@ -196,8 +196,8 @@ int main()
                 for (int i = 0; i < 4; i++)
                     buttons[i].btnOpened = false;
                 //buttons[1].btnOpened = false;
-                my = txMouseY() ;
-                mx = txMouseX() ;
+                mx = buttons[choosenSection].x ;
+                my = 100 ;
                 if(mx + 150 >= 1000)
                    mx = 850;
             }
@@ -215,8 +215,6 @@ int main()
             }
 
         }
-
-
 
         //Выбор категории
         for(int i = 0; i < numObj; i++)
@@ -242,7 +240,6 @@ int main()
         {
             object[3].drawObject = true;
         }
-
         if (openSubsect && buttons[1].subButtons[2].subBtnOpened && buttons[1].btnOpened)
         {
             object[4].drawObject = true;

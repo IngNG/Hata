@@ -1,6 +1,6 @@
 #include "TXLib.h"
 
-//#include "Struct"
+#include "strObject.cpp"
 
 //Подраздел
 struct subBUTTON
@@ -35,17 +35,6 @@ struct BUTTON
         if(txMouseX() >= Х && txMouseX() <= 35 && txMouseY() >= 0 && txMouseY() <= 20 && txMouseButtons() == 1);
     } */
 
-//Картинка
-struct strObject
-{
-    int x;
-    int y;
-    HDC pic;
-    bool drawObject;
-    int width;
-    int height;
-    //Раздел и подраздел
-};
 
 const int MENU_OPEN = 1;
 
@@ -91,15 +80,19 @@ int main()
     bool openSubsect = false;
 
     //Варианты мебели сверху
-    int numObj = 7;
+    int nObj = 7;
+    int nActObj = 0;
     strObject object[100];
-    object[0] = {50, 0, txLoadImage ("Pictures/Стул/кресло.bmp"), false, 324, 306};
-    object[1] = {150, 0, txLoadImage ("Pictures/Стол.bmp"), false, 910, 746};
-    object[2] = {250, 0, txLoadImage ("Pictures/Стул/кресло2.bmp"), false, 382, 400};
-    object[3] = {400, 0, txLoadImage ("Pictures/Bed.bmp"), false, 310, 415};
-    object[4] = {550, 0, txLoadImage ("Pictures/couchplanesofa.bmp"), false, 750, 563};
-    object[5] = {700, 0, txLoadImage ("Pictures/Sofa.bmp"), false, 768, 332};
-    object[6] = {815, 0, txLoadImage ("Pictures/izognytUE.bmp"), false, 150, 29};
+    object[0] = {750, 100, txLoadImage ("Pictures/Стул/кресло.bmp"), false, 324, 306};
+    object[1] = {750, 200, txLoadImage ("Pictures/Стол.bmp"), false, 910, 746};
+    object[2] = {750, 300, txLoadImage ("Pictures/Стул/кресло2.bmp"), false, 382, 400};
+    object[3] = {750, 400, txLoadImage ("Pictures/Bed.bmp"), false, 310, 415};
+    object[4] = {750, 500, txLoadImage ("Pictures/couchplanesofa.bmp"), false, 750, 563};
+    object[5] = {750, 600, txLoadImage ("Pictures/Sofa.bmp"), false, 768, 332};
+    object[6] = {750, 700, txLoadImage ("Pictures/izognytUE.bmp"), false, 150, 29};
+
+    strObject activeObj[1000];
+    int active = -10;
 
     //Разделы
     BUTTON buttons[5];
@@ -217,7 +210,7 @@ int main()
         }
 
         //Выбор категории
-        for(int i = 0; i < numObj; i++)
+        for(int i = 0; i < nObj; i++)
             object[i].drawObject = false;
 
         //Рисуем картинки если выбрана такая-то пара "раздел-подраздел"   С фига ли такой цикл, Никитос?!
@@ -260,31 +253,54 @@ int main()
 
 
         //Варианты мебели сверху
-        for(int i = 0; i < numObj; i++)
+        for(int i = 0; i < nObj; i++)
         {
             if (object[i].drawObject)
             {
                 Win32::TransparentBlt (txDC(),object[i].x,object[i].y,150,150,object[i].pic,0,0,object[i].width,object[i].height,TX_BLACK);
             }
 
-            //Клик на вариант
+            //Клик на вариант (раздел)
             if (object[i].drawObject &&
                 txMouseX() >= object[i].x &&
-                txMouseX() <= object[i].width &&
+                txMouseX() <= object[i].x + 150 &&
                 txMouseY() >= object[i].y &&
-                txMouseY() <= object[i].y && txMouseButtons() == 1)
+                txMouseY() <= object[i].y + 150 && txMouseButtons() == 1)
             {
-                Win32::TransparentBlt (txDC(),object[i].x - 300,object[i].y - 300,150,150,object[i].pic,0,0,object[i].width,object[i].height,TX_BLACK);
+                activeObj[nActObj] = {300, 300, object[i].pic, true, object[i].width, object[i].height};
+                nActObj++;
             }
         }
 
+        drawPics(activeObj, nActObj);
+
+        for(int i = 0; i < nActObj; i++)
+            if (activeObj[i].drawObject &&
+                txMouseX() >= activeObj[i].x &&
+                txMouseX() <= activeObj[i].x + 150 &&
+                txMouseY() >= activeObj[i].y &&
+                txMouseY() <= activeObj[i].y + 150 && txMouseButtons() == 1 &&
+                active < 0
+                )
+            {
+                active = i;
+            }
+
+            if (active >= 0)
+            {
+                activeObj[active].x = txMouseX() - 50;
+                activeObj[active].y = txMouseY() - 50;
+            }
+
+            if (txMouseButtons()!= 1)
+                active = -10;
 
         //Что это?
         if (window == MENU_OPEN)
             Win32::TransparentBlt (txDC(), mx, 0, 50, 50, object[0].pic, 0, 0, 686, 700, TX_BLACK); // 10x zoom
 
         //По пробелу скрываем всю мебель
-        for(int i = 0; i < numObj; i++)
+        for(int i = 0; i < nObj; i++)
             if (GetAsyncKeyState(VK_SPACE))
             {
                 object[i].drawObject=false;
@@ -309,7 +325,7 @@ int main()
     }
 
     //Удаление картинок
-    for(int i = 0; i < numObj; i++)
+    for(int i = 0; i < nObj; i++)
         txDeleteDC (object[i].pic);
 
     return 0;

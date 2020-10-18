@@ -87,16 +87,25 @@ int main()
     bool openSubsect = false;
 
     //Варианты мебели сверху
-    int nObj = 6;
+    int nObj = 7;
     int nActObj = 0;
     strObject object[100];
-    object[0] = {750, 100, txLoadImage ("Pictures/Стул/кресло.bmp"), "Мебель", "стулья", false, 324, 306};
-    object[1] = {750, 200, txLoadImage ("Pictures/Стол.bmp"), "Мебель", "столы", false, 910, 746};
-    object[2] = {750, 300, txLoadImage ("Pictures/Стул/кресло2.bmp"), "Мебель", "стулья", false, 382, 400};
-    object[3] = {750, 400, txLoadImage ("Pictures/Bed.bmp"), "Мебель", "кровати", false, 310, 415};
-    object[4] = {750, 500, txLoadImage ("Pictures/couchplanesofa.bmp"), "Мебель", "стулья", false, 750, 563};
-    object[5] = {750, 600, txLoadImage ("Pictures/Sofa.bmp"), "Мебель", "стулья", false, 768, 332};
-    object[6] = {750, 700, txLoadImage ("Pictures/izognytUE.bmp"), "Техника", "телевизоры", false, 150, 29};
+    object[0] = {750, 100, txLoadImage ("Pictures/Мебель/кресло.bmp"),
+        "Мебель", "стулья", false, 324, 306};
+    object[1] = {750, 250, txLoadImage ("Pictures/Мебель/кресло2.bmp"),
+        "Мебель", "стулья", false, 382, 400};
+    object[2] = {750, 400, txLoadImage ("Pictures/Мебель/couchplanesofa.bmp"),
+        "Мебель", "стулья", false, 750, 563};
+
+    object[3] = {750, 550, txLoadImage ("Pictures/Мебель/Sofa.bmp"),
+        "Мебель", "стулья", false, 768, 332};
+    object[4] = {750, 100, txLoadImage ("Pictures/Мебель/Стол.bmp"),
+        "Мебель", "столы", false, 300, 177};
+    object[5] = {750, 250, txLoadImage ("Pictures/Мебель/Bed.bmp"),
+        "Мебель", "кровати", false, 415, 310};
+
+    object[6] = {750, 100, txLoadImage ("Pictures/Техника/Изогнутый.bmp"),
+        "Техника", "телевизоры", false, 150, 29};
 
     strObject activeObj[1000];
     int active = -10;
@@ -136,16 +145,8 @@ int main()
                 txSetColor (TX_BLACK, 4);
             }
 
-
-            /*if (click(subButton[2]))
-            {
-                category = subbUtton[2].category;//Столы кухонные
-            } */
-
             txRectangle (mx, my, mx + 200, my + 140);
 
-            //for (int i = 0; i < 4; i++)
-            //    buttons[0].subButtons[i].subBtnOpened = false;
 
             for (int i = 0; i < 4; i++)
             {
@@ -171,7 +172,7 @@ int main()
                 }
                 txSetColor (TX_BLACK, 4);
             }
-            txSleep(20);
+            //txSleep(20);
         }
 
         else
@@ -227,61 +228,31 @@ int main()
         for(int i = 0; i < nObj; i++)
             object[i].drawObject = false;
 
-        //Рисуем картинки если выбрана такая-то пара "раздел-подраздел"   С фига ли такой цикл, Никитос?!
-        /*for(int i = 0; i < 4; i++)
-            if (openSubsect && buttons[i].subButtons[i].subBtnOpened && buttons[i].btnOpened)
-                object[i].drawObject = true;   */
+        //Рисуем картинки если выбрана такая-то пара "раздел-подраздел"
         for(int i = 0; i < nObj; i++)
             if (openSubsect && chSubSection == object[i].subSection && chSection == object[i].section)
             {
                 object[i].drawObject = true;
             }
 
-        /*
-        if (openSubsect && chSubSection == object[1].subSection && chSection == object[1].section)
-        {
-            object[1].drawObject = true;
-        }
-        if (openSubsect && chSubSection == object[2].subSection && buttons[2].btnOpened)
-        {
-            object[2].drawObject = true;
-        }
-        if (openSubsect && chSubSection == object[2].subSection && buttons[2].btnOpened)
-        {
-            object[3].drawObject = true;
-        }
-        if (openSubsect && chSubSection == object[2].subSection && buttons[2].btnOpened)
-        {
-            object[4].drawObject = true;
-        }
-        if (openSubsect && buttons[1].subButtons[2].subBtnOpened && buttons[1].btnOpened)
-        {
-            object[5].drawObject = true;
-        }
-        if (openSubsect && buttons[1].subButtons[2].subBtnOpened && buttons[1].btnOpened)
-        {
-            object[6].drawObject = true;
-        }
 
-        if (openSubsect && buttons[1].subButtons[3].subBtnOpened && buttons[1].btnOpened)
+        //Мой вариант понятнее. Нет?
+        //if (openSubsect && buttons[4].subButtons[2].subBtnOpened && buttons[4].btnOpened)
+        if (chSection == "Планировка" && chSubSection == "стены")
         {
-            object[7].drawObject = true;
-        }*/
-        if (openSubsect && buttons[4].subButtons[2].subBtnOpened && buttons[4].btnOpened)
-        {
-            if(txMouseButtons() == 1)
+            if (txMouseButtons() == 1)
             {
                 int x = txMouseX();
                 int y = txMouseY();
                 txRectangle(x, y, x, y);
                 txSleep(100);
-                    while(txMouseButtons() == 1)
-                    {
-                        int x2 = txMouseX();
-                        int y2 = txMouseY();
-                        txRectangle(x, y, x2, y2);
-                        txSleep(50);
-                    }
+                while(txMouseButtons() == 1)
+                {
+                    int x2 = txMouseX();
+                    int y2 = txMouseY();
+                    txRectangle(x, y, x2, y2);
+                    txSleep(50);
+                }
             }
         }
 

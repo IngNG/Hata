@@ -30,6 +30,13 @@ struct BUTTON
 
 };
 
+struct room
+{
+    int x = 0;
+    int y = 0;
+    int x2 = 0;
+    int y2 = 0;
+};
     /*bool click()
     {
         if(txMouseX() >= Х && txMouseX() <= 35 && txMouseY() >= 0 && txMouseY() <= 20 && txMouseButtons() == 1);
@@ -80,19 +87,21 @@ int main()
     bool openSubsect = false;
 
     //Варианты мебели сверху
-    int nObj = 7;
+    int nObj = 6;
     int nActObj = 0;
     strObject object[100];
-    object[0] = {750, 100, txLoadImage ("Pictures/Стул/кресло.bmp"), false, 324, 306};
-    object[1] = {750, 200, txLoadImage ("Pictures/Стол.bmp"), false, 910, 746};
-    object[2] = {750, 300, txLoadImage ("Pictures/Стул/кресло2.bmp"), false, 382, 400};
-    object[3] = {750, 400, txLoadImage ("Pictures/Bed.bmp"), false, 310, 415};
-    object[4] = {750, 500, txLoadImage ("Pictures/couchplanesofa.bmp"), false, 750, 563};
-    object[5] = {750, 600, txLoadImage ("Pictures/Sofa.bmp"), false, 768, 332};
-    object[6] = {750, 700, txLoadImage ("Pictures/izognytUE.bmp"), false, 150, 29};
+    object[0] = {750, 100, txLoadImage ("Pictures/Стул/кресло.bmp"), "Мебель", "стулья", false, 324, 306};
+    object[1] = {750, 200, txLoadImage ("Pictures/Стол.bmp"), "Мебель", "столы", false, 910, 746};
+    object[2] = {750, 300, txLoadImage ("Pictures/Стул/кресло2.bmp"), "Мебель", "стулья", false, 382, 400};
+    object[3] = {750, 400, txLoadImage ("Pictures/Bed.bmp"), "Мебель", "кровати", false, 310, 415};
+    object[4] = {750, 500, txLoadImage ("Pictures/couchplanesofa.bmp"), "Мебель", "стулья", false, 750, 563};
+    object[5] = {750, 600, txLoadImage ("Pictures/Sofa.bmp"), "Мебель", "стулья", false, 768, 332};
+    object[6] = {750, 700, txLoadImage ("Pictures/izognytUE.bmp"), "Техника", "телевизоры", false, 150, 29};
 
     strObject activeObj[1000];
     int active = -10;
+
+    room AcrtRoom[100];
 
     //Разделы
     BUTTON buttons[5];
@@ -109,6 +118,8 @@ int main()
     //Выбранный раздел / Подраздел
     int choosenSection = -1;
     int choosenSubSection = -1;
+    string chSection = "";
+    string chSubSection = "";
 
     while(!GetAsyncKeyState(VK_ESCAPE))
     {
@@ -141,8 +152,9 @@ int main()
                 //Цвет подраздела
                 if(txMouseX() >= mx && txMouseX() <= mx + 150 && txMouseY() >= my + 5 + i * 20 && txMouseY() <= my + 25 + i * 20)
                     txSetColor (TX_LIGHTBLUE, 4);
-                txDrawText (mx,         my + 5 + i * 20,
-                            mx + 200,   my + 25 + i * 20 , buttons[0].subButtons[i].text);
+                if(!(choosenSection == -1))
+                    txDrawText (mx,         my + 5 + i * 20,
+                                mx + 200,   my + 25 + i * 20 , buttons[choosenSection].subButtons[i].text);
 
                 //Выбор подраздела
                 if (txMouseX() >= mx &&
@@ -153,6 +165,7 @@ int main()
                 {
                     openSubsect = true;
                     buttons[choosenSection].subButtons[i].subBtnOpened = true;
+                    chSubSection = buttons[choosenSection].subButtons[i].text;
 
                     //А номер выбранной кнопки где-то хранится?
                 }
@@ -178,7 +191,7 @@ int main()
         //На фиг нужны mx, my? Почему не рисовать тупо прямоугольник под кнопкой? Как в КодБлокс том же
 
         //Клик на раздел
-        if (txMouseY() >= 0 && txMouseY() <= 100 && txMouseButtons() == 1)
+        if (txMouseY() >= 0 && txMouseY() <= 100 && txMouseButtons() == 1 && !openSubsect)
         {
             //Второй раз не открываем (можно красивее написать)
             for (int i = 0; i < 4; i++)
@@ -202,6 +215,7 @@ int main()
                 {
                     buttons[i].btnOpened = true;
                     choosenSection = i;
+                    chSection = buttons[i].text;
                 }
                 else
                     buttons[i].btnOpened = false;
@@ -217,23 +231,26 @@ int main()
         /*for(int i = 0; i < 4; i++)
             if (openSubsect && buttons[i].subButtons[i].subBtnOpened && buttons[i].btnOpened)
                 object[i].drawObject = true;   */
-        if (openSubsect && buttons[1].subButtons[1].subBtnOpened && buttons[1].btnOpened)
-        {
-            object[0].drawObject = true;
-        }
-        if (openSubsect && buttons[1].subButtons[1].subBtnOpened && buttons[1].btnOpened)
+        for(int i = 0; i < nObj; i++)
+            if (openSubsect && chSubSection == object[i].subSection && chSection == object[i].section)
+            {
+                object[i].drawObject = true;
+            }
+
+        /*
+        if (openSubsect && chSubSection == object[1].subSection && chSection == object[1].section)
         {
             object[1].drawObject = true;
         }
-        if (openSubsect && buttons[1].subButtons[1].subBtnOpened && buttons[1].btnOpened)
+        if (openSubsect && chSubSection == object[2].subSection && buttons[2].btnOpened)
         {
             object[2].drawObject = true;
         }
-        if (openSubsect && buttons[1].subButtons[2].subBtnOpened && buttons[1].btnOpened)
+        if (openSubsect && chSubSection == object[2].subSection && buttons[2].btnOpened)
         {
             object[3].drawObject = true;
         }
-        if (openSubsect && buttons[1].subButtons[2].subBtnOpened && buttons[1].btnOpened)
+        if (openSubsect && chSubSection == object[2].subSection && buttons[2].btnOpened)
         {
             object[4].drawObject = true;
         }
@@ -249,8 +266,26 @@ int main()
         if (openSubsect && buttons[1].subButtons[3].subBtnOpened && buttons[1].btnOpened)
         {
             object[7].drawObject = true;
+        }*/
+        if (openSubsect && buttons[4].subButtons[2].subBtnOpened && buttons[4].btnOpened)
+        {
+            if(txMouseButtons() == 1)
+            {
+                int x = txMouseX();
+                int y = txMouseY();
+                txRectangle(x, y, x, y);
+                txSleep(100);
+                    while(txMouseButtons() == 1)
+                    {
+                        int x2 = txMouseX();
+                        int y2 = txMouseY();
+                        txRectangle(x, y, x2, y2);
+                        txSleep(50);
+                    }
+            }
         }
 
+        //txRectangle(x, y, x2, y2);
 
         //Варианты мебели сверху
         for(int i = 0; i < nObj; i++)
@@ -267,15 +302,17 @@ int main()
                 txMouseY() >= object[i].y &&
                 txMouseY() <= object[i].y + 150 && txMouseButtons() == 1)
             {
-                activeObj[nActObj] = {300, 300, object[i].pic, true, object[i].width, object[i].height};
+                activeObj[nActObj] = {300, 300, object[i].pic, object[i].section, object[i].subSection, true, object[i].width, object[i].height};
                 nActObj++;
+                Sleep(200);
             }
         }
 
         drawPics(activeObj, nActObj);
 
         for(int i = 0; i < nActObj; i++)
-            if (activeObj[i].drawObject &&
+        {
+        if (activeObj[i].drawObject &&
                 txMouseX() >= activeObj[i].x &&
                 txMouseX() <= activeObj[i].x + 150 &&
                 txMouseY() >= activeObj[i].y &&
@@ -285,11 +322,16 @@ int main()
             {
                 active = i;
             }
+            if (activeObj[i].drawObject &&
+                activeObj[i].y + 75 <= 100)
+                activeObj[i].drawObject = false;
+        }
+
 
             if (active >= 0)
             {
-                activeObj[active].x = txMouseX() - 50;
-                activeObj[active].y = txMouseY() - 50;
+                activeObj[active].x = txMouseX() - 75;
+                activeObj[active].y = txMouseY() - 75;
             }
 
             if (txMouseButtons()!= 1)

@@ -1,6 +1,11 @@
 #include "TXLib.h"
-
 #include "strObject.cpp"
+#include <fstream>
+#include <iostream>
+#include <cstdlib>
+#include <cstring>
+
+using namespace std;
 
 //Подраздел
 struct subBUTTON
@@ -40,7 +45,27 @@ struct room
         if(txMouseX() >= Х && txMouseX() <= 35 && txMouseY() >= 0 && txMouseY() <= 20 && txMouseButtons() == 1);
     } */
 
+int getWidth(const char* address)
+{
+    char header[54];
+    ifstream bmp;
+    bmp.open(address, ios::in | ios::binary);
+    bmp.read(header, 54);
+    int width;
+    memcpy(&width, &header[18], sizeof(width));
+    return width;
+}
 
+int getHeight(const char* address)
+{
+    char header[54];
+    ifstream bmp;
+    bmp.open(address, ios::in | ios::binary);
+    bmp.read(header, 54);
+    int height;
+    memcpy(&height, &header[22], sizeof(height));
+    return height;
+}
 
 void drawBackArrow()
 {
@@ -66,22 +91,30 @@ int main()
     int nActObj = 0;
     int nActRoom = 0;
     strObject object[100];
-    object[0] = {750, 100, txLoadImage ("Pictures/Мебель/кресло.bmp"),
-        "Мебель", "стулья", false, 324, 306};
-    object[1] = {750, 250, txLoadImage ("Pictures/Мебель/кресло2.bmp"),
-        "Мебель", "стулья", false, 382, 400};
-    object[2] = {750, 400, txLoadImage ("Pictures/Мебель/couchplanesofa.bmp"),
-        "Мебель", "стулья", false, 750, 563};
+    object[0] = {750, 100, "Pictures/Мебель/кресло.bmp",
+        "Мебель", "стулья"};
+    object[1] = {750, 250, "Pictures/Мебель/кресло2.bmp",
+        "Мебель", "стулья"};
+    object[2] = {750, 400, "Pictures/Мебель/couchplanesofa.bmp",
+        "Мебель", "стулья"};
 
-    object[3] = {750, 550, txLoadImage ("Pictures/Мебель/Sofa.bmp"),
-        "Мебель", "стулья", false, 768, 332};
-    object[4] = {750, 100, txLoadImage ("Pictures/Мебель/Стол.bmp"),
-        "Мебель", "столы", false, 300, 177};
-    object[5] = {750, 250, txLoadImage ("Pictures/Мебель/Bed.bmp"),
-        "Мебель", "кровати", false, 415, 310};
+    object[3] = {750, 550, "Pictures/Мебель/Sofa.bmp",
+        "Мебель", "стулья"};
+    object[4] = {750, 100, "Pictures/Мебель/Стол.bmp",
+        "Мебель", "столы"};
+    object[5] = {750, 250, "Pictures/Мебель/Bed.bmp",
+        "Мебель", "кровати"};
 
-    object[6] = {750, 100, txLoadImage ("Pictures/Техника/Изогнутый.bmp"),
-        "Техника", "телевизоры", false, 150, 29};
+    object[6] = {750, 100, "Pictures/Техника/Изогнутый.bmp",
+        "Техника", "телевизоры"};
+
+    for(int i = 0; i < nObj; i++)
+    {
+        object[i].drawObject = false;
+        object[i].pic = txLoadImage (object[i].address);
+        object[i].width  = getWidth (object[i].address);
+        object[i].height = getHeight(object[i].address);
+    }
 
     strObject activeObj[1000];
     int active = -10;
@@ -114,7 +147,7 @@ int main()
 
         if (PAGE == "Справка")
         {
-            txDrawText(0, 0, 100, 100, "Другой режим");
+            txDrawText(0, 200, 150, 300, "Другой режим");
             txTextOut(450, 50, "Это справка.");
             txTextOut(250, 100, "Это редактор хаты в которой ты можещь сделать всё что хочешь.");
             if (txMouseButtons() == 1 &&
@@ -122,7 +155,7 @@ int main()
                 txMouseX() <= 100)
             {
                 PAGE = "Рудактор";
-                txSleep(2000);
+                txSleep(200);
             }
 
         }
@@ -179,6 +212,7 @@ int main()
                         txMouseButtons() == 1)
                     {
                         openSubsect = true;
+                        chSection = buttons[choosenSection].text;
                         chSubSection = buttons[choosenSection].subButtons[i].text;
                     }
                     txSetColor (TX_BLACK, 4);
@@ -190,17 +224,15 @@ int main()
 
 
 
-            txDrawText(0, 0, 100, 100, "Другой режим");
+            txDrawText(0, 200, 150, 300, "Другой режим");
             if (txMouseButtons() == 1 &&
                 txMouseX() >= 0 &&
-                txMouseY() >= 30 &&
+                txMouseY() >= 200 &&
                 txMouseX() <= 100)
             {
                 PAGE = "Справка";
-                txSleep(2000);
+                txSleep(200);
             }
-
-
 
             //Отмена выбора подраздела
             if (txMouseX() >= 0 && txMouseX() <= 35 &&
@@ -241,7 +273,10 @@ int main()
                         ActRoom[nActRoom].x2 = txMouseX();
                         ActRoom[nActRoom].y2 = txMouseY();
                         for(int i = 0; i < nActRoom + 1; i++)
+                        {
                             txRectangle(ActRoom[i].x, ActRoom[i].y, ActRoom[i].x2, ActRoom[i].y2);
+                            drawPics(activeObj, nActObj);
+                        }
                         txSleep(50);
                     }
                 }
@@ -265,10 +300,10 @@ int main()
                     txMouseY() >= object[i].y &&
                     txMouseY() <= object[i].y + 150 && txMouseButtons() == 1)
                 {
-                    activeObj[nActObj] = {300, 300, object[i].pic, object[i].section, object[i].subSection, true, object[i].width, object[i].height};
+                    activeObj[nActObj] = {300, 300, object[i].address, object[i].section, object[i].subSection, true, object[i].width, object[i].height, object[i].pic};
                     nActObj++;
-                    while(txMouseButtons() == 1)
-                    {}
+                    /*while(txMouseButtons() == 1)
+                    {}*/
                 }
             }
 
@@ -313,7 +348,7 @@ int main()
 
 
             //В качестве отладки выводим номер открытого раздела
-            if (chSubSection != "")
+            //if (chSubSection != "")
             {
                 txTextOut(800, 10, chSection.c_str());
                 txTextOut(800, 30, chSubSection.c_str());

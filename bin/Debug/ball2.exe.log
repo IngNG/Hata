@@ -1,0 +1,78 @@
+
+--------------------------------------------------
+TXLib сообщает:
+
+Программа: C:\Users\сапке54\Desktop\ball2\bin\Debug\ball2.exe, файл: C:\Users\сапке54\Desktop\TX\TXLib.h, строка: 13096, функция: bool {anonymous}::TX::txBitBlt(HDC, double, double, double, double, HDC, double, double, unsigned int),
+
+Сообщение: Параметр "sourceImage" неверен. Возможно, этот холст не создан, или уже уничтожен, или не загрузилась картинка.
+
+#1: TXLib [Ver: 00173a, Rev: 167, Date: 2020-07-08 18:27:56 +0400], Instance: 0x004FA2FC (32-bit), Flags: CMdRe0, Thread: 0x17AC (Main), GetLastError(): 13 (Недопустимые данные). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x00416D6D in C:\Users\сапке54\Desktop\ball2\bin\Debug\ball2.exe: txBitBlt() at C:/Users/сапке54/Desktop/TX/TXLib.h (13096)
+
+# 1 0x0041CF6D in C:\Users\сапке54\Desktop\ball2\bin\Debug\ball2.exe: main() at C:/Users/сапке54/Desktop/ball2/main.cpp (7):
+
+      5:     txCreateWindow (740, 600);
+      6:     HDC whiteBox = txLoadImage ("pic\\whiteBox.bmp");
+=>    7:     txBitBlt (txDC(), 0, 0, 0, 0, whiteBox, 10, 10);
+      8:     return 0;
+      9:     }
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 167, Date: 2020-07-08 18:27:56 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\сапке54\Desktop\TX\TXLib.h
+Compiled:	Jul 21 2020 16:16:21, GNU g++ 5.1.0, std=199711L, MinGW Runtime 3.20, 32-bit, Debug
+Started:	Jul 21 2020 16:16:32
+
+Run file:	C:\Users\сапке54\Desktop\ball2\bin\Debug\ball2.exe
+Directory:	C:\Users\сапке54\Desktop\ball2
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib сообщает:
+
+Программа: C:\Users\сапке54\Desktop\ball2\bin\Debug\ball2.exe, файл: C:\Users\сапке54\Desktop\TX\TXLib.h, строка: 13096, функция: bool {anonymous}::TX::txBitBlt(HDC, double, double, double, double, HDC, double, double, unsigned int),
+
+Сообщение: Параметр "sourceImage" неверен. Возможно, этот холст не создан, или уже уничтожен, или не загрузилась картинка.
+
+#1: TXLib [Ver: 00173a, Rev: 167, Date: 2020-07-08 18:27:56 +0400], Instance: 0x004FA2FC (32-bit), Flags: CMdRe0, Thread: 0xBC0 (Main), GetLastError(): 13 (Недопустимые данные). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x00416D6D in C:\Users\сапке54\Desktop\ball2\bin\Debug\ball2.exe: txBitBlt() at C:/Users/сапке54/Desktop/TX/TXLib.h (13096)
+
+# 1 0x0041CF6D in C:\Users\сапке54\Desktop\ball2\bin\Debug\ball2.exe: main() at C:/Users/сапке54/Desktop/ball2/main.cpp (7):
+
+      5:     txCreateWindow (740, 600);
+      6:     HDC whiteBox = txLoadImage ("pic\\whiteBox.bmp");
+=>    7:     txBitBlt (txDC(), 0, 0, 0, 0, whiteBox, 10, 10);
+      8:     txDeleteDC(whiteBox);
+      9:     return 0;
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 167, Date: 2020-07-08 18:27:56 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\сапке54\Desktop\TX\TXLib.h
+Compiled:	Jul 21 2020 16:19:16, GNU g++ 5.1.0, std=199711L, MinGW Runtime 3.20, 32-bit, Debug
+Started:	Jul 21 2020 16:19:21
+
+Run file:	C:\Users\сапке54\Desktop\ball2\bin\Debug\ball2.exe
+Directory:	C:\Users\сапке54\Desktop\ball2
+
+--------------------------------------------------

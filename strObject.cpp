@@ -4,15 +4,16 @@
 //Картинка
 struct strObject
 {
-    int x;
-    int y;
-    HDC pic;
+    const char* address;
     //Раздел и подраздел
     string section;
     string subSection;
+    int y;
+    int x;
     bool drawObject;
     int width;
     int height;
+    HDC pic;
 
     void drawIcon()
     {

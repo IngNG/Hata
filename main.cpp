@@ -91,25 +91,25 @@ int main()
     int nActObj = 0;
     int nActRoom = 0;
     strObject object[100];
-    object[0] = {750, 100, "Pictures/Мебель/кресло.bmp",
-        "Мебель", "стулья"};
-    object[1] = {750, 250, "Pictures/Мебель/кресло2.bmp",
-        "Мебель", "стулья"};
-    object[2] = {750, 400, "Pictures/Мебель/couchplanesofa.bmp",
-        "Мебель", "стулья"};
+    object[0] = {"Pictures/Мебель/стулья/кресло.bmp", "Мебель", "стулья"};
+    object[1] = {"Pictures/Мебель/стулья/кресло2.bmp", "Мебель", "стулья"};
+    object[2] = {"Pictures/Мебель/cстулья/ouchplanesofa.bmp","Мебель", "стулья"};
+    object[3] = {"Pictures/Мебель/стулья/ofa.bmp", "Мебель", "стулья"};
+    object[4] = {"Pictures/Мебель/столы/Стол.bmp", "Мебель", "столы", 100};
+    object[5] = {"Pictures/Мебель/кровати/Bed.bmp", "Мебель", "кровати", 100};
+    object[6] = {"Pictures/Техника/телевизоры/Изогнутый.bmp", "Техника", "телевизоры", 100};
 
-    object[3] = {750, 550, "Pictures/Мебель/Sofa.bmp",
-        "Мебель", "стулья"};
-    object[4] = {750, 100, "Pictures/Мебель/Стол.bmp",
-        "Мебель", "столы"};
-    object[5] = {750, 250, "Pictures/Мебель/Bed.bmp",
-        "Мебель", "кровати"};
-
-    object[6] = {750, 100, "Pictures/Техника/Изогнутый.bmp",
-        "Техника", "телевизоры"};
-
+    int yStul = 100;
     for(int i = 0; i < nObj; i++)
     {
+        if (object[i].subSection == "стулья")
+        {
+            object[i].y = yStul;
+            yStul = yStul + 150;
+        }
+
+
+        object[i].x = 750;
         object[i].drawObject = false;
         object[i].pic = txLoadImage (object[i].address);
         object[i].width  = getWidth (object[i].address);
@@ -123,7 +123,7 @@ int main()
 
     //Разделы
     BUTTON buttons[5];
-    buttons[0] =   {0, 0, "Мебель",     {{"стулья"      }, {"столы"       }, {"кровати"   }, {"шкафы"     }, {" "}}};
+    buttons[0] =   {0, 0, "Мебель",     {{"стулья"      }, {"столы"       }, {"кровати"   }, {"шкафы"     }, {"диваны"}}};
     buttons[1] = {200, 0, "Техника",    {{"стир. машины"}, {"холодильники"}, {"телевизоры"}, {"компьютеры"}, {" "}}};
     buttons[2] = {400, 0, "Пол",        {{"паркет"      }, {"ковры"       }, {""          }, {""          }, {" "}}};
     buttons[3] = {600, 0, "Разное",     {{"ванные"      }, {"туалеты"     }, {"декор"     }, {""          }, {" "}}};
@@ -300,10 +300,10 @@ int main()
                     txMouseY() >= object[i].y &&
                     txMouseY() <= object[i].y + 150 && txMouseButtons() == 1)
                 {
-                    activeObj[nActObj] = {300, 300, object[i].address, object[i].section, object[i].subSection, true, object[i].width, object[i].height, object[i].pic};
+                    activeObj[nActObj] = {object[i].address, object[i].section, object[i].subSection, 300, 300, true, object[i].width, object[i].height, object[i].pic};
                     nActObj++;
-                    /*while(txMouseButtons() == 1)
-                    {}*/
+                    while(txMouseButtons() == 1)
+                    {}
                 }
             }
 

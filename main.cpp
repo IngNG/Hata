@@ -82,12 +82,13 @@ int main()
 {
     txCreateWindow (1000, 800);
 
-    string PAGE = "Справка";
+    string PAGE = "Рудактор";
 
     bool openSubsect = false;
 
     //Варианты мебели сверху
-    int nObj = 10;
+
+    int nObj = 17;
     int nActObj = 0;
     int nActRoom = 0;
     strObject object[100];
@@ -97,10 +98,18 @@ int main()
     object[3] = {"Pictures/Мебель/стулья/Stul2.bmp", "Мебель", "стулья"};
     object[4] = {"Pictures/Мебель/стулья/Stul3.bmp", "Мебель", "стулья"};
     object[5] = {"Pictures/Мебель/стулья/Stul4.bmp", "Мебель", "стулья"};
+
     object[6] = {"Pictures/Мебель/Диваны/Divan1.bmp", "Мебель", "диваны", 100};
     object[7] = {"Pictures/Мебель/столы/Стол.bmp", "Мебель", "столы", 100};
     object[8] = {"Pictures/Мебель/кровати/Bed.bmp", "Мебель", "кровати", 100};
     object[9] = {"Pictures/Техника/телевизоры/Изогнутый.bmp", "Техника", "телевизоры", 100};
+    object[10] = {"Pictures/Техника/телевизоры/Изогнутый.bmp", "Техника", "телевизоры", 100};
+    object[11] = {"Pictures/мебель/диваны/Изогнутый.bmp", "Техника", "телевизоры", 100};
+    object[12] = {"Pictures/пол/ковры/Cover1.bmp", "Пол", "ковры", 100};
+    object[13] = {"Pictures/пол/ковры/Cover2.bmp", "Пол", "ковры", 300};
+    object[14] = {"Pictures/пол/ковры/Cover3.bmp", "Пол", "ковры", 500};
+    object[15] = {"Pictures/пол/ковры/Cover4.bmp", "Пол", "ковры", 700};
+    object[16] = {"Pictures/пол/ковры/Sofa.bmp", "Мебель", "стулья", 100};
 
     //Прикинь, диваны не рисуются
     int yStul = 100;
@@ -112,7 +121,6 @@ int main()
             yStul = yStul + 150;
         }
 
-
         object[i].x = 750;
         object[i].drawObject = false;
         object[i].pic = txLoadImage (object[i].address);
@@ -122,7 +130,7 @@ int main()
 
     strObject activeObj[1000];
     int active = -10;
-
+    int activeRoom = -10;
     room ActRoom[100];
 
     //Разделы
@@ -152,12 +160,12 @@ int main()
         //На фига мне по умолчанию справку выводить?
         if (PAGE == "Справка")
         {
-            txDrawText(0, 200, 150, 300, "Другой режим");
+            txDrawText(850, 700, 1000, 800, "Закрыть справку");
             txTextOut(450, 50, "Это справка.");
             txTextOut(250, 100, "Это редактор хаты в которой ты можещь сделать всё что хочешь.");
             if (txMouseButtons() == 1 &&
-                txMouseX() >= 0 &&
-                txMouseX() <= 100)
+                txMouseX() >= 850 &&
+                txMouseX() <= 1000)
             {
                 PAGE = "Рудактор";
                 txSleep(200);
@@ -166,6 +174,10 @@ int main()
         }
         else
         {
+            drawPics(activeObj, nActObj);
+            for(int i = 0; i < nActRoom + 1; i++)
+                txRectangle(ActRoom[i].x, ActRoom[i].y, ActRoom[i].x2, ActRoom[i].y2);
+
             txRectangle (0, 0, 1000, 100);
 
             //Подраздел на выбран
@@ -214,7 +226,7 @@ int main()
                         txMouseX() <= mx + 150 &&
                         txMouseY() >= my + 5 + i * 20 &&
                         txMouseY() <= my + 25 + i * 20 &&
-                        txMouseButtons() == 1)
+                        txMouseButtons() == 1 && active <= 0)
                     {
                         openSubsect = true;
                         chSection = buttons[choosenSection].text;
@@ -227,13 +239,11 @@ int main()
             else
                 drawBackArrow();
 
-
-
-            txDrawText(0, 200, 150, 300, "Другой режим");
+            txDrawText(850, 700, 1000, 800, "Открыть справку");
             if (txMouseButtons() == 1 &&
-                txMouseX() >= 0 &&
-                txMouseY() >= 200 &&
-                txMouseX() <= 100)
+                txMouseX() >= 850 &&
+                txMouseY() >= 700 &&
+                txMouseX() <= 1000)
             {
                 PAGE = "Справка";
                 txSleep(200);
@@ -287,9 +297,6 @@ int main()
                 }
             }
 
-            for(int i = 0; i < nActRoom + 1; i++)
-                txRectangle(ActRoom[i].x, ActRoom[i].y, ActRoom[i].x2, ActRoom[i].y2);
-
             //Варианты мебели сверху
             for(int i = 0; i < nObj; i++)
             {
@@ -312,10 +319,8 @@ int main()
                 }
             }
 
-            drawPics(activeObj, nActObj);
-
             //Выбор и удаление активной картинки
-            for(int i = 0; i < nActObj; i++)
+            for(int i = 0; i < nActRoom; i++)
             {
                 if (activeObj[i].drawObject &&
                     txMouseX() >= activeObj[i].x &&
@@ -332,6 +337,20 @@ int main()
                     activeObj[i].drawObject = false;
             }
 
+            for(int i = 0; i < nActRoom + 1; i++)
+            {
+                if (txMouseX() >= ActRoom[i].x &&
+                    txMouseX() <= ActRoom[i].x2 &&
+                    txMouseY() >= ActRoom[i].y &&
+                    txMouseY() <= ActRoom[i].y2 && txMouseButtons() == 2 &&
+                    activeRoom < 0)
+                {
+                    activeRoom = i;
+                }
+
+                if (ActRoom[i].y <= 100)
+                    {ActRoom[i].x2 = ActRoom[i].x; ActRoom[i].y2 = ActRoom[i].x;}
+            }
             //Движение активной картинки
             if (active >= 0)
             {
@@ -339,25 +358,36 @@ int main()
                 activeObj[active].y = txMouseY() - 75;
             }
 
+            if (activeRoom >= 0)
+            {
+                int y3 = ActRoom[activeRoom].y2 - ActRoom[activeRoom].y;
+                int x3 = ActRoom[activeRoom].x2 - ActRoom[activeRoom].x;
+                ActRoom[activeRoom].x = txMouseX();
+                ActRoom[activeRoom].y = txMouseY();
+                ActRoom[activeRoom].x2 = txMouseX() + x3;
+                ActRoom[activeRoom].y2 = txMouseY() + y3;
+            }
+
             if (txMouseButtons()!= 1)
                 active = -10;
 
+            if (txMouseButtons()!= 2)
+                activeRoom = -10;
 
             //По пробелу скрываем всю мебель
-            for(int i = 0; i < nObj; i++)
-                if (GetAsyncKeyState(VK_SPACE))
-                {
-                    object[i].drawObject=false;
-                }
-
-
+           // for(int i = 0; i < nObj; i++)
+           //     if (GetAsyncKeyState(VK_SPACE))
+           //     {
+           //         object[i].drawObject=false;
+           //     }
 
             //В качестве отладки выводим номер открытого раздела
-            //if (chSubSection != "")
+            if (chSubSection != "")
             {
                 txTextOut(800, 10, chSection.c_str());
                 txTextOut(800, 30, chSubSection.c_str());
             }
+
         }
 
         txSleep(20) ;

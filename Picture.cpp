@@ -41,42 +41,59 @@ void drawPics(Picture* activeObj, int nActObj)
         }
 }
 
-int fillVariants(Picture* object)
+int fillVariants(Picture* object, BUTTON *btn)
 {
-    int nVariants = 21;
-    object[0] = {"Pictures/Мебель/стулья/кресло.bmp", "Мебель", "стулья"};
-    object[1] = {"Pictures/Мебель/стулья/кресло2.bmp", "Мебель", "стулья"};
-    object[2] = {"Pictures/Мебель/стулья/Stul1.bmp","Мебель", "стулья"};
-    object[3] = {"Pictures/Мебель/стулья/Stul2.bmp", "Мебель", "стулья"};
-    object[4] = {"Pictures/Мебель/стулья/Stul3.bmp", "Мебель", "стулья"};
-    object[5] = {"Pictures/Мебель/стулья/Stul4.bmp", "Мебель", "стулья"};
-    object[6] = {"Pictures/Мебель/Диваны/Divan1.bmp", "Мебель", "диваны", 100};
-    object[7] = {"Pictures/Мебель/столы/Стол.bmp", "Мебель", "столы", 100};
-    object[8] = {"Pictures/Мебель/кровати/Bed.bmp", "Мебель", "кровати", 100};
-    object[9] = {"Pictures/Мебель/кровати/Bed3.bmp", "Мебель", "кровати", 300};
-    object[10] = {"Pictures/Техника/телевизоры/Изогнутый.bmp", "Техника", "телевизоры", 100};
-    object[11] = {"Pictures/мебель/диваны/Изогнутый.bmp", "Техника", "телевизоры", 100};
-    object[12] = {"Pictures/пол/ковры/Cover1.bmp", "Пол", "ковры", 100};
-    object[13] = {"Pictures/пол/ковры/Cover2.bmp", "Пол", "ковры", 300};
-    object[14] = {"Pictures/пол/ковры/Cover3.bmp", "Пол", "ковры", 500};
-    object[15] = {"Pictures/пол/ковры/Cover4.bmp", "Пол", "ковры", 700};
-    object[16] = {"Pictures/диван/Sofa.bmp", "Мебель", "стулья", 100};
-    object[17] = {"Pictures/мебель/Диваны/Divan1.bmp", "Мебель", "диваны", 400};
-    object[18] = {"Pictures/мебель/Диваны/Divan2.bmp", "Мебель", "диваны", 600};
-    object[19] = {"Pictures/мебель/Диваны/Divan3.bmp", "Мебель", "диваны", 200};
-    object[20] = {"Pictures/мебель/Диваны/Divan4.bmp", "Мебель", "диваны", 800};
+    setlocale(LC_ALL, "Russian");
 
+    int nVariants = 21;
+    object[0] = {"Pictures/Мебель/стулья/кресло.bmp"};
+    object[1] = {"Pictures/Мебель/стулья/кресло2.bmp"};
+    object[2] = {"Pictures/Мебель/стулья/Stul1.bmp"};
+    object[3] = {"Pictures/Мебель/стулья/Stul2.bmp"};
+    object[4] = {"Pictures/Мебель/стулья/Stul3.bmp"};
+    object[5] = {"Pictures/Мебель/стулья/Stul4.bmp"};
+
+    object[6] = {"Pictures/Мебель/столы/Стол.bmp"};
+    object[7] = {"Pictures/Мебель/столы/Стол кухонный.bmp"};
+
+    object[8] = {"Pictures/Мебель/кровати/Bed.bmp"};
+    object[9] = {"Pictures/Мебель/кровати/Bed2.bmp"};
+    object[10] = {"Pictures/Мебель/кровати/Bed3.bmp"};
+
+    object[11] = {"Pictures/техника/телевизоры/Изогнутый.bmp"};
+
+    object[12] = {"Pictures/пол/ковры/Cover1.bmp"};
+    object[13] = {"Pictures/пол/ковры/Cover2.bmp"};
+    object[14] = {"Pictures/пол/ковры/Cover3.bmp"};
+    object[15] = {"Pictures/пол/ковры/Cover4.bmp"};
+
+    object[16] = {"Pictures/Мебель/диваны/Sofa.bmp"};
+    object[17] = {"Pictures/Мебель/диваны/Divan1.bmp"};
+    object[18] = {"Pictures/Мебель/диваны/Divan2.bmp"};
+    object[19] = {"Pictures/Мебель/диваны/Divan3.bmp"};
+    object[20] = {"Pictures/Мебель/диваны/Divan4.bmp"};
 
 
     //Прикинь, диваны не рисуются
-    int yStul = 100;
     for(int i = 0; i < nVariants; i++)
     {
-        if (object[i].subSection == "стулья")
-        {
-            object[i].y = yStul;
-            yStul = yStul + 150;
-        }
+        string str = object[i].address;
+        int pos1 = str.find("/", 0);
+        int pos2 = str.find("/", pos1 + 1);
+        int pos3 = str.find("/", pos2 + 1);
+        object[i].section = str.substr(pos1 + 1, pos2 - pos1 - 1);
+        object[i].subSection = str.substr(pos2 + 1, pos3 - pos2 - 1);
+
+        //5 кнопок
+        for (int j = 0; j < 5; j++)
+            //5 подразделов
+            for (int k = 0; k < 5; k++)
+                if (btn[j].text == object[i].section &&
+                    btn[j].subButtons[k].text == object[i].subSection)
+                    {
+                        object[i].y = 100 + 150 * btn[j].subButtons[k].N;
+                        btn[j].subButtons[k].N++;
+                    }
 
         object[i].x = 750;
         object[i].drawObject = false;

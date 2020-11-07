@@ -35,19 +35,6 @@ int main()
 
     bool openSubsect = false;
 
-    //Варианты мебели сверху
-    Picture variants[100];
-    int nVariants = fillVariants(variants);
-
-    //Картинки в центре
-    int nPictures = 0;
-    Picture activeObj[1000];
-    int activePic = -10;
-
-    //Стены, комнаты
-    int nRooms = 0;
-    room ActRoom[100];
-    int activeRoom = -10;
 
     //Разделы
     BUTTON buttons[5];
@@ -60,10 +47,27 @@ int main()
 
     int mx = -500;
 
+    //Варианты мебели сверху
+    Picture variants[100];
+    int nVariants = fillVariants(variants, buttons);
+
+    //Картинки в центре
+    int nPictures = 0;
+    Picture activeObj[1000];
+    int activePic = -10;
+
+    //Стены, комнаты
+    int nRooms = 0;
+    room ActRoom[100];
+    int activeRoom = -10;
+
+
     //Выбранный раздел / Подраздел
     int choosenSection = -1;
     string chSection = "";
     string chSubSection = "";
+
+
 
     while(!GetAsyncKeyState(VK_ESCAPE))
     {
@@ -88,9 +92,9 @@ int main()
         }
         else
         {
-            drawPics(activeObj, nPictures);
             for(int i = 0; i < nRooms + 1; i++)
                 txRectangle(ActRoom[i].x, ActRoom[i].y, ActRoom[i].x2, ActRoom[i].y2);
+            drawPics(activeObj, nPictures);
 
             txRectangle (0, 0, 1000, 100);
 
@@ -235,7 +239,7 @@ int main()
             }
 
             //Выбор и удаление активной картинки
-            for(int i = 0; i < nRooms; i++)
+            for(int i = 0; i < nPictures; i++)
             {
                 if (activeObj[i].drawObject &&
                     txMouseX() >= activeObj[i].x &&

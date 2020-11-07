@@ -43,34 +43,52 @@ void drawPics(Picture* activeObj, int nActObj)
 
 int fillVariants(Picture* object)
 {
-    int nVariants = 17;
-    object[0] = {"Pictures/Мебель/стулья/кресло.bmp", "Мебель", "стулья"};
-    object[1] = {"Pictures/Мебель/стулья/кресло2.bmp", "Мебель", "стулья"};
-    object[2] = {"Pictures/Мебель/стулья/Stul1.bmp","Мебель", "стулья"};
-    object[3] = {"Pictures/Мебель/стулья/Stul2.bmp", "Мебель", "стулья"};
-    object[4] = {"Pictures/Мебель/стулья/Stul3.bmp", "Мебель", "стулья"};
-    object[5] = {"Pictures/Мебель/стулья/Stul4.bmp", "Мебель", "стулья"};
+    setlocale(LC_ALL, "Russian");
 
-    object[6] = {"Pictures/Мебель/Диваны/Divan1.bmp", "Мебель", "диваны", 100};
-    object[7] = {"Pictures/Мебель/столы/Стол.bmp", "Мебель", "столы", 100};
-    object[8] = {"Pictures/Мебель/кровати/Bed.bmp", "Мебель", "кровати", 100};
-    object[9] = {"Pictures/Мебель/кровати/Bed3.bmp", "Мебель", "кровати", 300};
-    object[10] = {"Pictures/Техника/телевизоры/Изогнутый.bmp", "Техника", "телевизоры", 100};
-    object[11] = {"Pictures/мебель/диваны/Изогнутый.bmp", "Техника", "телевизоры", 100};
-    object[12] = {"Pictures/пол/ковры/Cover1.bmp", "Пол", "ковры", 100};
-    object[13] = {"Pictures/пол/ковры/Cover2.bmp", "Пол", "ковры", 300};
-    object[14] = {"Pictures/пол/ковры/Cover3.bmp", "Пол", "ковры", 500};
-    object[15] = {"Pictures/пол/ковры/Cover4.bmp", "Пол", "ковры", 700};
-    object[16] = {"Pictures/пол/ковры/Sofa.bmp", "Мебель", "стулья", 100};
+    int nVariants = 17;
+    object[0] = {"Pictures/Мебель/стулья/кресло.bmp"};
+    object[1] = {"Pictures/Мебель/стулья/кресло2.bmp"};
+    object[2] = {"Pictures/Мебель/стулья/Stul1.bmp"};
+    object[3] = {"Pictures/Мебель/стулья/Stul2.bmp"};
+    object[4] = {"Pictures/Мебель/стулья/Stul3.bmp"};
+    object[5] = {"Pictures/Мебель/стулья/Stul4.bmp"};
+    object[6] = {"Pictures/пол/ковры/Sofa.bmp"};
+
+    object[7] = {"Pictures/Мебель/столы/Стол.bmp"};
+    object[8] = {"Pictures/Мебель/кровати/Bed.bmp"};
+    object[9] = {"Pictures/Мебель/кровати/Bed3.bmp"};
+    object[10] = {"Pictures/техника/телевизоры/Изогнутый.bmp"};
+    object[11] = {"Pictures/Мебель/диваны/Изогнутый.bmp"};
+    object[16] = {"Pictures/Мебель/диваны/Divan1.bmp"};
+    object[12] = {"Pictures/пол/ковры/Cover1.bmp"};
+    object[13] = {"Pictures/пол/ковры/Cover2.bmp"};
+    object[14] = {"Pictures/пол/ковры/Cover3.bmp"};
+    object[15] = {"Pictures/пол/ковры/Cover4.bmp"};
+    object[16] = {"Pictures/пол/ковры/Sofa.bmp"};
 
     //Прикинь, диваны не рисуются
-    int yStul = 100;
+    int cord[25];
+    int c = 0;
+    for(int i = 0; i < 26; i++)
+        cord[i] = 100;
     for(int i = 0; i < nVariants; i++)
     {
-        if (object[i].subSection == "стулья")
+        string str = object[i].address;
+        int pos1 = str.find("/", 0);
+        int pos2 = str.find("/", pos1 + 1);
+        int pos3 = str.find("/", pos2 + 1);
+        object[i].section = str.substr(pos1 + 1, pos2 - pos1 - 1);
+        object[i].subSection = str.substr(pos2 + 1, pos3 - pos2 - 1);
+
+        if (object[i].subSection == object[i - 1].subSection && !(i == 0))
         {
-            object[i].y = yStul;
-            yStul = yStul + 150;
+            object[i].y = cord[c];
+            cord[c + 1] = cord[c] + 200;
+        }
+        else
+        {
+            c++;
+            object[i].y = cord[c];
         }
 
         object[i].x = 750;

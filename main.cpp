@@ -88,9 +88,9 @@ int main()
         }
         else
         {
-            drawPics(activeObj, nPictures);
             for(int i = 0; i < nRooms + 1; i++)
                 txRectangle(ActRoom[i].x, ActRoom[i].y, ActRoom[i].x2, ActRoom[i].y2);
+            drawPics(activeObj, nPictures);
 
             txRectangle (0, 0, 1000, 100);
 
@@ -235,7 +235,7 @@ int main()
             }
 
             //Выбор и удаление активной картинки
-            for(int i = 0; i < nRooms; i++)
+            for(int i = 0; i < nPictures; i++)
             {
                 if (activeObj[i].drawObject &&
                     txMouseX() >= activeObj[i].x &&

@@ -4,6 +4,7 @@
 struct subBUTTON
 {
     const char* text;
+    int N;
 };
 
 //Раздел

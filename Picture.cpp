@@ -41,36 +41,40 @@ void drawPics(Picture* activeObj, int nActObj)
         }
 }
 
-int fillVariants(Picture* object)
+int fillVariants(Picture* object, BUTTON *btn)
 {
     setlocale(LC_ALL, "Russian");
 
-    int nVariants = 17;
+    int nVariants = 21;
     object[0] = {"Pictures/Мебель/стулья/кресло.bmp"};
     object[1] = {"Pictures/Мебель/стулья/кресло2.bmp"};
     object[2] = {"Pictures/Мебель/стулья/Stul1.bmp"};
     object[3] = {"Pictures/Мебель/стулья/Stul2.bmp"};
     object[4] = {"Pictures/Мебель/стулья/Stul3.bmp"};
     object[5] = {"Pictures/Мебель/стулья/Stul4.bmp"};
-    object[6] = {"Pictures/пол/ковры/Sofa.bmp"};
 
-    object[7] = {"Pictures/Мебель/столы/Стол.bmp"};
+    object[6] = {"Pictures/Мебель/столы/Стол.bmp"};
+    object[7] = {"Pictures/Мебель/столы/Стол кухонный.bmp"};
+
     object[8] = {"Pictures/Мебель/кровати/Bed.bmp"};
-    object[9] = {"Pictures/Мебель/кровати/Bed3.bmp"};
-    object[10] = {"Pictures/техника/телевизоры/Изогнутый.bmp"};
-    object[11] = {"Pictures/Мебель/диваны/Изогнутый.bmp"};
-    object[16] = {"Pictures/Мебель/диваны/Divan1.bmp"};
+    object[9] = {"Pictures/Мебель/кровати/Bed2.bmp"};
+    object[10] = {"Pictures/Мебель/кровати/Bed3.bmp"};
+
+    object[11] = {"Pictures/техника/телевизоры/Изогнутый.bmp"};
+
     object[12] = {"Pictures/пол/ковры/Cover1.bmp"};
     object[13] = {"Pictures/пол/ковры/Cover2.bmp"};
     object[14] = {"Pictures/пол/ковры/Cover3.bmp"};
     object[15] = {"Pictures/пол/ковры/Cover4.bmp"};
-    object[16] = {"Pictures/пол/ковры/Sofa.bmp"};
+
+    object[16] = {"Pictures/Мебель/диваны/Sofa.bmp"};
+    object[17] = {"Pictures/Мебель/диваны/Divan1.bmp"};
+    object[18] = {"Pictures/Мебель/диваны/Divan2.bmp"};
+    object[19] = {"Pictures/Мебель/диваны/Divan3.bmp"};
+    object[20] = {"Pictures/Мебель/диваны/Divan4.bmp"};
+
 
     //Прикинь, диваны не рисуются
-    int cord[25];
-    int c = 0;
-    for(int i = 0; i < 26; i++)
-        cord[i] = 100;
     for(int i = 0; i < nVariants; i++)
     {
         string str = object[i].address;
@@ -80,16 +84,16 @@ int fillVariants(Picture* object)
         object[i].section = str.substr(pos1 + 1, pos2 - pos1 - 1);
         object[i].subSection = str.substr(pos2 + 1, pos3 - pos2 - 1);
 
-        if (object[i].subSection == object[i - 1].subSection && !(i == 0))
-        {
-            object[i].y = cord[c];
-            cord[c + 1] = cord[c] + 200;
-        }
-        else
-        {
-            c++;
-            object[i].y = cord[c];
-        }
+        //5 кнопок
+        for (int j = 0; j < 5; j++)
+            //5 подразделов
+            for (int k = 0; k < 5; k++)
+                if (btn[j].text == object[i].section &&
+                    btn[j].subButtons[k].text == object[i].subSection)
+                    {
+                        object[i].y = 100 + 150 * btn[j].subButtons[k].N;
+                        btn[j].subButtons[k].N++;
+                    }
 
         object[i].x = 750;
         object[i].drawObject = false;

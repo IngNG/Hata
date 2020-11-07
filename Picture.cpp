@@ -43,14 +43,13 @@ void drawPics(Picture* activeObj, int nActObj)
 
 int fillVariants(Picture* object)
 {
-    int nVariants = 17;
+    int nVariants = 21;
     object[0] = {"Pictures/Мебель/стулья/кресло.bmp", "Мебель", "стулья"};
     object[1] = {"Pictures/Мебель/стулья/кресло2.bmp", "Мебель", "стулья"};
     object[2] = {"Pictures/Мебель/стулья/Stul1.bmp","Мебель", "стулья"};
     object[3] = {"Pictures/Мебель/стулья/Stul2.bmp", "Мебель", "стулья"};
     object[4] = {"Pictures/Мебель/стулья/Stul3.bmp", "Мебель", "стулья"};
     object[5] = {"Pictures/Мебель/стулья/Stul4.bmp", "Мебель", "стулья"};
-
     object[6] = {"Pictures/Мебель/Диваны/Divan1.bmp", "Мебель", "диваны", 100};
     object[7] = {"Pictures/Мебель/столы/Стол.bmp", "Мебель", "столы", 100};
     object[8] = {"Pictures/Мебель/кровати/Bed.bmp", "Мебель", "кровати", 100};
@@ -61,7 +60,13 @@ int fillVariants(Picture* object)
     object[13] = {"Pictures/пол/ковры/Cover2.bmp", "Пол", "ковры", 300};
     object[14] = {"Pictures/пол/ковры/Cover3.bmp", "Пол", "ковры", 500};
     object[15] = {"Pictures/пол/ковры/Cover4.bmp", "Пол", "ковры", 700};
-    object[16] = {"Pictures/пол/ковры/Sofa.bmp", "Мебель", "стулья", 100};
+    object[16] = {"Pictures/диван/Sofa.bmp", "Мебель", "стулья", 100};
+    object[17] = {"Pictures/мебель/Диваны/Divan1.bmp", "Мебель", "диваны", 400};
+    object[18] = {"Pictures/мебель/Диваны/Divan2.bmp", "Мебель", "диваны", 600};
+    object[19] = {"Pictures/мебель/Диваны/Divan3.bmp", "Мебель", "диваны", 200};
+    object[20] = {"Pictures/мебель/Диваны/Divan4.bmp", "Мебель", "диваны", 800};
+
+
 
     //Прикинь, диваны не рисуются
     int yStul = 100;

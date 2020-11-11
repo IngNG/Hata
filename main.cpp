@@ -16,7 +16,7 @@ struct room
     int y2;
 };
 
-void drawBackArrow()
+/*void drawBackArrow()
 {
     txSetColor (TX_BLACK, 2);
     if(txMouseX() >= 0 && txMouseX() <= 35 && txMouseY() >= 0 && txMouseY() <= 20)
@@ -25,7 +25,7 @@ void drawBackArrow()
     txLine(10, 10, 15, 5);
     txLine(10, 10, 15, 15);
     txSetColor (TX_BLACK, 4);
-}
+}*/
 
 int main()
 {
@@ -33,17 +33,22 @@ int main()
 
     string PAGE = "Редактор";
 
-    bool openSubsect = false;
+    ///bool openSubsect = false;
 
 
     //Разделы
     BUTTON buttons[5];
-    buttons[0] =   {0, 0, "Мебель",     {{"стулья"      }, {"столы"       }, {"кровати"   }, {"диваны"    }, {"шкафы"}}};
-    buttons[1] = {200, 0, "Техника",    {{"стир. машины"}, {"холодильники"}, {"телевизоры"}, {"компьютеры"}, {" "}}};
-    buttons[2] = {400, 0, "Пол",        {{"паркет"      }, {"ковры"       }, {""          }, {""          }, {" "}}};
-    buttons[3] = {600, 0, "Разное",     {{"ванные"      }, {"туалеты"     }, {"декор"     }, {""          }, {" "}}};
-    buttons[4] = {800, 0, "Планировка", {{"двери"       }, {"окна"        }, {"стены"     }, {""          }, {" "}}};
+    buttons[0] = {"Мебель",     {{"стулья"      }, {"столы"       }, {"кровати"   }, {"диваны"    }, {"шкафы"}}};
+    buttons[1] = {"Техника",    {{"стир. машины"}, {"холодильники"}, {"телевизоры"}, {"компьютеры"}, {" "}}};
+    buttons[2] = {"Пол",        {{"паркет"      }, {"ковры"       }, {""          }, {""          }, {" "}}};
+    buttons[3] = {"Разное",     {{"ванные"      }, {"туалеты"     }, {"декор"     }, {""          }, {" "}}};
+    buttons[4] = {"Планировка", {{"двери"       }, {"окна"        }, {"стены"     }, {""          }, {" "}}};
     //Координаты кнопок ваще не проблема посчитать
+    for(int i = 0; i < 4 + 1; i++)
+    {
+        buttons[i].x = i * 200;
+        buttons[i].y = 0;
+    }
 
     int mx = -500;
 
@@ -79,12 +84,19 @@ int main()
         //На фига мне по умолчанию справку выводить?
         if (PAGE == "Справка")
         {
-            txDrawText(850, 700, 1000, 800, "Закрыть справку");
+            txSetColor(TX_BLACK, 4);
+            if (txMouseButtons() == 1 &&
+                txMouseX() >= 0 &&  txMouseY() >= 700 &&
+                txMouseX() <= 150 && txMouseY() <= 800)
+                txSetColor (TX_LIGHTBLUE, 4);
+
+            txDrawText(0, 700, 150, 800, "Закрыть справку");
+            txSetColor(TX_BLACK, 4);
             txTextOut(450, 50, "Это справка.");
             txTextOut(250, 100, "Это редактор хаты в которой ты можещь сделать всё что хочешь.");
             if (txMouseButtons() == 1 &&
-                txMouseX() >= 850 &&  txMouseY() >= 700 &&
-                txMouseX() <= 1000 && txMouseY() <= 800)
+                txMouseX() >= 0 &&  txMouseY() >= 700 &&
+                txMouseX() <= 150 && txMouseY() <= 800)
             {
                 PAGE = "Редактор";
                 txSleep(200);
@@ -99,84 +111,78 @@ int main()
             txRectangle (0, 0, 1000, 100);
 
             //Подраздел на выбран
-            if(!openSubsect)
+
+            //Рисуем кнопки
+            for (int i = 0; i < 5; i++)
             {
-                //Рисуем кнопки
-                for (int i = 0; i < 5; i++)
+                buttons[i].draw();
+                if(txMouseX() >= buttons[i].x          && txMouseY() >= buttons[i].y &&
+                   txMouseX() <= buttons[i].x + 200    && txMouseY() <= buttons[i].y + 100)
+                    txSetColor (TX_LIGHTBLUE, 4);
+                txDrawText(buttons[i].x, buttons[i].y, buttons[i].x + 200, buttons[i].y + 100 , buttons[i].text);
+                txSetColor (TX_BLACK, 4);
+            }
+
+            //Какой конкретно раздел?
+            for (int i = 0; i < 5; i++)
+            {
+                if (txMouseY() >= 0            && txMouseY() <= 100 &&
+                    txMouseX() >= buttons[i].x && txMouseX() <= buttons[i].x + 200 &&
+                    txMouseButtons() == 1)
                 {
-                    txSetColor (TX_BLACK, 4);
-                    if(txMouseX() >= buttons[i].x          && txMouseY() >= buttons[i].y &&
-                       txMouseX() <= buttons[i].x + 200    && txMouseY() <= buttons[i].y + 100)
-                        txSetColor (TX_LIGHTBLUE, 4);
-                    buttons[i].draw();
-                    txSetColor (TX_BLACK, 4);
-                }
-
-                if (txMouseY() >= 0 && txMouseY() <= 100 && txMouseButtons() == 1)
-                {
-                    //Какой конкретно раздел?
-                    for (int i = 0; i < 5; i++)
-                    {
-                        if (txMouseX() >= buttons[i].x && txMouseX() <= buttons[i].x + 200)
-                        {
-                            choosenSection = i;
-                            chSection = buttons[i].text;
-                        }
-                    }
-
-                    mx = buttons[choosenSection].x ;
-                }
-
-                int my = 100;
-                txRectangle (mx, my, mx + 200, my + 140);
-
-                //Ежели что и подраздел выбираем
-                for (int i = 0; i < 5; i++)
-                {
-                    //Цвет подраздела
-                    if(txMouseX() >= mx && txMouseX() <= mx + 150 && txMouseY() >= my + 5 + i * 20 && txMouseY() <= my + 25 + i * 20)
-                        txSetColor (TX_LIGHTBLUE, 4);
-                    if(choosenSection >= 0)
-                        txDrawText (mx,         my + 5 + i * 20,
-                                    mx + 200,   my + 25 + i * 20 , buttons[choosenSection].subButtons[i].text);
-
-                    //Выбор подраздела
-                    if (txMouseX() >= mx &&
-                        txMouseX() <= mx + 150 &&
-                        txMouseY() >= my + 5 + i * 20 &&
-                        txMouseY() <= my + 25 + i * 20 &&
-                        txMouseButtons() == 1 && activePic <= 0)
-                    {
-                        openSubsect = true;
-                        chSection = buttons[choosenSection].text;
-                        chSubSection = buttons[choosenSection].subButtons[i].text;
-                    }
-                    txSetColor (TX_BLACK, 4);
+                    choosenSection = i;
+                    chSection = buttons[i].text;
                 }
             }
 
-            else
-                drawBackArrow();
+            mx = buttons[choosenSection].x ;
 
-            txDrawText(850, 700, 1000, 800, "Открыть справку");
+            int my = 100;
+            if(choosenSection > -1)
+                txRectangle (mx, my, mx + 200, my + 140);
+
+            //Ежели что и подраздел выбираем
+            for (int i = 0; i < 5; i++)
+            {
+                //Цвет подраздела
+                if(txMouseX() >= mx && txMouseX() <= mx + 150 && txMouseY() >= my + 5 + i * 20 && txMouseY() <= my + 25 + i * 20)
+                    txSetColor (TX_LIGHTBLUE, 4);
+                if(choosenSection >= 0)
+                    txDrawText (mx,         my + 5 + i * 20,
+                                mx + 200,   my + 25 + i * 20 , buttons[choosenSection].subButtons[i].text);
+
+                //Выбор подраздела
+                if (txMouseX() >= mx &&
+                    txMouseX() <= mx + 150 &&
+                    txMouseY() >= my + 5 + i * 20 &&
+                    txMouseY() <= my + 25 + i * 20 &&
+                    txMouseButtons() == 1 && activePic <= 0)
+                {
+                    //openSubsect = true;
+                    chSection = buttons[choosenSection].text;
+                    chSubSection = buttons[choosenSection].subButtons[i].text;
+                }
+                txSetColor (TX_BLACK, 4);
+            }
+
+            txDrawText(0, 700, 150, 800, "Открыть справку");
             if (txMouseButtons() == 1 &&
-                txMouseX() >= 850 &&
+                txMouseX() >= 0 &&
                 txMouseY() >= 700 &&
-                txMouseX() <= 1000)
+                txMouseX() <= 150)
             {
                 PAGE = "Справка";
                 txSleep(200);
             }
 
             //Отмена выбора подраздела
-            if (txMouseX() >= 0 && txMouseX() <= 35 &&
-                txMouseY() >= 0 && txMouseY() <= 20 &&
-                txMouseButtons() == 1 && openSubsect)
+            if (txMouseY() >= 300 && txMouseButtons() == 1 && chSubSection != "стены")
             {
-                openSubsect = false;
-                txSleep(200);
-                chSection = "";
-                chSubSection = "";
+                //openSubsect = false;
+                //txSleep(20);
+                choosenSection = -1;
+                //chSection = "";
+                //chSubSection = "";
             }
 
             //На фиг нужны mx, my? Почему не рисовать тупо прямоугольник под кнопкой? Как в КодБлокс том же
@@ -187,7 +193,7 @@ int main()
                 variants[i].drawObject = false;
 
                 //Рисуем картинки если выбрана такая-то пара "раздел-подраздел"
-                if (openSubsect && chSubSection == variants[i].subSection && chSection == variants[i].section)
+                if (chSubSection == variants[i].subSection && chSection == variants[i].section)
                 {
                     variants[i].drawObject = true;
                 }
@@ -301,11 +307,11 @@ int main()
            //     }
 
             //В качестве отладки выводим номер открытого раздела
-            if (chSubSection != "")
+            /*if (chSubSection != "")
             {
                 txTextOut(800, 10, chSection.c_str());
                 txTextOut(800, 30, chSubSection.c_str());
-            }
+            }*/
 
         }
 

@@ -10,10 +10,10 @@ struct subBUTTON
 //Раздел
 struct BUTTON
 {
-    int x;
-    int y;
     const char* text;
     subBUTTON subButtons[10];
+    int x;
+    int y;
 
     void draw()
     {

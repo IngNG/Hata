@@ -10,41 +10,36 @@ using namespace std;
 
 struct room
 {
-    int x ;
-    int y ;
-    int x2;
-    int y2;
+    int x0;
+    int y0;
+    int x1;
+    int y1;
 };
 
-/*void drawBackArrow()
-{
-    txSetColor (TX_BLACK, 2);
-    if(txMouseX() >= 0 && txMouseX() <= 35 && txMouseY() >= 0 && txMouseY() <= 20)
-        txSetColor (TX_LIGHTRED, 2);
-    txLine(10, 10, 30, 10);
-    txLine(10, 10, 15, 5);
-    txLine(10, 10, 15, 15);
-    txSetColor (TX_BLACK, 4);
-}*/
+
+const int WindowWidth = 1000;
+const int WindowHeight = 800;
+
+
+
 
 int main()
 {
-    txCreateWindow (1000, 800);
-
+    txCreateWindow (WindowWidth, WindowHeight);
+    txTextCursor(0);
     string PAGE = "Редактор";
-
-    ///bool openSubsect = false;
 
 
     //Разделы
-    BUTTON buttons[5];
+    int buttons_count = 5;
+    BUTTON buttons[buttons_count];
     buttons[0] = {"Мебель",     {{"стулья"      }, {"столы"       }, {"кровати"   }, {"диваны"    }, {"шкафы"}}};
     buttons[1] = {"Техника",    {{"стир. машины"}, {"холодильники"}, {"телевизоры"}, {"компьютеры"}, {" "}}};
     buttons[2] = {"Пол",        {{"паркет"      }, {"ковры"       }, {""          }, {""          }, {" "}}};
     buttons[3] = {"Разное",     {{"ванные"      }, {"туалеты"     }, {"декор"     }, {""          }, {" "}}};
     buttons[4] = {"Планировка", {{"двери"       }, {"окна"        }, {"стены"     }, {""          }, {" "}}};
     //Координаты кнопок ваще не проблема посчитать
-    for(int i = 0; i < 4 + 1; i++)
+    for(int i = 0; i < buttons_count; i++)
     {
         buttons[i].x = i * 200;
         buttons[i].y = 0;
@@ -77,23 +72,23 @@ int main()
     while(!GetAsyncKeyState(VK_ESCAPE))
     {
         txBegin();
-        txSetColor(TX_BLACK, 4);
-        txSetFillColor (TX_WHITE);
+        txSetColor(RGB(0,0,0), 4);
+        txSetFillColor (RGB(255,255,255));
         txClear();
 
         //На фига мне по умолчанию справку выводить?
         if (PAGE == "Справка")
         {
-            txSetColor(TX_BLACK, 4);
+            txSetColor(RGB(0,0,0), 4);
             if (txMouseButtons() == 1 &&
                 txMouseX() >= 0 &&  txMouseY() >= 700 &&
                 txMouseX() <= 150 && txMouseY() <= 800)
-                txSetColor (TX_LIGHTBLUE, 4);
+                txSetColor (RGB(0,0,127), 4);
 
             txDrawText(0, 700, 150, 800, "Закрыть справку");
-            txSetColor(TX_BLACK, 4);
+            txSetColor(RGB(0,0,0), 4);
             txTextOut(450, 50, "Это справка.");
-            txTextOut(250, 100, "Это редактор хаты в которой ты можещь сделать всё что хочешь.");
+            txTextOut(250, 100, "Это простой редактор квартиры который умеет играться с картинками.");
             if (txMouseButtons() == 1 &&
                 txMouseX() >= 0 &&  txMouseY() >= 700 &&
                 txMouseX() <= 150 && txMouseY() <= 800)
@@ -105,12 +100,12 @@ int main()
         else
         {
             for(int i = 0; i < nRooms + 1; i++)
-                txRectangle(ActRoom[i].x, ActRoom[i].y, ActRoom[i].x2, ActRoom[i].y2);
+                txRectangle(ActRoom[i].x0, ActRoom[i].y0, ActRoom[i].x1, ActRoom[i].y1);
             drawPics(activeObj, nPictures);
 
             txRectangle (0, 0, 1000, 100);
 
-            //Подраздел на выбран
+            //Если Подраздел на выбран
 
             //Рисуем кнопки
             for (int i = 0; i < 5; i++)
@@ -141,7 +136,7 @@ int main()
             if(choosenSection > -1)
                 txRectangle (mx, my, mx + 200, my + 140);
 
-            //Ежели что и подраздел выбираем
+            //Выбираем подраздел
             for (int i = 0; i < 5; i++)
             {
                 //Цвет подраздела
@@ -178,24 +173,18 @@ int main()
             //Отмена выбора подраздела
             if (txMouseY() >= 300 && txMouseButtons() == 1 && chSubSection != "стены")
             {
-                //openSubsect = false;
-                //txSleep(20);
                 choosenSection = -1;
-                //chSection = "";
-                //chSubSection = "";
             }
-
-            //На фиг нужны mx, my? Почему не рисовать тупо прямоугольник под кнопкой? Как в КодБлокс том же
 
             //Выбор категории
             for(int i = 0; i < nVariants; i++)
             {
-                variants[i].drawObject = false;
+                variants[i].drawObject = 0;
 
                 //Рисуем картинки если выбрана такая-то пара "раздел-подраздел"
                 if (chSubSection == variants[i].subSection && chSection == variants[i].section)
                 {
-                    variants[i].drawObject = true;
+                    variants[i].drawObject = 1;
                 }
             }
 
@@ -206,15 +195,15 @@ int main()
                 {
                     nRooms++;
                     ActRoom[nRooms] = {txMouseX(), txMouseY(), txMouseX(), txMouseY()};
-                    txRectangle(ActRoom[nRooms].x, ActRoom[nRooms].y, ActRoom[nRooms].x2, ActRoom[nRooms].y2);
+                    txRectangle(ActRoom[nRooms].x0, ActRoom[nRooms].y0, ActRoom[nRooms].x1, ActRoom[nRooms].y1);
                     txSleep(10);
                     while(txMouseButtons() == 1)
                     {
-                        ActRoom[nRooms].x2 = txMouseX();
-                        ActRoom[nRooms].y2 = txMouseY();
+                        ActRoom[nRooms].x1 = txMouseX();
+                        ActRoom[nRooms].y1 = txMouseY();
                         for(int i = 0; i < nRooms + 1; i++)
                         {
-                            txRectangle(ActRoom[i].x, ActRoom[i].y, ActRoom[i].x2, ActRoom[i].y2);
+                            txRectangle(ActRoom[i].x0, ActRoom[i].y0, ActRoom[i].x1, ActRoom[i].y1);
                             drawPics(activeObj, nPictures);
                         }
                         txSleep(50);
@@ -264,17 +253,17 @@ int main()
 
             for(int i = 0; i < nRooms + 1; i++)
             {
-                if (txMouseX() >= ActRoom[i].x &&
-                    txMouseX() <= ActRoom[i].x2 &&
-                    txMouseY() >= ActRoom[i].y &&
-                    txMouseY() <= ActRoom[i].y2 && txMouseButtons() == 2 &&
+                if (txMouseX() >= ActRoom[i].x0 &&
+                    txMouseX() <= ActRoom[i].x1 &&
+                    txMouseY() >= ActRoom[i].y0 &&
+                    txMouseY() <= ActRoom[i].y1 && txMouseButtons() == 2 &&
                     activeRoom < 0)
                 {
                     activeRoom = i;
                 }
 
-                if (ActRoom[i].y <= 100)
-                    {ActRoom[i].x2 = ActRoom[i].x; ActRoom[i].y2 = ActRoom[i].x;}
+                if (ActRoom[i].y0 <= 100)
+                    {ActRoom[i].x1 = ActRoom[i].x0; ActRoom[i].y1 = ActRoom[i].x0;}
             }
             //Движение активной картинки
             if (activePic >= 0)
@@ -285,12 +274,12 @@ int main()
 
             if (activeRoom >= 0)
             {
-                int y3 = ActRoom[activeRoom].y2 - ActRoom[activeRoom].y;
-                int x3 = ActRoom[activeRoom].x2 - ActRoom[activeRoom].x;
-                ActRoom[activeRoom].x = txMouseX();
-                ActRoom[activeRoom].y = txMouseY();
-                ActRoom[activeRoom].x2 = txMouseX() + x3;
-                ActRoom[activeRoom].y2 = txMouseY() + y3;
+                int y2 = ActRoom[activeRoom].y1 - ActRoom[activeRoom].y0;
+                int x2 = ActRoom[activeRoom].x1 - ActRoom[activeRoom].x0;
+                ActRoom[activeRoom].x0 = txMouseX();
+                ActRoom[activeRoom].y0 = txMouseY();
+                ActRoom[activeRoom].x1 = txMouseX() + x2;
+                ActRoom[activeRoom].y1 = txMouseY() + y2;
             }
 
             if (txMouseButtons()!= 1)
@@ -299,19 +288,13 @@ int main()
             if (txMouseButtons()!= 2)
                 activeRoom = -10;
 
-            //По пробелу скрываем всю мебель
-           // for(int i = 0; i < nVariants; i++)
-           //     if (GetAsyncKeyState(VK_SPACE))
-           //     {
-           //         variants[i].drawObject=false;
-           //     }
-
-            //В качестве отладки выводим номер открытого раздела
-            /*if (chSubSection != "")
+            if(GetAsyncKeyState(VK_SPACE))
             {
-                txTextOut(800, 10, chSection.c_str());
-                txTextOut(800, 30, chSubSection.c_str());
-            }*/
+                for(int i = 0; i < nVariants; i++)
+                {
+                    variants[i].drawObject=0;
+                }
+            }
 
         }
 

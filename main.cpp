@@ -1,5 +1,4 @@
 #include "TXLib.h"
-#include "Button.cpp"
 #include "Picture.cpp"
 #include <fstream>
 #include <iostream>

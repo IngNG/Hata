@@ -71,8 +71,6 @@ int main()
     string chSection = "";
     string chSubSection = "";
 
-
-
     while(!GetAsyncKeyState(VK_ESCAPE))
     {
         txBegin();
@@ -253,6 +251,7 @@ int main()
                     txMouseY() <= activeObj[i].y + 150 && txMouseButtons() == 1 &&
                     activePic < 0)
                 {
+                    activeObj[i].yMouse = txMouseY() - activeObj[i];
                     activePic = i;
                 }
 
@@ -278,8 +277,8 @@ int main()
             //Движение активной картинки
             if (activePic >= 0)
             {
-                activeObj[activePic].x = txMouseX() - 75;
-                activeObj[activePic].y = txMouseY() - 75;
+                activeObj[activePic].x = txMouseX() - txMouseX() - activeObj[activePic].x;
+                activeObj[activePic].y = txMouseY();
             }
 
             if (activeRoom >= 0)

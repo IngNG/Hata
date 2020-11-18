@@ -11,7 +11,7 @@ using namespace std;
 //Картинка
 struct Picture
 {
-    const char* address;
+    string address;
     //Раздел и подраздел
     string section;
     string subSection;
@@ -21,6 +21,8 @@ struct Picture
     int width;
     int height;
     HDC pic;
+    int yMouse;
+    int xMouse;
 
     void drawIcon()
     {
@@ -43,34 +45,40 @@ void drawPics(Picture* activeObj, int nActObj)
         }
 }
 
-void fillVariants(string address)
+int fillVariants(string address, Picture* object, int n)
 {
-    //setlocale(LC_ALL, "Russian");
-
     DIR *dir;
     struct dirent *ent;
     if ((dir = opendir (address.c_str())) != NULL)
     {
-        string s = ent->d_name;
-        s = address + s;
-            cout << s << endl;
-        if (s.find(".bmp") != -1)
+        while ((ent = readdir (dir)) != NULL)
         {
-            cout << s << endl;
-    txSleep(2000);
+            string s = ent->d_name;
+            s = address + s;
+            if (s.find(".bmp") != -1)
+            {
+                //cout << s << endl;
+                object[n] = {s};
+                n++;
+            }
         }
-    txSleep(2000);
         closedir (dir);
     }
+    return n;
 }
 
 int fillVariants(Picture* object, BUTTON *btn)
 {
     setlocale(LC_ALL, "Russian");
 
-    int nVariants = 21;
-    fillVariants("Pictures/мебель/диваны/");
-    object[0] = {"Pictures/Мебель/стулья/кресло.bmp"};
+    int nVariants = 0;
+    nVariants = fillVariants("Pictures/Мебель/стулья/", object, nVariants);
+    nVariants = fillVariants("Pictures/Мебель/столы/", object, nVariants);
+    nVariants = fillVariants("Pictures/Мебель/кровати/", object, nVariants);
+    nVariants = fillVariants("Pictures/Мебель/телевизоры/", object, nVariants);
+    nVariants = fillVariants("Pictures/Мебель/ковры/", object, nVariants);
+    nVariants = fillVariants("Pictures/Мебель/диваны/", object, nVariants);
+    /*object[0] = {"Pictures/Мебель/стулья/кресло.bmp"};
     object[1] = {"Pictures/Мебель/стулья/кресло2.bmp"};
     object[2] = {"Pictures/Мебель/стулья/Stul1.bmp"};
     object[3] = {"Pictures/Мебель/стулья/Stul2.bmp"};
@@ -95,22 +103,21 @@ int fillVariants(Picture* object, BUTTON *btn)
     object[17] = {"Pictures/Мебель/диваны/Divan1.bmp"};
     object[18] = {"Pictures/Мебель/диваны/Divan2.bmp"};
     object[19] = {"Pictures/Мебель/диваны/Divan3.bmp"};
-    object[20] = {"Pictures/Мебель/диваны/Divan4.bmp"};
-
+    object[20] = {"Pictures/Мебель/диваны/Divan4.bmp"};*/
 
     //Прикинь, диваны не рисуются
     for(int i = 0; i < nVariants; i++)
     {
-        string d = "Pictures/";
+        //string d = "Pictures/";
         string str = object[i].address;
         int pos1 = str.find("/", 0);
         int pos2 = str.find("/", pos1 + 1);
         int pos3 = str.find("/", pos2 + 1);
         object[i].section = str.substr(pos1 + 1, pos2 - pos1 - 1);
-        d = d + object[i].section + "/";
+        //d = d + object[i].section + "/";
         object[i].subSection = str.substr(pos2 + 1, pos3 - pos2 - 1);
-        d = d + object[i].subSection + "/";
-//        object[i].address = fillVariants(d);
+        //d = d + object[i].subSection + "/";
+        //object[i].address = fillVariants("Pictures/Мебель/стулья/", object);
 
         //5 кнопок
         for (int j = 0; j < 5; j++)
@@ -125,9 +132,9 @@ int fillVariants(Picture* object, BUTTON *btn)
 
         object[i].x = 750;
         object[i].drawObject = false;
-        object[i].pic = txLoadImage (object[i].address);
-        object[i].width  = getWidth (object[i].address);
-        object[i].height = getHeight(object[i].address);
+        object[i].pic = txLoadImage (object[i].address.c_str());
+        object[i].width  = getWidth (object[i].address.c_str());
+        object[i].height = getHeight(object[i].address.c_str());
     }
 
     return nVariants;

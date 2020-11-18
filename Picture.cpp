@@ -84,12 +84,12 @@ int fillVariants(Picture* object, BUTTON *btn)
     object[9] = {"Pictures/Мебель/кровати/Bed2.bmp"};
     object[10] = {"Pictures/Мебель/кровати/Bed3.bmp"};
 
-    object[11] = {"Pictures/техника/телевизоры/Изогнутый.bmp"};
+    object[11] = {"Pictures/Техника/телевизоры/Изогнутый.bmp"};
 
-    object[12] = {"Pictures/пол/ковры/Cover1.bmp"};
-    object[13] = {"Pictures/пол/ковры/Cover2.bmp"};
-    object[14] = {"Pictures/пол/ковры/Cover3.bmp"};
-    object[15] = {"Pictures/пол/ковры/Cover4.bmp"};
+    object[12] = {"Pictures/Пол/ковры/Cover1.bmp"};
+    object[13] = {"Pictures/Пол/ковры/Cover2.bmp"};
+    object[14] = {"Pictures/Пол/ковры/Cover3.bmp"};
+    object[15] = {"Pictures/Пол/ковры/Cover4.bmp"};
 
     object[16] = {"Pictures/Мебель/диваны/Sofa.bmp"};
     object[17] = {"Pictures/Мебель/диваны/Divan1.bmp"};
@@ -101,15 +101,15 @@ int fillVariants(Picture* object, BUTTON *btn)
     //Прикинь, диваны не рисуются
     for(int i = 0; i < nVariants; i++)
     {
-        string d = "Pictures/";
+        //string d = "Pictures/";
         string str = object[i].address;
         int pos1 = str.find("/", 0);
         int pos2 = str.find("/", pos1 + 1);
         int pos3 = str.find("/", pos2 + 1);
         object[i].section = str.substr(pos1 + 1, pos2 - pos1 - 1);
-        d = d + object[i].section + "/";
+        //d = d + object[i].section + "/";
         object[i].subSection = str.substr(pos2 + 1, pos3 - pos2 - 1);
-        d = d + object[i].subSection + "/";
+        //d = d + object[i].subSection + "/";
 //        object[i].address = fillVariants(d);
 
         //5 кнопок

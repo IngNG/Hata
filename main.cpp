@@ -34,6 +34,7 @@ int main()
 
     ///bool openSubsect = false;
 
+  txTextCursor (false);
 
     //Разделы
     BUTTON buttons[5];

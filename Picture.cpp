@@ -1,8 +1,10 @@
 #include "TXLib.h"
+#include "Button.cpp"
 #include <fstream>
 #include <iostream>
 #include <cstdlib>
 #include <cstring>
+#include <dirent.h>
 
 using namespace std;
 
@@ -41,11 +43,33 @@ void drawPics(Picture* activeObj, int nActObj)
         }
 }
 
+void fillVariants(string address)
+{
+    //setlocale(LC_ALL, "Russian");
+
+    DIR *dir;
+    struct dirent *ent;
+    if ((dir = opendir (address.c_str())) != NULL)
+    {
+        string s = ent->d_name;
+        s = address + s;
+            cout << s << endl;
+        if (s.find(".bmp") != -1)
+        {
+            cout << s << endl;
+    txSleep(2000);
+        }
+    txSleep(2000);
+        closedir (dir);
+    }
+}
+
 int fillVariants(Picture* object, BUTTON *btn)
 {
     setlocale(LC_ALL, "Russian");
 
     int nVariants = 21;
+    fillVariants("Pictures/мебель/диваны/");
     object[0] = {"Pictures/Мебель/стулья/кресло.bmp"};
     object[1] = {"Pictures/Мебель/стулья/кресло2.bmp"};
     object[2] = {"Pictures/Мебель/стулья/Stul1.bmp"};
@@ -77,12 +101,16 @@ int fillVariants(Picture* object, BUTTON *btn)
     //Прикинь, диваны не рисуются
     for(int i = 0; i < nVariants; i++)
     {
+        string d = "Pictures/";
         string str = object[i].address;
         int pos1 = str.find("/", 0);
         int pos2 = str.find("/", pos1 + 1);
         int pos3 = str.find("/", pos2 + 1);
         object[i].section = str.substr(pos1 + 1, pos2 - pos1 - 1);
+        d = d + object[i].section + "/";
         object[i].subSection = str.substr(pos2 + 1, pos3 - pos2 - 1);
+        d = d + object[i].subSection + "/";
+//        object[i].address = fillVariants(d);
 
         //5 кнопок
         for (int j = 0; j < 5; j++)

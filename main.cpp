@@ -251,7 +251,7 @@ int main()
                     txMouseY() <= activeObj[i].y + 150 && txMouseButtons() == 1 &&
                     activePic < 0)
                 {
-                    activeObj[i].yMouse = txMouseY() - activeObj[i];
+//                    activeObj[i].yMouse = txMouseY() - activeObj[i];
                     activePic = i;
                 }
 
@@ -277,7 +277,7 @@ int main()
             //Движение активной картинки
             if (activePic >= 0)
             {
-                activeObj[activePic].x = txMouseX() - txMouseX() - activeObj[activePic].x;
+                activeObj[activePic].x = txMouseX();// - txMouseX() - activeObj[activePic].x;
                 activeObj[activePic].y = txMouseY();
             }
 

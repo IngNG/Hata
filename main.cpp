@@ -50,7 +50,10 @@ int main()
     }
 
     int mx = -500;
-
+    int x4 = 0;
+    int y4 = 0;
+    int x5 = 0;
+    int y5 = 0;
     //Варианты мебели сверху
     Picture variants[100];
     int nVariants = fillVariants(variants, buttons);
@@ -161,7 +164,7 @@ int main()
                 }
                 txSetColor (TX_BLACK, 4);
             }
-
+            //Открыть справку
             txDrawText(0, 700, 150, 800, "Открыть справку");
             if (txMouseButtons() == 1 &&
                 txMouseX() >= 0 &&
@@ -181,8 +184,6 @@ int main()
                 //chSection = "";
                 //chSubSection = "";
             }
-
-            //На фиг нужны mx, my? Почему не рисовать тупо прямоугольник под кнопкой? Как в КодБлокс том же
 
             //Выбор категории
             for(int i = 0; i < nVariants; i++)
@@ -219,12 +220,12 @@ int main()
                 }
             }
 
-            //Варианты мебели сверху
+            //Варианты мебели справа
             for(int i = 0; i < nVariants; i++)
             {
                 if (variants[i].drawObject)
                 {
-                    Win32::TransparentBlt (txDC(),variants[i].x,variants[i].y,150,150,variants[i].pic,0,0,variants[i].width,variants[i].height,TX_BLACK);
+                    Win32::TransparentBlt (txDC(),variants[i].x,variants[i].y,150,150,variants[i].pic,0,0,variants[i].width,variants[i].height,TX_WHITE);
                 }
 
                 //Клик на вариант (раздел)
@@ -251,15 +252,17 @@ int main()
                     txMouseY() <= activeObj[i].y + 150 && txMouseButtons() == 1 &&
                     activePic < 0)
                 {
-//                    activeObj[i].yMouse = txMouseY() - activeObj[i];
+                    //activeObj[i].yMouse = txMouseY() - activeObj[i];
                     activePic = i;
+                    x4 = txMouseX() - activeObj[activePic].x;
+                    y4 = txMouseY() - activeObj[activePic].y;
                 }
 
                 if (activeObj[i].drawObject &&
-                    activeObj[i].y + 75 <= 100)
+                    activeObj[i].y <= 100)
                     activeObj[i].drawObject = false;
             }
-
+            //Выбор и удаление активной комнаты
             for(int i = 0; i < nRooms + 1; i++)
             {
                 if (txMouseX() >= ActRoom[i].x &&
@@ -269,6 +272,8 @@ int main()
                     activeRoom < 0)
                 {
                     activeRoom = i;
+                    x5 = txMouseX() - ActRoom[activeRoom].x;
+                    y5 = txMouseY() - ActRoom[activeRoom].y;
                 }
 
                 if (ActRoom[i].y <= 100)
@@ -277,18 +282,22 @@ int main()
             //Движение активной картинки
             if (activePic >= 0)
             {
-                activeObj[activePic].x = txMouseX();// - txMouseX() - activeObj[activePic].x;
-                activeObj[activePic].y = txMouseY();
+                //if(chSubSection == "двери" &&
+                //((ActRoom[activeRoom].x == activeObj[activePic].x - 25 or
+                //   ActRoom[activeRoom].x == activeObj[activePic].x + 25) )
+                //    activeObj[activePic].x = ActRoom[activeRoom].x
+                activeObj[activePic].x = txMouseX() - x4;
+                activeObj[activePic].y = txMouseY() - y4;
             }
-
+            //Движение активной комнаты
             if (activeRoom >= 0)
             {
                 int y3 = ActRoom[activeRoom].y2 - ActRoom[activeRoom].y;
                 int x3 = ActRoom[activeRoom].x2 - ActRoom[activeRoom].x;
-                ActRoom[activeRoom].x = txMouseX();
-                ActRoom[activeRoom].y = txMouseY();
-                ActRoom[activeRoom].x2 = txMouseX() + x3;
-                ActRoom[activeRoom].y2 = txMouseY() + y3;
+                ActRoom[activeRoom].x = txMouseX() - x5;
+                ActRoom[activeRoom].y = txMouseY() - y5;
+                ActRoom[activeRoom].x2 = txMouseX() + x3 - x5;
+                ActRoom[activeRoom].y2 = txMouseY() + y3 - y5;
             }
 
             if (txMouseButtons()!= 1)
@@ -296,13 +305,6 @@ int main()
 
             if (txMouseButtons()!= 2)
                 activeRoom = -10;
-
-            //По пробелу скрываем всю мебель
-           // for(int i = 0; i < nVariants; i++)
-           //     if (GetAsyncKeyState(VK_SPACE))
-           //     {
-           //         variants[i].drawObject=false;
-           //     }
 
             //В качестве отладки выводим номер открытого раздела
             /*if (chSubSection != "")

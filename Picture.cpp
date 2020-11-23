@@ -26,7 +26,7 @@ struct Picture
 
     void drawIcon()
     {
-        Win32::TransparentBlt (txDC(), x, y, 120, 120, pic, 0, 0, width, height,TX_BLACK);
+        Win32::TransparentBlt (txDC(), x, y, 120, 120, pic, 0, 0, width, height,TX_WHITE);
     }
 };
 
@@ -75,9 +75,10 @@ int fillVariants(Picture* object, BUTTON *btn)
     nVariants = fillVariants("Pictures/Мебель/стулья/", object, nVariants);
     nVariants = fillVariants("Pictures/Мебель/столы/", object, nVariants);
     nVariants = fillVariants("Pictures/Мебель/кровати/", object, nVariants);
-    nVariants = fillVariants("Pictures/Мебель/телевизоры/", object, nVariants);
-    nVariants = fillVariants("Pictures/Мебель/ковры/", object, nVariants);
+    nVariants = fillVariants("Pictures/Техника/телевизоры/", object, nVariants);
+    nVariants = fillVariants("Pictures/Пол/ковры/", object, nVariants);
     nVariants = fillVariants("Pictures/Мебель/диваны/", object, nVariants);
+    nVariants = fillVariants("Pictures/Планировка/двери/", object, nVariants);
     /*object[0] = {"Pictures/Мебель/стулья/кресло.bmp"};
     object[1] = {"Pictures/Мебель/стулья/кресло2.bmp"};
     object[2] = {"Pictures/Мебель/стулья/Stul1.bmp"};

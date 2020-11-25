@@ -94,6 +94,7 @@ int main()
             txSetColor(TX_BLACK, 4);
             txTextOut(450, 50, "Это справка.");
             txTextOut(250, 100, "Это редактор хаты в которой ты можещь сделать всё что хочешь.");
+            txTextOut(300, 150, "Картинки можно удалить передвинув их вверх.");
             if (txMouseButtons() == 1 &&
                 txMouseX() >= 0 &&  txMouseY() >= 700 &&
                 txMouseX() <= 150 && txMouseY() <= 800)
@@ -200,6 +201,7 @@ int main()
             //Рисование стен
             if (chSection == "Планировка" && chSubSection == "стены")
             {
+                txTextOut(850, 245, "*Рисуйте*");
                 if (txMouseButtons() == 1)
                 {
                     nRooms++;
@@ -223,9 +225,13 @@ int main()
             //Варианты мебели справа
             for(int i = 0; i < nVariants; i++)
             {
-                if (variants[i].drawObject)
+                if (variants[i].drawObject && chSubSection != "двери")
                 {
                     Win32::TransparentBlt (txDC(),variants[i].x,variants[i].y,150,150,variants[i].pic,0,0,variants[i].width,variants[i].height,TX_WHITE);
+                }
+                if (variants[i].drawObject && chSubSection == "двери")
+                {
+                    Win32::TransparentBlt (txDC(),variants[i].x,variants[i].y,150,104,variants[i].pic,0,0,variants[i].width,variants[i].height,TX_WHITE);
                 }
 
                 //Клик на вариант (раздел)

@@ -225,14 +225,19 @@ int main()
             //¬арианты мебели справа
             for(int i = 0; i < nVariants; i++)
             {
-                if (variants[i].drawObject && chSubSection != "двери")
+              /*if (variants[i].drawObject && chSubSection != "двери")
                 {
                     Win32::TransparentBlt (txDC(),variants[i].x,variants[i].y,150,150,variants[i].pic,0,0,variants[i].width,variants[i].height,TX_WHITE);
                 }
                 if (variants[i].drawObject && chSubSection == "двери")
                 {
-                    Win32::TransparentBlt (txDC(),variants[i].x,variants[i].y,150,104,variants[i].pic,0,0,variants[i].width,variants[i].height,TX_WHITE);
-                }
+                    Win32::TransparentBlt (txDC(),variants[i].x,variants[i].y,variants[i].width,variants[i].height,variants[i].pic,0,0,variants[i].width,variants[i].height,TX_WHITE);
+                }  */
+
+                if(variants[i].width > variants[i].height && variants[i].drawObject)
+                    Win32::TransparentBlt  (txDC(), variants[i].x, variants[i].y, 150, 150 * variants[i].height/variants[i].width, variants[i].pic, 0, 0, variants[i].width, variants[i].height, TX_WHITE);
+                else if (variants[i].drawObject)
+                    Win32::TransparentBlt  (txDC(), variants[i].x, variants[i].y, 150 * variants[i].width/variants[i].height, 150, variants[i].pic, 0, 0, variants[i].width, variants[i].height, TX_WHITE);
 
                 // лик на вариант (раздел)
                 if (variants[i].drawObject &&
@@ -288,13 +293,28 @@ int main()
             //ƒвижение активной картинки
             if (activePic >= 0)
             {
-                //if(chSubSection == "двери" &&
-                //((ActRoom[activeRoom].x == activeObj[activePic].x - 25 or
-                //   ActRoom[activeRoom].x == activeObj[activePic].x + 25) )
-                //    activeObj[activePic].x = ActRoom[activeRoom].x
-                activeObj[activePic].x = txMouseX() - x4;
-                activeObj[activePic].y = txMouseY() - y4;
-            }
+                for(int i = 0; i < nRooms + 1; i++)
+                {
+                    if(chSubSection == "двери" &&
+                    ((ActRoom[i].x >= activeObj[activePic].x - 25  or
+                      ActRoom[i].x <= activeObj[activePic].x + 25) &&
+                      ActRoom[i].y <= activeObj[activePic].x       &&
+                      ActRoom[i].y2 >= activeObj[activePic].x))
+                        activeObj[activePic].x = ActRoom[i].x;
+
+                    else if(chSubSection == "двери" &&
+                    ((ActRoom[i].x2 >= activeObj[activePic].x - 25  or
+                      ActRoom[i].x2 <= activeObj[activePic].x + 25) &&
+                      ActRoom[i].y  <= activeObj[activePic].x       &&
+                      ActRoom[i].y2 >= activeObj[activePic].x))
+                        activeObj[activePic].x = ActRoom[i].x2;
+                    else
+                    {
+                        activeObj[activePic].x = txMouseX() - x4;
+                        activeObj[activePic].y = txMouseY() - y4;
+                    }
+                }
+             }
             //ƒвижение активной комнаты
             if (activeRoom >= 0)
             {
@@ -313,11 +333,11 @@ int main()
                 activeRoom = -10;
 
             //¬ качестве отладки выводим номер открытого раздела
-            /*if (chSubSection != "")
+            if (chSubSection != "")
             {
                 txTextOut(800, 10, chSection.c_str());
                 txTextOut(800, 30, chSubSection.c_str());
-            }*/
+            }
 
         }
 

@@ -26,7 +26,7 @@ struct Picture
 
     void drawIcon()
     {
-        Win32::TransparentBlt (txDC(), x, y, 120, 120, pic, 0, 0, width, height,TX_WHITE);
+        Win32::TransparentBlt (txDC(), x, y, width, height, pic, 0, 0, width, height,TX_WHITE);
     }
 };
 

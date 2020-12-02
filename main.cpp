@@ -54,6 +54,8 @@ int main()
     int y4 = 0;
     int x5 = 0;
     int y5 = 0;
+    int x6 = 0;
+    int y6 = 0;
     //Варианты мебели сверху
     Picture variants[100];
     int nVariants = fillVariants(variants, buttons);
@@ -293,27 +295,26 @@ int main()
             //Движение активной картинки
             if (activePic >= 0)
             {
-                for(int i = 0; i < nRooms + 1; i++)
-                {
-                    if(chSubSection == "двери" &&
-                    ((ActRoom[i].x >= activeObj[activePic].x - 25  or
-                      ActRoom[i].x <= activeObj[activePic].x + 25) &&
-                      ActRoom[i].y <= activeObj[activePic].x       &&
-                      ActRoom[i].y2 >= activeObj[activePic].x))
-                        activeObj[activePic].x = ActRoom[i].x;
-
-                    else if(chSubSection == "двери" &&
-                    ((ActRoom[i].x2 >= activeObj[activePic].x - 25  or
-                      ActRoom[i].x2 <= activeObj[activePic].x + 25) &&
-                      ActRoom[i].y  <= activeObj[activePic].x       &&
-                      ActRoom[i].y2 >= activeObj[activePic].x))
-                        activeObj[activePic].x = ActRoom[i].x2;
-                    else
+                activeObj[activePic].x = txMouseX() - x4;
+                activeObj[activePic].y = txMouseY() - y4;
+                /*else
+                    for(int i = 0; i < nRooms + 1; i++)
                     {
-                        activeObj[activePic].x = txMouseX() - x4;
-                        activeObj[activePic].y = txMouseY() - y4;
-                    }
-                }
+                        if(chSubSection == "двери" &&
+                        ((ActRoom[i].x >= activeObj[activePic].x - 25  or
+                          ActRoom[i].x <= activeObj[activePic].x + 25) &&
+                          ActRoom[i].y <= activeObj[activePic].x       &&
+                          ActRoom[i].y2 >= activeObj[activePic].x))
+                            activeObj[activePic].x = ActRoom[i].x;
+
+                        else if(chSubSection == "двери" &&
+                        ((ActRoom[i].x2 >= activeObj[activePic].x - 25  or
+                          ActRoom[i].x2 <= activeObj[activePic].x + 25) &&
+                          ActRoom[i].y  <= activeObj[activePic].x       &&
+                          ActRoom[i].y2 >= activeObj[activePic].x))
+                            activeObj[activePic].x = ActRoom[i].x2;
+
+                    }  */
              }
             //Движение активной комнаты
             if (activeRoom >= 0)
@@ -324,6 +325,41 @@ int main()
                 ActRoom[activeRoom].y = txMouseY() - y5;
                 ActRoom[activeRoom].x2 = txMouseX() + x3 - x5;
                 ActRoom[activeRoom].y2 = txMouseY() + y3 - y5;
+            }
+
+            if (txMouseButtons() == 3)
+            {
+                x6 = txMouseX();
+                y6 = txMouseY();
+                txSleep(100);
+                while (txMouseButtons() == 3)
+                {
+                    for (int i = 0; i < nPictures; i++)
+                    {
+                        txSetColor(TX_BLACK, 4);
+                        txSetFillColor (TX_WHITE);
+                        txRectangle (0, 0, 1000, 100);
+                        //Рисуем кнопки
+                        for (int i = 0; i < 5; i++)
+                        {
+                            buttons[i].draw();
+                            if(txMouseX() >= buttons[i].x          && txMouseY() >= buttons[i].y &&
+                               txMouseX() <= buttons[i].x + 200    && txMouseY() <= buttons[i].y + 100)
+                                txSetColor (TX_LIGHTBLUE, 4);
+                            txDrawText(buttons[i].x, buttons[i].y, buttons[i].x + 200, buttons[i].y + 100 , buttons[i].text);
+                            txSetColor (TX_BLACK, 4);
+                        }
+
+                        int x7 = txMouseX() - x6;
+                        int y7 = txMouseY() - y6;
+                        activeObj[i].x = activeObj[i].x + x7;
+                        activeObj[i].y = activeObj[i].y + y7;
+                        drawPics(activeObj, nPictures);
+
+                        txSleep(10);
+                        txClear();
+                    }
+                }
             }
 
             if (txMouseButtons()!= 1)
@@ -341,7 +377,7 @@ int main()
 
         }
 
-        txSleep(20) ;
+        txSleep(20);
     }
 
     //Удаление картинок

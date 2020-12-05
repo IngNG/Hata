@@ -1,3 +1,5 @@
+///\file Picture.cpp
+
 #include "TXLib.h"
 #include "Button.cpp"
 #include <fstream>
@@ -8,12 +10,13 @@
 
 using namespace std;
 
-//Картинка
+///Структура картинка
 struct Picture
 {
     string address;
-    //Раздел и подраздел
+    ///Раздел
     string section;
+    ///подраздел
     string subSection;
     int y;
     int x;

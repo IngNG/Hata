@@ -1,13 +1,15 @@
+///\file Button.cpp
+
 #include "TXLib.h"
 
-//Подраздел
+///Структура "подраздел"
 struct subBUTTON
 {
     const char* text;
     int N;
 };
 
-//Раздел
+/// Структура "Раздел"
 struct BUTTON
 {
     const char* text;
@@ -15,6 +17,8 @@ struct BUTTON
     int x;
     int y;
 
+
+    ///Рисование кнопки
     void draw()
     {
         txSetColor (TX_BLACK, 4);
@@ -24,6 +28,5 @@ struct BUTTON
         txDrawText(x, y, x + 200, y + 100 ,text);
         txSetColor (TX_BLACK, 4);
     }
-
 };
 

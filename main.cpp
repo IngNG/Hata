@@ -7,6 +7,7 @@
 
 using namespace std;
 
+    ///структура "рисования комнаx`xxxты"
 struct room
 {
     int x ;
@@ -30,9 +31,14 @@ int main()
 {
     txCreateWindow (1000, 800);
 
+
+    txTextCursor (false);
+
+
     string PAGE = "Редактор";
 
     ///bool openSubsect = false;
+
 
 
     //Разделы
@@ -77,7 +83,7 @@ int main()
     string chSubSection = "";
 
     while(!GetAsyncKeyState(VK_ESCAPE))
-    {
+        {
         txBegin();
         txSetColor(TX_BLACK, 4);
         txSetFillColor (TX_WHITE);

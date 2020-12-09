@@ -7,7 +7,7 @@
 
 using namespace std;
 
-    ///структура "рисования комнаx`xxxты"
+///структура "Комната"
 struct room
 {
     int x ;

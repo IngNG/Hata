@@ -31,15 +31,11 @@ int main()
 {
     txCreateWindow (1000, 800);
 
-
     txTextCursor (false);
-
 
     string PAGE = "Редактор";
 
     ///bool openSubsect = false;
-
-
 
     //Разделы
     BUTTON buttons[5];
@@ -209,13 +205,13 @@ int main()
             if (chSection == "Планировка" && chSubSection == "стены")
             {
                 txTextOut(850, 245, "*Рисуйте*");
-                if (txMouseButtons() == 1)
+                if (txMouseButtons() == 2)
                 {
                     nRooms++;
                     ActRoom[nRooms] = {txMouseX(), txMouseY(), txMouseX(), txMouseY()};
                     txRectangle(ActRoom[nRooms].x, ActRoom[nRooms].y, ActRoom[nRooms].x2, ActRoom[nRooms].y2);
                     txSleep(10);
-                    while(txMouseButtons() == 1)
+                    while(txMouseButtons() == 2)
                     {
                         ActRoom[nRooms].x2 = txMouseX();
                         ActRoom[nRooms].y2 = txMouseY();
@@ -265,14 +261,14 @@ int main()
             }
 
             //Выбор и удаление активной картинки
-            for(int i = 0; i < nPictures; i++)
+            for(int i = nPictures; i > -1; i--)
             {
                 if (activeObj[i].drawObject &&
                     txMouseX() >= activeObj[i].x &&
                     txMouseX() <= activeObj[i].x + 150 &&
                     txMouseY() >= activeObj[i].y &&
                     txMouseY() <= activeObj[i].y + 150 && txMouseButtons() == 1 &&
-                    activePic < 0)
+                    activePic < 0 && activeRoom < 0)
                 {
                     //activeObj[i].yMouse = txMouseY() - activeObj[i];
                     activePic = i;
@@ -285,13 +281,13 @@ int main()
             }
 
             //Выбор и удаление активной комнаты
-            for(int i = 0; i < nRooms + 1; i++)
+            for(int i = nRooms + 1; i > -1; i--)
             {
                 if (txMouseX() >= ActRoom[i].x &&
                     txMouseX() <= ActRoom[i].x2 &&
                     txMouseY() >= ActRoom[i].y &&
-                    txMouseY() <= ActRoom[i].y2 && txMouseButtons() == 2 &&
-                    activeRoom < 0)
+                    txMouseY() <= ActRoom[i].y2 && txMouseButtons() == 1 &&
+                    activeRoom < 0 && activePic < 0)
                 {
                     activeRoom = i;
                     x5 = txMouseX() - ActRoom[activeRoom].x;
@@ -305,6 +301,7 @@ int main()
             //Движение активной картинки
             if (activePic >= 0)
             {
+                //activeRoom = -10;
                 activeObj[activePic].x = txMouseX() - x4;
                 activeObj[activePic].y = txMouseY() - y4;
             }
@@ -312,6 +309,7 @@ int main()
             //Движение активной комнаты
             if (activeRoom >= 0)
             {
+                //activePic = -10;
                 int y3 = ActRoom[activeRoom].y2 - ActRoom[activeRoom].y;
                 int x3 = ActRoom[activeRoom].x2 - ActRoom[activeRoom].x;
                 ActRoom[activeRoom].x = txMouseX() - x5;
@@ -336,12 +334,12 @@ int main()
                     x7[i] = activeObj[i].x;
                     y7[i] = activeObj[i].y;
                 }
-                for (int i = 0; i < nRooms; i++)
+                for (int i = 0; i < nRooms + 1; i++)
                 {
                     x8[i] = ActRoom[i].x;
                     y8[i] = ActRoom[i].y;
                 }
-                for (int i = 0; i < nRooms; i++)
+                for (int i = 0; i < nRooms + 1; i++)
                 {
                     x8_2[i] = ActRoom[i].x2;
                     y8_2[i] = ActRoom[i].y2;
@@ -401,7 +399,7 @@ int main()
                         activeObj[i].y = y7[i] + y9;
                     }
 
-                    for (int i = 0; i < nRooms; i++)
+                    for (int i = 0; i < nRooms + 1; i++)
                     {
                         ActRoom[i].x = x8[i] + x9;
                         ActRoom[i].y = y8[i] + y9;
@@ -416,7 +414,7 @@ int main()
             if (txMouseButtons()!= 1)
                 activePic = -10;
 
-            if (txMouseButtons()!= 2)
+            if (txMouseButtons()!= 1)
                 activeRoom = -10;
 
             //В качестве отладки выводим номер открытого раздела

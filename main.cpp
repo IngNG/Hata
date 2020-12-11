@@ -29,13 +29,11 @@ struct room
 
 int main()
 {
-    txCreateWindow (1000, 800);
+    txCreateWindow (1200, 800);
 
     txTextCursor (false);
 
     string PAGE = "Редактор";
-
-    ///bool openSubsect = false;
 
     //Разделы
     BUTTON buttons[5];
@@ -45,7 +43,7 @@ int main()
     buttons[3] = {"Разное",     {{"ванные"      }, {"туалеты"     }, {"декор"     }, {""          }, {""}}};
     buttons[4] = {"Планировка", {{"двери"       }, {"окна"        }, {"стены"     }, {""          }, {""}}};
     //Координаты кнопок ваще не проблема посчитать
-    for(int i = 0; i < 4 + 1; i++)
+    for(int i = 0; i < 5; i++)
     {
         buttons[i].x = i * 200;
         buttons[i].y = 0;
@@ -79,13 +77,12 @@ int main()
     string chSubSection = "";
 
     while(!GetAsyncKeyState(VK_ESCAPE))
-        {
+    {
         txBegin();
         txSetColor(TX_BLACK, 4);
         txSetFillColor (TX_WHITE);
         txClear();
 
-        //На фига мне по умолчанию справку выводить?
         if (PAGE == "Справка")
         {
             txSetColor(TX_BLACK, 4);
@@ -95,10 +92,17 @@ int main()
                 txSetColor (TX_LIGHTBLUE, 4);
 
             txDrawText(0, 700, 150, 800, "Закрыть справку");
-            txSetColor(TX_BLACK, 4);
+            txSetColor(TX_BLACK, 6);
             txTextOut(450, 50, "Это справка.");
-            txTextOut(250, 100, "Это редактор хаты в которой ты можещь сделать всё что хочешь.");
-            txTextOut(300, 150, "Картинки можно удалить передвинув их вверх.");
+            txDrawText(380, 100, 800, 500,
+                                "В редакторе планировок вы можете\n"
+                                "легко создавать комнаты, добавлять\n"
+                                "мебель, менять отделку.\n "
+                                "В нашем каталоге размещено 23 обьекта.\n"
+                                "Картинки можно удалить передвинув их вверх.\n"
+                                "Можно добавить стены, для этого нам нужно нажать на планировку > стены.\n"
+                                "И уже можно рисовать.\n"
+                                "Автор этого проекта Никита Шаров и Максим Плешаков.");
             if (txMouseButtons() == 1 &&
                 txMouseX() >= 0 &&  txMouseY() >= 700 &&
                 txMouseX() <= 150 && txMouseY() <= 800)
@@ -163,7 +167,6 @@ int main()
                     txMouseY() <= my + 25 + i * 20 &&
                     txMouseButtons() == 1 && activePic <= 0)
                 {
-                    //openSubsect = true;
                     chSection = buttons[choosenSection].text;
                     chSubSection = buttons[choosenSection].subButtons[i].text;
                 }
@@ -182,7 +185,6 @@ int main()
             //Отмена выбора подраздела
             if (txMouseY() >= 300 && txMouseButtons() == 1 && chSubSection != "стены")
             {
-                //openSubsect = false;
                 //txSleep(20);
                 choosenSection = -1;
                 //chSection = "";

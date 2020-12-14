@@ -14,6 +14,7 @@ struct room
     int y ;
     int x2;
     int y2;
+    bool window;
 };
 
 /*void drawBackArrow()
@@ -114,7 +115,12 @@ int main()
         else
         {
             for(int i = 0; i < nRooms + 1; i++)
+            {
+                if(ActRoom[i].window)
+                    txSetColor(TX_LIGHTBLUE, 4);
                 txRectangle(ActRoom[i].x, ActRoom[i].y, ActRoom[i].x2, ActRoom[i].y2);
+                txSetColor(TX_BLACK, 4);
+            }
             drawPics(activeObj, nPictures);
 
             txRectangle (0, 0, 1000, 100);
@@ -203,26 +209,49 @@ int main()
                 }
             }
 
-            //Рисование стен
-            if (chSection == "Планировка" && chSubSection == "стены")
+            //Рисование стен и окон
+            if (chSection == "Планировка" && (chSubSection == "стены" or chSubSection == "окна"))
             {
                 txTextOut(850, 245, "*Рисуйте*");
                 if (txMouseButtons() == 2)
                 {
                     nRooms++;
-                    ActRoom[nRooms] = {txMouseX(), txMouseY(), txMouseX(), txMouseY()};
+                    if(chSubSection == "окна")
+                        ActRoom[nRooms] = {txMouseX(), txMouseY(), txMouseX(), txMouseY(), true};
+                    else
+                        ActRoom[nRooms] = {txMouseX(), txMouseY(), txMouseX(), txMouseY(), false};
                     txRectangle(ActRoom[nRooms].x, ActRoom[nRooms].y, ActRoom[nRooms].x2, ActRoom[nRooms].y2);
                     txSleep(10);
                     while(txMouseButtons() == 2)
                     {
-                        ActRoom[nRooms].x2 = txMouseX();
-                        ActRoom[nRooms].y2 = txMouseY();
-                        if(txMouseX() - ActRoom[nRooms].x < 0)
+                        if(ActRoom[nRooms].window)
+                        {
+                            if(txMouseX() - ActRoom[nRooms].x > txMouseY() - ActRoom[nRooms].y)
+                            {
+                                ActRoom[nRooms].y2 = ActRoom[nRooms].y + 1;
+                                ActRoom[nRooms].x2 = txMouseX();
+                            }
+                            else if(txMouseX() - ActRoom[nRooms].x < txMouseY() - ActRoom[nRooms].y)
+                            {
+                                ActRoom[nRooms].x2 = ActRoom[nRooms].x + 1;
+                                ActRoom[nRooms].y2 = txMouseY();
+                            }
+
+                        }
+                        else
+                        {
+                            ActRoom[nRooms].x2 = txMouseX();
+                            ActRoom[nRooms].y2 = txMouseY();
+                        }
+                        if(txMouseX() < ActRoom[nRooms].x)
                             ActRoom[nRooms].x2 = ActRoom[nRooms].x + 1;
-                        if(txMouseY() - ActRoom[nRooms].y < 0)
+                        if(txMouseY() < ActRoom[nRooms].y)
                             ActRoom[nRooms].y2 = ActRoom[nRooms].y + 1;
                         for(int i = 0; i < nRooms + 1; i++)
                         {
+                            txSetColor(TX_BLACK, 4);
+                            if(ActRoom[i].window)
+                                txSetColor(TX_LIGHTBLUE, 4);
                             txRectangle(ActRoom[i].x, ActRoom[i].y, ActRoom[i].x2, ActRoom[i].y2);
                             drawPics(activeObj, nPictures);
                         }
@@ -349,14 +378,18 @@ int main()
                 txSleep(100);
                 while (txMouseButtons() == 3)
                 {
-
                     txBegin();
                     txClear();
                     txSetColor(TX_BLACK, 4);
                     txSetFillColor (TX_WHITE);
 
                     for(int i = 0; i < nRooms + 1; i++)
+                    {
+                        if(ActRoom[i].window)
+                            txSetColor(TX_LIGHTBLUE, 4);
                         txRectangle(ActRoom[i].x, ActRoom[i].y, ActRoom[i].x2, ActRoom[i].y2);
+                        txSetColor(TX_BLACK, 4);
+                    }
                     drawPics(activeObj, nPictures);
 
                     txRectangle (0, 0, 1000, 100);
@@ -420,12 +453,12 @@ int main()
                 activeRoom = -10;
 
             //В качестве отладки выводим номер открытого раздела
-            if (chSubSection != "")
+            /*if (chSubSection != "")
             {
                 txTextOut(800, 10, chSection.c_str());
                 txTextOut(800, 30, chSubSection.c_str());
             }
-
+            */
         }
 
         txSleep(20);

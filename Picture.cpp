@@ -85,16 +85,6 @@ int fillVariants(Picture* object, BUTTON *btn)
     nVariants = fillVariants("Pictures/Мебель/диваны/", object, nVariants);
     nVariants = fillVariants("Pictures/Планировка/двери/", object, nVariants);
 
-
-
-
-
-
-
-
-
-
-    //Прикинь, диваны не рисуются
     for(int i = 0; i < nVariants; i++)
     {
         //string d = "Pictures/";
@@ -103,10 +93,7 @@ int fillVariants(Picture* object, BUTTON *btn)
         int pos2 = str.find("/", pos1 + 1);
         int pos3 = str.find("/", pos2 + 1);
         object[i].section = str.substr(pos1 + 1, pos2 - pos1 - 1);
-        //d = d + object[i].section + "/";
         object[i].subSection = str.substr(pos2 + 1, pos3 - pos2 - 1);
-        //d = d + object[i].subSection + "/";
-        //object[i].address = fillVariants("Pictures/Мебель/стулья/", object);
 
         //5 кнопок
         for (int j = 0; j < 5; j++)
@@ -115,11 +102,11 @@ int fillVariants(Picture* object, BUTTON *btn)
                 if (btn[j].text == object[i].section &&
                     btn[j].subButtons[k].text == object[i].subSection)
                     {
-                        object[i].y = 100 + 150 * btn[j].subButtons[k].N;
+                        object[i].y = 10 + 150 * btn[j].subButtons[k].N;
                         btn[j].subButtons[k].N++;
                     }
 
-        object[i].x = 1040;
+        object[i].x = 1025;
         object[i].drawObject = false;
         object[i].pic = txLoadImage (object[i].address.c_str());
         object[i].width  = getWidth (object[i].address.c_str());

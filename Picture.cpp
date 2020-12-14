@@ -130,11 +130,11 @@ int fillVariants(Picture* object, BUTTON *btn)
                 if (btn[j].text == object[i].section &&
                     btn[j].subButtons[k].text == object[i].subSection)
                     {
-                        object[i].y = 100 + 150 * btn[j].subButtons[k].N;
+                        object[i].y = 10 + 150 * btn[j].subButtons[k].N;
                         btn[j].subButtons[k].N++;
                     }
 
-        object[i].x = 750;
+        object[i].x = 1025;
         object[i].drawObject = false;
         object[i].pic = txLoadImage (object[i].address.c_str());
         object[i].width  = getWidth (object[i].address.c_str());

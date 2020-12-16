@@ -84,6 +84,9 @@ int fillVariants(Picture* object, BUTTON *btn)
     nVariants = fillVariants("Pictures/Пол/паркет/", object, nVariants);
     nVariants = fillVariants("Pictures/Мебель/диваны/", object, nVariants);
     nVariants = fillVariants("Pictures/Планировка/двери/", object, nVariants);
+    nVariants = fillVariants("Pictures/Разное/декор/", object, nVariants);
+    nVariants = fillVariants("Pictures/Разное/ванные/", object, nVariants);
+
 
     for(int i = 0; i < nVariants; i++)
     {
